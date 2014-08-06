@@ -1,0 +1,380 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NodeJS最新教程（1） | 皓眸IT</title>
+<meta name="author" content="Chale Cao">
+
+<meta name="description" content="前言最近在学NodeJS，其实以前学过，好长时间没有用，就忘记了。想想还是比较可惜的。最近学习也是从看资料开始，偶尔看到一些博客写的真的很不错。但是都是零零碎碎的。而且很多都是老版本的，按照博客的写法一步一步走过来，很多地方要么报错，要么都不能用。自己也是找了很多资料，所以打算把这些更改的地方写一下，正确的写法记录一下，分享给想学的同学，让大家都少走弯路，节省学习成本。">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="NodeJS最新教程（1）"/>
+<meta property="og:site_name" content="皓眸IT"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css">
+<![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="皓眸IT Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+
+<link rel="stylesheet" href="/css/nprogress.css" type="text/css">
+
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.bootcss.com/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+  
+  <header id="header" class="hm-menu-left-container"><nav id="main-nav" class="navbar navbar-default hm-navbar-menu-left  " role="navigation">
+    <div class="hm-navbar-header">
+    <a href="http://yoursite.com" ><img class="hm-logo" src="/images/haomou.png" title="皓眸IT" width="64" height="64" /></a>
+    <br/>|<br/><span class="fa fa-tint hm-black shine_blue" ></span><br/>|<br/><span class="fa fa-heart hm-black shine_red" ></span><br/>|<br/>
+        <i class="fa fa-bars fa-2x hm-black hm-menu shine_blue" ></i><br/><div class="hm-line"></div>
+    </div>
+    <div class="collapse navbar-collapse">
+      <h1 style="color:black">皓眸IT</h1>
+      <ul class="nav navbar-nav hm-left-nav">
+  
+        <li item='2014/07/29/2014_nodejs_1/' class='active'><a href="/" title="首页">首页</a></li>      
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>关于我<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://home.ustc.edu.cn/~chh1990/chero/chero.html" title="个人主页">个人主页</a></li>    
+        </ul>
+      </li>
+    
+      </ul>
+
+        
+        <div id="widget_category" class="widget hm-left-widget">
+            <div class="panel-heading">分类：</div>            <div data-src='category' class='ajax_widgets'>正在加载...</div>
+        </div>
+        
+        <div id="widget_tagcloud" class="widget hm-left-widget">
+            <div class="panel-heading">标签云：</div>            <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div>        </div>
+        
+
+
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/chalecao">github</a></li>
+      
+      </ul>
+    </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div style="" id="headflash" class="headflash hm_container"><embed pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="/images/bck.swf" width="100%" height="313" style="undefined" id="headflash_f" name="headflash_f" bgcolor="#000" quality="high" allowscriptaccess="false" wmode="transparent" allowfullscreen="false"></div>
+  <div id='content' class=" container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>皓眸IT <small>Everything or Nothing</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article class="hm-article">
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left hm-article-w"></i>
+      <h1 class="title">NodeJS最新教程（1）</h1>
+      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-07-29T08:40:49.000Z"> <a href="/2014/07/29/2014_nodejs_1/">Jul 29 2014</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry"  data-spy="scroll" data-target="#toc" >
+      
+        <h3 id="前言">前言</h3>
+<p>最近在学NodeJS，其实以前学过，好长时间没有用，就忘记了。想想还是比较可惜的。最近学习也是从看资料开始，偶尔看到一些博客写的真的很不错。但是都是零零碎碎的。而且很多都是老版本的，按照博客的写法一步一步走过来，很多地方要么报错，要么都不能用。<br>自己也是找了很多资料，所以打算把这些更改的地方写一下，正确的写法记录一下，分享给想学的同学，让大家都少走弯路，节省学习成本。<br><a id="more"></a></p>
+<h3 id="作者">作者</h3>
+<p><img alt="皓眸GEEK" src="/images/hm.jpg" width="150" height="200"><br>Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域<br>毕业于中国科学技术大学，硕士研究生。单身，喜欢真诚，善良的女孩子。<br>擅长：JAVA，PHP，C#，JS，WebGL，WebRTC …<br>Mail To: chh1990@mail.ustc.edu.cn<br>WebSite：<a href="http://www.haomou.net" target="_blank" rel="external">http://www.haomou.net</a></p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/07/29/2014_nodejs_1/" target="_blank" rel="external">http://www.haomou.net/2014/07/29/2014_nodejs_1/</a></p>
+<h3 id="安装NodeJS环境">安装NodeJS环境</h3>
+<p><strong>step1:</strong> 进入官网(<a href="http://www.nodejs.org/" target="_blank" rel="external">http://www.nodejs.org/</a> )，下载安装包安装，本文作者用的是win8.1系统。windows系统会自动将nodeJS安装后的路径加到系统环境变量path中，如果你在cmd控制台输入：node，没有反应，则说明你的这个nodeJS目录没有添加到系统环境变量中，请手动添加。<br>我的nodeJS版本如下：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="title">node</span> -v</div><div class="line">v0.<span class="number">10</span>.<span class="number">28</span></div></pre></td></tr></table></figure>
+
+<p><strong>step2:</strong> 安装Express框架，Express是WEB开发框架，你可以认为类似java中的spring web mvc或者php中的thinkPHP，或者Ruby中的rails，或者python中的Django框架。利用这可框架可以大大提高开发效率，至于该框架的原理，后期高级课程在说明。我们先入为主，先有一些主观的概念。<br>安装方法及版本：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">npm install -g express</div><div class="line"><span class="keyword">...</span></div><div class="line">express -V(大写)</div><div class="line"><span class="number">4.2</span><span class="number">.0</span></div></pre></td></tr></table></figure>
+
+<p><strong>step3:</strong> 使用Express构建web项目</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">express <span class="operator">-e</span> nodetest</div><div class="line"><span class="built_in">cd</span> nodetest</div><div class="line">npm install</div></pre></td></tr></table></figure>
+
+<p>其中，-e是-ejs的缩写，指的是使用ejs模板，另外还有一种用的比较多的模板是jade，这里不做多介绍。上面的命令会自动创建项目工程目录nodetest，并自动生成package.json文件，然后我们进入改工程文件，然后安装依赖包。这样最简单的web项目就创建成功了。<br><strong>step4：</strong> 安装supervisor</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm <span class="operator"><span class="keyword">install</span> -g supervisor</span></div></pre></td></tr></table></figure>
+
+<p>安装supervisor的优点是每次修改完代码之后，supervisor插件会自动应用更改，不用再手工部署。我们现在启动刚才的web工程。</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">node <span class="operator"><span class="keyword">start</span>  //根据package.josn文件中的配置，实际上是执行 <span class="keyword">bin</span>/www</span></div><div class="line">或者</div><div class="line">supervisor <span class="keyword">bin</span>/www</div></pre></td></tr></table></figure>
+
+<p><strong>step5：</strong> 打开浏览器访问（<a href="http://localhost:3000/" target="_blank" rel="external">http://localhost:3000/</a> ），能看到express的欢迎信息，恭喜您，第一个web工程建好了。</p>
+<h3 id="项目目录结构">项目目录结构</h3>
+<p>☞ node_modules, 存放所有的项目依赖库。(每个项目管理自己的依赖，与Maven,Gradle等不同)<br>☞ package.json，项目依赖配置及开发者信息<br>☞ app.js，程序启动文件<br>☞ public，静态文件(css,js,img)<br>☞ routes，路由文件(MVC中的C,controller)<br>☞ Views，页面文件(Ejs模板)<br><strong>step6：</strong> 修改程序，ejs后缀的模板看着不爽，想改成html的，可以！修改：app.js</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> ejs = <span class="keyword">require</span>(<span class="string">'ejs'</span>);</div><div class="line">app.<span class="keyword">set</span>(<span class="string">'views'</span>, path.<span class="keyword">join</span>(__dirname, <span class="string">'views'</span>));</div><div class="line">app.engine(<span class="string">'.html'</span>,ejs.__express);</div></pre></td></tr></table></figure>
+
+<p><strong>step7：</strong> 开发一个简单的登录页面，首先下载比较流行的bootstrap界面框架（<a href="http://www.bootcss.com/" target="_blank" rel="external">http://www.bootcss.com/</a> ），分别将：<br>-css目录复制到public/stylesheets目录<br>-js目录复制到public/javascripts目录，需要添加jquery库<br>为了方便，我们将页面分为三个部分，头部head.html、内容部分login.html、底部信息栏foot.html<br>☞ head.html, 为html页面的头部区域<br>☞ index.html,home.html, 为内容显示区域<br>☞ foot.html，为页面底部区域<br><em>head.html</em></p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="doctype">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;</span></div><div class="line"><span class="tag">&lt;<span class="title">html</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.w3.org/1999/xhtml"</span> <span class="attribute">xml:lang</span>=<span class="value">"en"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="title">head</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="title">meta</span> <span class="attribute">http-equiv</span>=<span class="value">"Content-Type"</span> <span class="attribute">content</span>=<span class="value">"text/html;charset=UTF-8"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="title">title</span>&gt;</span><span class="vbscript">&lt;%=: title %&gt;</span><span class="tag">&lt;/<span class="title">title</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">type</span>=<span class="value">"text/css"</span> <span class="attribute">href</span>=<span class="value">"/stylesheets/bootstrap.min.css"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">type</span>=<span class="value">"text/css"</span> <span class="attribute">href</span>=<span class="value">"/stylesheets/bootstrap-theme.min.css"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">type</span>=<span class="value">"text/css"</span> <span class="attribute">href</span>=<span class="value">"/stylesheets/bootstrap-select.min.css"</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="title">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="title">body</span>&gt;</span></div></pre></td></tr></table></figure>
+
+<p><em>foot.html</em></p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"/javascripts/jquery-2.0.0.min.js"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"/javascripts/bootstrap.min.js"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"/javascripts/jquery.json-2.4.js"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"/javascripts/bootstrap-select.min.js"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"/javascripts/movie1.js"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="title">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="title">html</span>&gt;</span></div></pre></td></tr></table></figure>
+
+<p><em>index.html</em></p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="vbscript">&lt;% include header.html %&gt;</span></div><div class="line"><span class="tag">&lt;<span class="title">h1</span>&gt;</span>Welcome to <span class="vbscript">&lt;%= title %&gt;</span><span class="tag">&lt;/<span class="title">h1</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="title">p</span>&gt;</span><span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"/login"</span>&gt;</span>登陆<span class="tag">&lt;/<span class="title">a</span>&gt;</span><span class="tag">&lt;/<span class="title">p</span>&gt;</span></div><div class="line"><span class="vbscript">&lt;% include footer.html %&gt;</span></div></pre></td></tr></table></figure>
+
+<p><em>home.html</em></p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="vbscript">&lt;% include header.html %&gt;</span></div><div class="line"><span class="tag">&lt;<span class="title">h1</span>&gt;</span>Welcome <span class="vbscript">&lt;%= user.username %&gt;</span>, 欢迎登陆！！<span class="tag">&lt;/<span class="title">h1</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="title">a</span> <span class="attribute">claa</span>=<span class="value">"btn"</span> <span class="attribute">href</span>=<span class="value">"/logout"</span>&gt;</span>退出<span class="tag">&lt;/<span class="title">a</span>&gt;</span></div><div class="line"><span class="vbscript">&lt;% include footer.html %&gt;</span></div></pre></td></tr></table></figure>
+
+<p><em>login.html</em></p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">&lt;% include header.html %&gt;</div><div class="line">&lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"container-fluid"</span>&gt;</div><div class="line">&lt;form <span class="type">class</span>=<span class="string">"form-horizontal"</span> method=<span class="string">"post"</span>&gt;</div><div class="line">&lt;fieldset&gt;</div><div class="line">&lt;legend&gt;用户登陆&lt;/legend&gt;</div><div class="line">&lt;%- message %&gt;</div><div class="line">&lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"control-group"</span>&gt;</div><div class="line">&lt;label <span class="type">class</span>=<span class="string">"control-label"</span> <span class="keyword">for</span>=<span class="string">"username"</span>&gt;用户名&lt;/label&gt;</div><div class="line">&lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"controls"</span>&gt;</div><div class="line">&lt;input type=<span class="string">"text"</span> <span class="type">class</span>=<span class="string">"input-xlarge"</span> <span class="property">id</span>=<span class="string">"username"</span> <span class="property">name</span>=<span class="string">"username"</span>&gt;</div><div class="line">&lt;/<span class="keyword">div</span>&gt;</div><div class="line">&lt;/<span class="keyword">div</span>&gt;</div><div class="line">&lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"control-group"</span>&gt;</div><div class="line">&lt;label <span class="type">class</span>=<span class="string">"control-label"</span> <span class="keyword">for</span>=<span class="string">"password"</span>&gt;密码&lt;/label&gt;</div><div class="line">&lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"controls"</span>&gt;</div><div class="line">&lt;input type=<span class="string">"password"</span> <span class="type">class</span>=<span class="string">"input-xlarge"</span> <span class="property">id</span>=<span class="string">"password"</span> <span class="property">name</span>=<span class="string">"password"</span>&gt;</div><div class="line">&lt;/<span class="keyword">div</span>&gt;</div><div class="line">&lt;/<span class="keyword">div</span>&gt;</div><div class="line">&lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"form-actions"</span>&gt;</div><div class="line">&lt;button type=<span class="string">"submit"</span> <span class="type">class</span>=<span class="string">"btn btn-primary"</span>&gt;登陆&lt;/button&gt;</div><div class="line">&lt;/<span class="keyword">div</span>&gt;</div><div class="line">&lt;/fieldset&gt;</div><div class="line">&lt;/form&gt;</div><div class="line">&lt;/<span class="keyword">div</span>&gt;</div><div class="line">&lt;% include footer.html %&gt;</div></pre></td></tr></table></figure>
+
+<h3 id="编写路由规则">编写路由规则</h3>
+<p><strong>step8:</strong> 打开app.js，发现有这么一行：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var routes = <span class="keyword">require</span>(<span class="string">'./routes/index'</span>);</div><div class="line"><span class="keyword">...</span></div><div class="line">app.use(<span class="string">'/'</span>, routes);</div></pre></td></tr></table></figure>
+
+<p>上面的语法意思是，拦截所有的根路径请求，交给routes处理，routes实际上是指index中定义的实例。我们这里只需要打开routes目录下的index文件，设置相应的路由规则。<br><em>routes/index.js</em></p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> express = require(<span class="string">'express'</span>);</div><div class="line"><span class="keyword">var</span> router = express.Router();</div><div class="line">router.<span class="keyword">get</span>(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span><span class="params">(req, res)</span></span>{</div><div class="line">	<span class="keyword">return</span> res.redirect(<span class="string">'/login'</span>);</div><div class="line">});</div><div class="line">router.<span class="keyword">get</span>(<span class="string">'/login'</span>, <span class="function"><span class="keyword">function</span><span class="params">(req, res)</span></span>{</div><div class="line">	res.render(<span class="string">'login'</span>, { title: <span class="string">'用户登陆'</span>});</div><div class="line">});</div><div class="line"></div><div class="line">router.post(<span class="string">'/login'</span>, <span class="function"><span class="keyword">function</span><span class="params">(req, res)</span></span>{</div><div class="line">	<span class="keyword">var</span> user={</div><div class="line">		username:<span class="string">'admin'</span>,</div><div class="line">		password:<span class="string">'admin'</span></div><div class="line">	}</div><div class="line">	<span class="keyword">if</span>(req.body.username===user.username && req.body.password===user.password){</div><div class="line">		<span class="keyword">return</span> res.redirect(<span class="string">'/home'</span>);</div><div class="line">	} <span class="keyword">else</span> {</div><div class="line">		<span class="keyword">return</span> res.redirect(<span class="string">'/login'</span>);</div><div class="line">	}</div><div class="line">});</div><div class="line">router.<span class="keyword">get</span>(<span class="string">'/logout'</span>, <span class="function"><span class="keyword">function</span><span class="params">(req, res)</span></span>{</div><div class="line">	res.redirect(<span class="string">'/'</span>);</div><div class="line">});</div><div class="line">router.<span class="keyword">get</span>(<span class="string">'/home'</span>, <span class="function"><span class="keyword">function</span><span class="params">(req, res)</span></span>{</div><div class="line"></div><div class="line">	res.render(<span class="string">'home'</span>, { title: <span class="string">'Home'</span>});</div><div class="line">});</div><div class="line">module.exports = router;</div></pre></td></tr></table></figure>
+
+<p>打开浏览器，你可以登录了。是不是很简单，下面学学session控制，将登录信息放到session中，便于共享数据。</p>
+<h3 id="使用SESSION传递参数">使用SESSION传递参数</h3>
+<p>分析上面的程序：<br>☞  在login页面提交参数的时候，直接比较参数<br>☞  home页面又重新对user赋值，常规的做法应该把user放到session中</p>
+<p>不同语言的session处理机制：<br>☞ Java的web服务器，是多线程调用模型。每用户请求会打开一个线程，每<br>    个线程在内容中维护着用户的状态。在JVM中会维护session的状态，做持久化操作等。<br>☞ PHP的web服务器，是交行CGI的程序处理，CGI是无状态的，所以一般<br>    用cookie在客户的浏览器是维护用户的状态。但cookie在客户端维护的信<br>    息是不够的，所以CGI应用要模仿用户session，就需要在服务器端生成<br>    一个session文件存储起来，让原本无状态的CGI应用，通过中间文件的<br>    方式，达到session的效果。当然phph也可以把session存储到数据库中。<br>☞  Nodejs的web服务器，也是CGI的程序无状态的，与PHP不同的地方在于，<br>    单线程应用，所有请求都是异步响应，通过callback方式返回数据。如果<br>    我们想保存session数据，也是需要找到一个存储，通过文件存<br>    储,redis,Mongdb都可以。</p>
+<h3 id="使用mongodb保存用户session">使用mongodb保存用户session</h3>
+<p>安装mongoDB，建立数据库test，即可，这里默认会建立数据表session。关于mongoDB的安装使用，下次再做学习。<br><strong>说明一点：express4版本之后，session这些处理从express插件中分离出来，</strong>所以这里我们需要安装两个插件：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm <span class="operator"><span class="keyword">install</span> express-<span class="keyword">session</span></span></div><div class="line">npm <span class="keyword">install</span> <span class="keyword">connect</span>-mongo</div></pre></td></tr></table></figure>
+
+<p>修改app.js，增加session处理，如下；</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//添加session处理,这个配置要放在路由配置之前</span></div><div class="line"><span class="keyword">var</span> settings = <span class="built_in">require</span>(<span class="string">'./settings'</span>);</div><div class="line"><span class="keyword">var</span> session    = <span class="built_in">require</span>(<span class="string">'express-session'</span>);</div><div class="line"><span class="keyword">var</span> MongoStore = <span class="built_in">require</span>(<span class="string">'connect-mongo'</span>)(session);</div><div class="line">app.use(session({</div><div class="line">    secret: settings.cookieSecret,</div><div class="line">    key: settings.db,</div><div class="line">    store: <span class="keyword">new</span> MongoStore({</div><div class="line">          db: settings.db</div><div class="line">        }, <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">           <span class="built_in">console</span>.log(<span class="string">'connect mongodb success...'</span>);</div><div class="line">       }) ,</div><div class="line">    cookie: { maxAge : <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="built_in">Date</span>.now() + <span class="number">1000</span> * <span class="number">60</span> * <span class="number">60</span>)}</div><div class="line">}));</div></pre></td></tr></table></figure>
+
+<p>在app.js同级建立settings.js配置文件，<br><em>settings.js</em></p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="module"><span class="keyword">module</span>.exports = </span>{</div><div class="line">  cookieSecret: <span class="string">'mysession'</span>,</div><div class="line">  db: <span class="string">'test'</span>,</div><div class="line">  host: <span class="string">'localhost'</span></div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>然后我们再次修改路由配置文件routes/index.js，增加session处理，</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> express = require(<span class="string">'express'</span>);</div><div class="line"><span class="keyword">var</span> router = express.Router();</div><div class="line"><span class="comment">//添加权限控制</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">authentication</span><span class="params">(req, res, next)</span> </span>{</div><div class="line">	<span class="keyword">if</span> (!req.session.user) {</div><div class="line">		req.session.error=<span class="string">'请先登陆'</span>;</div><div class="line">		<span class="keyword">return</span> res.redirect(<span class="string">'/login'</span>);</div><div class="line">	}</div><div class="line">	next();</div><div class="line">}</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">notAuthentication</span><span class="params">(req, res, next)</span> </span>{</div><div class="line">	<span class="keyword">if</span> (req.session.user) {</div><div class="line">		req.session.error=<span class="string">'已登陆'</span>;</div><div class="line">		<span class="keyword">return</span> res.redirect(<span class="string">'/'</span>);</div><div class="line">	}</div><div class="line">	next();</div><div class="line">}</div><div class="line">router.<span class="keyword">get</span>(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span><span class="params">(req, res)</span></span>{</div><div class="line">	<span class="keyword">return</span> res.redirect(<span class="string">'/login'</span>);</div><div class="line">});</div><div class="line">router.<span class="keyword">get</span>(<span class="string">'/login'</span>, <span class="function"><span class="keyword">function</span><span class="params">(req, res)</span></span>{</div><div class="line">	res.render(<span class="string">'login'</span>, { title: <span class="string">'用户登陆'</span>});</div><div class="line">});</div><div class="line">router.post(<span class="string">'/login'</span>, <span class="function"><span class="keyword">function</span><span class="params">(req, res)</span></span>{</div><div class="line">	<span class="keyword">var</span> user={</div><div class="line">		username:<span class="string">'admin'</span>,</div><div class="line">		password:<span class="string">'admin'</span></div><div class="line">	}</div><div class="line">	<span class="keyword">if</span>(req.body.username===user.username && req.body.password===user.password){</div><div class="line">		req.session.user=user;</div><div class="line">		<span class="keyword">return</span> res.redirect(<span class="string">'/home'</span>);</div><div class="line">	} <span class="keyword">else</span> {</div><div class="line">		<span class="keyword">return</span> res.redirect(<span class="string">'/login'</span>);</div><div class="line">	}</div><div class="line">});</div><div class="line">router.<span class="keyword">get</span>(<span class="string">'/logout'</span>,authentication);</div><div class="line">router.<span class="keyword">get</span>(<span class="string">'/logout'</span>, <span class="function"><span class="keyword">function</span><span class="params">(req, res)</span></span>{</div><div class="line">	req.session.user=<span class="literal">null</span>;</div><div class="line">	res.redirect(<span class="string">'/'</span>);</div><div class="line">});</div><div class="line">router.<span class="keyword">get</span>(<span class="string">'/home'</span>,authentication);</div><div class="line">router.<span class="keyword">get</span>(<span class="string">'/home'</span>, <span class="function"><span class="keyword">function</span><span class="params">(req, res)</span></span>{</div><div class="line"></div><div class="line">	res.render(<span class="string">'home'</span>, { title: <span class="string">'Home'</span>});</div><div class="line">});</div><div class="line">module.exports = router;</div></pre></td></tr></table></figure>
+
+<h3 id="谢谢！">谢谢！</h3>
+<p>有问题请留言。T_T  I am teacher Chale.  T_T</p>
+
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://yoursite.com">皓眸IT</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/07/29/2014_nodejs_1/">NodeJS最新教程（1）</a></div>
+</div></div><div class="widget" id="widget_after_content_ujian>">
+<div class="ujian-hook"></div>
+</div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/NodeJS/" itemprop="url"><span itemprop="title" >NodeJS</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/NodeJS/" class="label label-primary" itemprop="url"><span itemprop="title">NodeJS</span></a><a href="/tags/教程/" class="label label-success" itemprop="url"><span itemprop="title">教程</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-08-06 14:55:05"datetime="2014-08-06 14:55:05"> Aug 6 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://yoursite.com/2014/07/29/2014_nodejs_1/#comments" class="ds-thread-count comment-link" data-thread-key="2014_nodejs_1" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  <li class="previous"><a href="/2014/08/04/2014_Html5_canvas_video/" title="WebRTC相关的canvas与video">&larr; WebRTC相关的canvas与video</a></li>
+  
+  
+  <li class="next"><a href="/2014/07/29/2014_angularjs_1/" title="AngularJS入门教程（1）">AngularJS入门教程（1） &rarr;</a></li>
+  
+</ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="2014_nodejs_1"  data-url="http://yoursite.com/2014/07/29/2014_nodejs_1/" data-title="NodeJS最新教程（1）"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_search" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">搜索</div>  <form action="//google.com/search" method="get" accept-charset="utf-8">
+  <div class="input-group">
+    <input class="form-control" id="searchbox" type="search" name="q" results="0" placeholder="搜索">
+    <span class="input-group-btn">
+      <button class="btn btn-default" type="submit">Go!</button>
+    </span>
+    <input type="hidden" name="q" value="site:yoursite.com">
+  </div>
+</form>
+</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_recent_comments" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近评论</div>  
+
+<div class="list-group-item ds-recent-comments" data-num-items="6" data-show-avatars="1" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="50"></div>
+
+
+
+</div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2014 Chale Cao
+  
+    &nbsp;&nbsp;</span>
+  <a href='http://www.miibeian.gov.cn/'>苏ICP备13018740号-6</a></span>
+  <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'>
+<script>
+var _hmt = _hmt || [];
+_js2load.push({src:"//hm.baidu.com/hm.js?d4bd99741b546509c094cd1b0bf951c4"});
+</script>
+</span>  </div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-08-06 14:55:05</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haomou"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://yoursite.com/2014/07/29/2014_nodejs_1/";
+    var wumiiTitle = "NodeJS最新教程（1）";
+    var wumiiTags = "NodeJS,教程";
+    var wumiiCategories = ["NodeJS"];
+    var wumiiSitePrefix = "http://yoursite.com";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+            
+<script type="text/javascript">var ujian_config = {num:6,showType:0,picSize:84,textHeight:45};_js2load.push({src:'http://v1.ujian.cc/code/ujian.js?uid=1952516'});</script>
+<a href="http://www.ujian.cc" style="border:0;"><img src="http://img.ujian.cc/pixel.png" alt="友荐云推荐" style="border:0;padding:0;margin:0;" /></a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />').wrap('<div class="img_block"></div>');
+     
+      if(alt){$(this).after('<span class="caption">' + alt + '</span>')};
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script src="/js/chenall.js" type="text/javascript"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Canvas标签图像处理/滤镜特效 | 皓眸IT</title>
+<meta name="author" content="Chale Cao">
+
+<meta name="description" content="简介这段时间做了一个手机WebRTC拍照加特效的应用，主要用到canvas标签获取图像矩阵（这个在上一篇博客中已经详细介绍过：），然后做图像处理，例如滤镜特效（马赛克，浮雕，衬底，反色等），这里我们详细介绍相关的知识。其实从原理上讲，大部分的图像处理都是对图像像素矩阵和某个特效矩阵做卷积，得到新的像素矩阵，就是处理后的效果。关于这个大学课程《数字信息处理》里面有详细介绍。">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="Canvas标签图像处理/滤镜特效"/>
+<meta property="og:site_name" content="皓眸IT"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css">
+<![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="皓眸IT Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+
+<link rel="stylesheet" href="/css/nprogress.css" type="text/css">
+
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.bootcss.com/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+  
+  <header id="header" class="hm-menu-left-container"><nav id="main-nav" class="navbar navbar-default hm-navbar-menu-left  " role="navigation">
+    <div class="hm-navbar-header">
+    <a href="http://yoursite.com" ><img class="hm-logo" src="/images/haomou.png" title="皓眸IT" width="64" height="64" /></a>
+    <br/>|<br/><span class="fa fa-tint hm-black shine_blue" ></span><br/>|<br/><span class="fa fa-heart hm-black shine_red" ></span><br/>|<br/>
+        <i class="fa fa-bars fa-2x hm-black hm-menu shine_blue" ></i><br/><div class="hm-line"></div>
+    </div>
+    <div class="collapse navbar-collapse">
+      <h1 style="color:black">皓眸IT</h1>
+      <ul class="nav navbar-nav hm-left-nav">
+  
+        <li item='2014/08/05/2014_canvas/' class='active'><a href="/" title="首页">首页</a></li>      
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>关于我<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://home.ustc.edu.cn/~chh1990/chero/chero.html" title="个人主页">个人主页</a></li>    
+        </ul>
+      </li>
+    
+      </ul>
+
+        
+        <div id="widget_category" class="widget hm-left-widget">
+            <div class="panel-heading">分类：</div>            <div data-src='category' class='ajax_widgets'>正在加载...</div>
+        </div>
+        
+        <div id="widget_tagcloud" class="widget hm-left-widget">
+            <div class="panel-heading">标签云：</div>            <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div>        </div>
+        
+
+
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/chalecao">github</a></li>
+      
+      </ul>
+    </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div style="" id="headflash" class="headflash hm_container"><embed pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="/images/bck.swf" width="100%" height="313" style="undefined" id="headflash_f" name="headflash_f" bgcolor="#000" quality="high" allowscriptaccess="false" wmode="transparent" allowfullscreen="false"></div>
+  <div id='content' class=" container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>皓眸IT <small>Everything or Nothing</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article class="hm-article">
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left hm-article-w"></i>
+      <h1 class="title">Canvas标签图像处理/滤镜特效</h1>
+      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-08-05T10:40:49.000Z"> <a href="/2014/08/05/2014_canvas/">Aug 5 2014</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry"  data-spy="scroll" data-target="#toc" >
+      
+        <h3 id="简介">简介</h3>
+<p>这段时间做了一个手机WebRTC拍照加特效的应用，主要用到canvas标签获取图像矩阵（这个在上一篇博客中已经详细介绍过：），然后做图像处理，例如滤镜特效（马赛克，浮雕，衬底，反色等），这里我们详细介绍相关的知识。其实从原理上讲，大部分的图像处理都是对图像像素矩阵和某个特效矩阵做卷积，得到新的像素矩阵，就是处理后的效果。关于这个大学课程《数字信息处理》里面有详细介绍。<br><a id="more"></a></p>
+<h3 id="作者">作者</h3>
+<p><img alt="皓眸GEEK" src="/images/hm.jpg" width="150" height="200"><br>Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域<br>毕业于中国科学技术大学，硕士研究生。单身，喜欢真诚，善良的女孩子。<br>擅长：JAVA，PHP，C#，JS，WebGL，WebRTC …<br>Mail To: chh1990@mail.ustc.edu.cn<br>WebSite：<a href="http://www.haomou.net" target="_blank" rel="external">http://www.haomou.net</a></p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/08/05/2014_canvas/" target="_blank" rel="external">http://www.haomou.net/2014/08/05/2014_canvas/</a></p>
+<h3 id="canas介绍">canas介绍</h3>
+<p>上一个介绍WebRTC中使用<a href="http://www.haomou.net/2014/08/04/2014_Html5_canvas_video/" target="_blank" rel="external">video标签和canvas标签</a>的文章中，并没有详细的介绍canvas标签。这里补上。<br>canvas是一个新的HTML元素，这个元素可以被Script语言(通常是JavaScript)用来绘制图形。例如可以用它来画图、合成图象、或做动画。canvas最先在苹果公司(Apple)的Mac OS X Dashboard上被引入，而后被应用于Safari。后面被采用成为HTML5标准规范的一部分。<br>像其他的html标签一样，canvas拥有大部分通用的属性，比如width和height。canvas标签在使用中一般是通过js来操作的，可以吧canvas看成一个画布，在上面如何作图，js是就是进行创作的工具。操作画布之前，首先要获取改画布的上文context，这个可以理解为环境状态，比如画画之前先固定好画布，看一下画布的大小，决定怎么作画。这个获取上下文也就是这个意思。代码：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">'canvas_id'</span>);</div><div class="line"><span class="keyword">if</span> (canvas.getContext){</div><div class="line">  <span class="keyword">var</span> ctx = canvas.getContext(<span class="string">'2d'</span>);</div><div class="line">  <span class="comment">// drawing code here</span></div><div class="line">} <span class="keyword">else</span> {</div><div class="line">  <span class="comment">// canvas-unsupported code here</span></div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>目前这个canvas只支持2d绘画，而3d绘画是通过webgl实现的。这个后续课程会讲解到，有兴趣的可以做个预研，了解一下。目前这个使用的比较多的是开源的Three.js框架。</p>
+<h3 id="canas绘制文本">canas绘制文本</h3>
+<p>绘制文本需要用到下列的属性和方法：<br>属性：<br>1.context.font属性，获取或设置文本的字体和大小。设置该属性的字符串语法与CSS语法中的font是一样的，不能解析成CSS的值会被忽略掉。<br>2.context.textAlign属性，获取或设置字体的对其方式。只允许下列值:start, end, left, right, 和center。其他值会被忽略，默认值是start。<br>3.context.textBaseline属性，获取或设置字体的基准线。有效的值如下：top, hanging, middle, alphabetic, ideographic, bottom。其他值会被忽略，默认值是alphabetic。<br>用法：<br>1.context.fillText(text, x, y [, maxWidth ] )，该方法用于在指定的位置绘制文本。如果设置了maxWidth，则会调整字符串使之符合这个条件。<br>2.context. strokeText(text, x, y [, maxWidth ] )，该方法用于在指定的位置绘制镂空的文本。<br>例子代码：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="doctype">&lt;!DOCTYPE HTML&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="title">html</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="title">body</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="title">canvas</span> <span class="attribute">id</span>=<span class="value">"lesson"</span> <span class="attribute">width</span>=<span class="value">"300"</span><span class="value">height="200"</span>&gt;</span>      </div><div class="line">         <span class="tag">&lt;<span class="title">p</span>&gt;</span>Your browser does not support the canvas element!<span class="tag">&lt;/<span class="title">p</span>&gt;</span>      </div><div class="line"><span class="tag">&lt;/<span class="title">canvas</span>&gt;</span>            </div><div class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript">      </span></div><div class="line">  <span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{      </div><div class="line">         <span class="keyword">var</span> canvas =<span class="built_in">document</span>.getElementById(<span class="string">"lesson"</span>);      </div><div class="line">         <span class="keyword">var</span> context =canvas.getContext(<span class="string">"2d"</span>);      </div><div class="line">              </div><div class="line">         context.font =<span class="string">"30px Times New Roman"</span>;      </div><div class="line">         context.fillText(<span class="string">"HelloCanvas!"</span>, <span class="number">10</span>, <span class="number">35</span>);      </div><div class="line">  }      </div><div class="line"><span class="tag">&lt;/<span class="title">script</span>&gt;</span>      </div><div class="line"><span class="tag">&lt;/<span class="title">body</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="title">html</span>&gt;</span></div></pre></td></tr></table></figure>
+
+<h3 id="canas绘制图片">canas绘制图片</h3>
+<p>绘制原图：context.drawImage(image, dx, dy)<br>缩放绘图：context.drawImage(image, dx, dy, dw, dh)<br>切片绘图：context.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh)<br>合理的绘制多幅图像可以做出漂亮的组合效果，比如常见的画廊就是框图片与照片的叠加，只不过要注意绘制的先后顺序。<br>第一个参数image代表图片的来源，可以是下列几种：<br>　　(1)页面内的图片:我们可以通过 document.images 集合、document.getElementsByTagName 方法又或者 document.getElementById 方法来获取页面内的图片。<br>　　(2)已经完备的canvas：可以使用document.getElementsByTagName或document.getElementById方法来获取已经准备好的canvas元素。一个常用的场景就是为另一个大的canvas做缩略图。<br>　　(3)通过data:url方式(<a href="http://en.wikipedia.org/wiki/Data:_URL)嵌入图像：Data" target="_blank" rel="external">http://en.wikipedia.org/wiki/Data:_URL)嵌入图像：Data</a> urls允许用一串Base64编码的字符串的方式来定义一个图片。其优点就是图片内容即时可用，无须再到服务器兜一圈。(还有一个优点是，可以将CSS，JavaScript，HTML和图片全部封装在一起，迁移起来十分方便。)缺点就是图像没法缓存，图片大的话内嵌的url数据会相当的长。例如：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> img_src = <span class="string">'data:image/gif;base64,R0lGODlhCwALAIAAAAAA3pn/ZiH5BAEAAAEALAAAAAALAAsAAAIUhA+hkcuO4lmNVindo7qyrIXiGBYAOw=='</span>;</div></pre></td></tr></table></figure>
+
+<p>　　(4)动态创建的图片：我们可以用脚本创建一个新的Image对象，但这种方法的主要缺点是如果不希望脚本因为等待图片装置而暂停，还得需要突破预装载。<br>var img = new Image();<br>img.src = ‘myImage.png’;<br>　　当脚本执行后，图片开始装载。若调用drawImage时，图片没装载完，脚本会等待直至装载完毕。如果不希望这样的效果，则需要使用图片的onload事件。(见下面的例子)。其他几个参数的含义：sx,sy是Image在源中的起始坐标，sw/sWidth,sh/sHeight是源中图片的宽和高，dx,dy是在目标中的坐标，dw/dWidth,dh/dHeight是目标的宽和高。具体可以参看下图：<br><img alt="示例" src="/images/Canvas_drawimage.jpg" width="300" height="290"><br>代码：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="preprocessor">&lt;?</span>doctype html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">&lt;head&gt;</div><div class="line">&lt;title&gt;cavas tests&lt;/title&gt;</div><div class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</div><div class="line"> <span class="function"><span class="keyword">function</span> <span class="title">onStart</span><span class="params">()</span> </span>{</div><div class="line">  <span class="keyword">var</span> canvas = document.getElementById(<span class="string">"lesson01"</span>);</div><div class="line">  <span class="keyword">if</span>(canvas.getContext)</div><div class="line">  {</div><div class="line">   <span class="keyword">var</span> context = canvas.getContext(<span class="string">"2d"</span>);</div><div class="line">   <span class="keyword">var</span> pic = <span class="keyword">new</span> Image();   </div><div class="line">   pic.onload=<span class="function"><span class="keyword">function</span><span class="params">()</span></span>{  </div><div class="line">    context.drawImage(pic,<span class="number">0</span>, <span class="number">0</span>); </div><div class="line">   } </div><div class="line">   pic.src = <span class="string">"http://imgsrc.baidu.com/forum/pic/item/e6b14bc2a4561b1fe4dd3b24.jpg"</span>;      </div><div class="line">  }</div><div class="line">}</div><div class="line">&lt;/script&gt;</div><div class="line">&lt;/head&gt;</div><div class="line">&lt;body onload=<span class="string">"onStart();"</span>&gt;</div><div class="line">&lt;canvas id=<span class="string">"lesson01"</span> width=<span class="string">"500"</span> height=<span class="string">"500"</span>&gt;</div><div class="line"> Your browser does not support Canvas.</div><div class="line">&lt;/canvas&gt;</div><div class="line">&lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
+
+<h3 id="图像处理">图像处理</h3>
+<p>在泛函分析中，卷积、旋积或摺积(英语：Convolution)是通过两个函数f 和g 生成第三个函数的一种数学算子，表征函数f 与经过翻转和平移的g 的重叠部分的面积。所谓的对图像的卷积操作，就是指对图像上的每一点的像素值，用这个矩阵进行运算，得到一个新的值。关于卷积的详细理论介绍，参考另一篇博文：<br><a href="http://www.haomou.net/2014/08/05/2014_theory/" target="_blank" rel="external">图像处理的数学理论</a><br>在HTML5中可以使用canvas标签的getImageData方法获得像素矩阵，然后采用卷积做特效处理。</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div></pre></td><td class="code"><pre><div class="line">var <span class="variable">canvas =</span> document.getElementById('canvas1');</div><div class="line">var <span class="variable">context =</span> canvas.getContext('<span class="number">2</span>d');</div><div class="line">var <span class="variable">defaultImage =</span> context.getImageData(<span class="number">0</span>, <span class="number">0</span>, this.canvas.width, this.canvas.height);</div><div class="line"></div><div class="line">ImageFilters.<span class="variable">ConvolutionFilter =</span> function (srcImageData, matrixX, matrixY, matrix, divisor, bias, preserveAlpha, clamp, color, alpha) {</div><div class="line">    var <span class="variable">srcPixels    =</span> srcImageData.data,</div><div class="line">        <span class="variable">srcWidth     =</span> srcImageData.width,</div><div class="line">        <span class="variable">srcHeight    =</span> srcImageData.height,</div><div class="line">        <span class="variable">srcLength    =</span> srcPixels.length,</div><div class="line">        <span class="variable">dstImageData =</span> this.utils.createImageData(srcWidth, srcHeight),</div><div class="line">        <span class="variable">dstPixels    =</span> dstImageData.data;</div><div class="line"></div><div class="line">    <span class="variable">divisor =</span> divisor || <span class="number">1</span>;</div><div class="line">    <span class="variable">bias =</span> bias || <span class="number">0</span>;</div><div class="line">    // default <span class="constant">true</span></div><div class="line"></div><div class="line">    (preserveAlpha !== <span class="constant">false</span>) && (<span class="variable">preserveAlpha =</span> <span class="constant">true</span>);</div><div class="line">    (clamp !== <span class="constant">false</span>) && (<span class="variable">clamp =</span> <span class="constant">true</span>);</div><div class="line"></div><div class="line">    <span class="variable">color =</span> color || <span class="number">0</span>;</div><div class="line">    <span class="variable">alpha =</span> alpha || <span class="number">0</span>;</div><div class="line"></div><div class="line">    var <span class="variable">index =</span> <span class="number">0</span>,</div><div class="line">        <span class="variable">rows =</span> matrixX &gt;&gt; <span class="number">1</span>,</div><div class="line">        <span class="variable">cols =</span> matrixY &gt;&gt; <span class="number">1</span>,</div><div class="line">        <span class="variable">clampR =</span> color &gt;&gt; <span class="number">16</span> & <span class="number">0</span>xFF,</div><div class="line">        <span class="variable">clampG =</span> color &gt;&gt;  <span class="number">8</span> & <span class="number">0</span>xFF,</div><div class="line">        <span class="variable">clampB =</span> color       & <span class="number">0</span>xFF,</div><div class="line">        <span class="variable">clampA =</span> alpha * <span class="number">0</span>xFF;</div><div class="line"></div><div class="line">    for (var <span class="variable">y =</span> <span class="number">0</span>; y &lt; srcHeight; y += <span class="number">1</span>) {</div><div class="line">        for (var <span class="variable">x =</span> <span class="number">0</span>; x &lt; srcWidth; x += <span class="number">1</span>, index += <span class="number">4</span>) {</div><div class="line">            var <span class="variable">r =</span> <span class="number">0</span>,</div><div class="line">                <span class="variable">g =</span> <span class="number">0</span>,</div><div class="line">                <span class="variable">b =</span> <span class="number">0</span>,</div><div class="line">                <span class="variable">a =</span> <span class="number">0</span>,</div><div class="line">                <span class="variable">replace =</span> <span class="constant">false</span>,</div><div class="line">                <span class="variable">mIndex =</span> <span class="number">0</span>,</div><div class="line">                v;</div><div class="line"></div><div class="line">            for (var <span class="variable">row =</span> -rows; row &lt;= rows; row += <span class="number">1</span>) {</div><div class="line">                var <span class="variable">rowIndex =</span> y + row,</div><div class="line">                    offset;</div><div class="line"></div><div class="line">                <span class="keyword">if</span> (<span class="number">0</span> &lt;= rowIndex && rowIndex &lt; srcHeight) {</div><div class="line">                    <span class="variable">offset =</span> rowIndex * srcWidth;</div><div class="line">                }</div><div class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (clamp) {</div><div class="line">                    <span class="variable">offset =</span> y * srcWidth;</div><div class="line">                }</div><div class="line">                <span class="keyword">else</span> {</div><div class="line">                    <span class="variable">replace =</span> <span class="constant">true</span>;</div><div class="line">                }</div><div class="line"></div><div class="line">                for (var <span class="variable">col =</span> -cols; col &lt;= cols; col += <span class="number">1</span>) {</div><div class="line">                    var <span class="variable">m =</span> matrix[mIndex++];</div><div class="line"></div><div class="line">                    <span class="keyword">if</span> (m !== <span class="number">0</span>) {</div><div class="line">                        var <span class="variable">colIndex =</span> x + col;</div><div class="line"></div><div class="line">                        <span class="keyword">if</span> (!(<span class="number">0</span> &lt;= colIndex && colIndex &lt; srcWidth)) {</div><div class="line">                            <span class="keyword">if</span> (clamp) {</div><div class="line">                                <span class="variable">colIndex =</span> x;</div><div class="line">                            }</div><div class="line">                            <span class="keyword">else</span> {</div><div class="line">                                <span class="variable">replace =</span> <span class="constant">true</span>;</div><div class="line">                            }</div><div class="line">                        }</div><div class="line"></div><div class="line">                        <span class="keyword">if</span> (replace) {</div><div class="line">                            r += m * clampR;</div><div class="line">                            g += m * clampG;</div><div class="line">                            b += m * clampB;</div><div class="line">                            a += m * clampA;</div><div class="line">                        }</div><div class="line">                        <span class="keyword">else</span> {</div><div class="line">                            var <span class="variable">p =</span> (offset + colIndex) &lt;&lt; <span class="number">2</span>;</div><div class="line">                            r += m * srcPixels[p];</div><div class="line">                            g += m * srcPixels[p + <span class="number">1</span>];</div><div class="line">                            b += m * srcPixels[p + <span class="number">2</span>];</div><div class="line">                            a += m * srcPixels[p + <span class="number">3</span>];</div><div class="line">                        }</div><div class="line">                    }</div><div class="line">                }</div><div class="line">            }</div><div class="line"></div><div class="line">            dstPixels[index]     = (<span class="variable">v =</span> r / divisor + bias) &gt; <span class="number">255</span> ? <span class="number">255</span> : v &lt; <span class="number">0</span> ? <span class="number">0</span> : v | <span class="number">0</span>;</div><div class="line">            dstPixels[index + <span class="number">1</span>] = (<span class="variable">v =</span> g / divisor + bias) &gt; <span class="number">255</span> ? <span class="number">255</span> : v &lt; <span class="number">0</span> ? <span class="number">0</span> : v | <span class="number">0</span>;</div><div class="line">            dstPixels[index + <span class="number">2</span>] = (<span class="variable">v =</span> b / divisor + bias) &gt; <span class="number">255</span> ? <span class="number">255</span> : v &lt; <span class="number">0</span> ? <span class="number">0</span> : v | <span class="number">0</span>;</div><div class="line">            dstPixels[index + <span class="number">3</span>] = preserveAlpha ? srcPixels[index + <span class="number">3</span>] : (<span class="variable">v =</span> a / divisor + bias) &gt; <span class="number">255</span> ? <span class="number">255</span> : v &lt; <span class="number">0</span> ? <span class="number">0</span> : v | <span class="number">0</span>;</div><div class="line">        }</div><div class="line">    }</div><div class="line"></div><div class="line">    return dstImageData;</div><div class="line">};</div><div class="line">ImageFilters.<span class="variable">GaussianBlur =</span> function (srcImageData, strength) {</div><div class="line">    var size, matrix, divisor;</div><div class="line"></div><div class="line">    switch (strength) {</div><div class="line">    case <span class="number">2</span>:</div><div class="line">        <span class="variable">size =</span> <span class="number">5</span>;</div><div class="line">        <span class="variable">matrix =</span> [</div><div class="line">            <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>,</div><div class="line">            <span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>,</div><div class="line">            <span class="number">2</span>, <span class="number">4</span>, <span class="number">8</span>, <span class="number">4</span>, <span class="number">2</span>,</div><div class="line">            <span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>,</div><div class="line">            <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span></div><div class="line">        ];</div><div class="line">        <span class="variable">divisor =</span> <span class="number">52</span>;</div><div class="line">        break;</div><div class="line">    case <span class="number">3</span>:</div><div class="line">        <span class="variable">size =</span> <span class="number">7</span>;</div><div class="line">        <span class="variable">matrix =</span> [</div><div class="line">            <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>,  <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>,</div><div class="line">            <span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>,  <span class="number">4</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>,</div><div class="line">            <span class="number">2</span>, <span class="number">2</span>, <span class="number">4</span>,  <span class="number">8</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">2</span>,</div><div class="line">            <span class="number">2</span>, <span class="number">4</span>, <span class="number">8</span>, <span class="number">16</span>, <span class="number">8</span>, <span class="number">4</span>, <span class="number">2</span>,</div><div class="line">            <span class="number">2</span>, <span class="number">2</span>, <span class="number">4</span>,  <span class="number">8</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">2</span>,</div><div class="line">            <span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>,  <span class="number">4</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>,</div><div class="line">            <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>,  <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span></div><div class="line">        ];</div><div class="line">        <span class="variable">divisor =</span> <span class="number">140</span>;</div><div class="line">        break;</div><div class="line">    case <span class="number">4</span>:</div><div class="line">        <span class="variable">size =</span> <span class="number">15</span>;</div><div class="line">        <span class="variable">matrix =</span> [</div><div class="line">            <span class="number">2</span> ,<span class="number">2</span> , <span class="number">3</span> , <span class="number">4</span> , <span class="number">5</span> , <span class="number">5</span> , <span class="number">6</span> , <span class="number">6</span> , <span class="number">6</span> , <span class="number">5</span> , <span class="number">5</span> , <span class="number">4</span> , <span class="number">3</span> ,<span class="number">2</span> ,<span class="number">2</span>,</div><div class="line">            <span class="number">2</span> ,<span class="number">3</span> , <span class="number">4</span> , <span class="number">5</span> , <span class="number">7</span> , <span class="number">7</span> , <span class="number">8</span> , <span class="number">8</span> , <span class="number">8</span> , <span class="number">7</span> , <span class="number">7</span> , <span class="number">5</span> , <span class="number">4</span> ,<span class="number">3</span> ,<span class="number">2</span>,</div><div class="line">            <span class="number">3</span> ,<span class="number">4</span> , <span class="number">6</span> , <span class="number">7</span> , <span class="number">9</span> ,<span class="number">10</span> ,<span class="number">10</span> ,<span class="number">11</span> ,<span class="number">10</span> ,<span class="number">10</span> , <span class="number">9</span> , <span class="number">7</span> , <span class="number">6</span> ,<span class="number">4</span> ,<span class="number">3</span>,</div><div class="line">            <span class="number">4</span> ,<span class="number">5</span> , <span class="number">7</span> , <span class="number">9</span> ,<span class="number">10</span> ,<span class="number">12</span> ,<span class="number">13</span> ,<span class="number">13</span> ,<span class="number">13</span> ,<span class="number">12</span> ,<span class="number">10</span> , <span class="number">9</span> , <span class="number">7</span> ,<span class="number">5</span> ,<span class="number">4</span>,</div><div class="line">            <span class="number">5</span> ,<span class="number">7</span> , <span class="number">9</span> ,<span class="number">11</span> ,<span class="number">13</span> ,<span class="number">14</span> ,<span class="number">15</span> ,<span class="number">16</span> ,<span class="number">15</span> ,<span class="number">14</span> ,<span class="number">13</span> ,<span class="number">11</span> , <span class="number">9</span> ,<span class="number">7</span> ,<span class="number">5</span>,</div><div class="line">            <span class="number">5</span> ,<span class="number">7</span> ,<span class="number">10</span> ,<span class="number">12</span> ,<span class="number">14</span> ,<span class="number">16</span> ,<span class="number">17</span> ,<span class="number">18</span> ,<span class="number">17</span> ,<span class="number">16</span> ,<span class="number">14</span> ,<span class="number">12</span> ,<span class="number">10</span> ,<span class="number">7</span> ,<span class="number">5</span>,</div><div class="line">            <span class="number">6</span> ,<span class="number">8</span> ,<span class="number">10</span> ,<span class="number">13</span> ,<span class="number">15</span> ,<span class="number">17</span> ,<span class="number">19</span> ,<span class="number">19</span> ,<span class="number">19</span> ,<span class="number">17</span> ,<span class="number">15</span> ,<span class="number">13</span> ,<span class="number">10</span> ,<span class="number">8</span> ,<span class="number">6</span>,</div><div class="line">            <span class="number">6</span> ,<span class="number">8</span> ,<span class="number">11</span> ,<span class="number">13</span> ,<span class="number">16</span> ,<span class="number">18</span> ,<span class="number">19</span> ,<span class="number">20</span> ,<span class="number">19</span> ,<span class="number">18</span> ,<span class="number">16</span> ,<span class="number">13</span> ,<span class="number">11</span> ,<span class="number">8</span> ,<span class="number">6</span>,</div><div class="line">            <span class="number">6</span> ,<span class="number">8</span> ,<span class="number">10</span> ,<span class="number">13</span> ,<span class="number">15</span> ,<span class="number">17</span> ,<span class="number">19</span> ,<span class="number">19</span> ,<span class="number">19</span> ,<span class="number">17</span> ,<span class="number">15</span> ,<span class="number">13</span> ,<span class="number">10</span> ,<span class="number">8</span> ,<span class="number">6</span>,</div><div class="line">            <span class="number">5</span> ,<span class="number">7</span> ,<span class="number">10</span> ,<span class="number">12</span> ,<span class="number">14</span> ,<span class="number">16</span> ,<span class="number">17</span> ,<span class="number">18</span> ,<span class="number">17</span> ,<span class="number">16</span> ,<span class="number">14</span> ,<span class="number">12</span> ,<span class="number">10</span> ,<span class="number">7</span> ,<span class="number">5</span>,</div><div class="line">            <span class="number">5</span> ,<span class="number">7</span> , <span class="number">9</span> ,<span class="number">11</span> ,<span class="number">13</span> ,<span class="number">14</span> ,<span class="number">15</span> ,<span class="number">16</span> ,<span class="number">15</span> ,<span class="number">14</span> ,<span class="number">13</span> ,<span class="number">11</span> , <span class="number">9</span> ,<span class="number">7</span> ,<span class="number">5</span>,</div><div class="line">            <span class="number">4</span> ,<span class="number">5</span> , <span class="number">7</span> , <span class="number">9</span> ,<span class="number">10</span> ,<span class="number">12</span> ,<span class="number">13</span> ,<span class="number">13</span> ,<span class="number">13</span> ,<span class="number">12</span> ,<span class="number">10</span> , <span class="number">9</span> , <span class="number">7</span> ,<span class="number">5</span> ,<span class="number">4</span>,</div><div class="line">            <span class="number">3</span> ,<span class="number">4</span> , <span class="number">6</span> , <span class="number">7</span> , <span class="number">9</span> ,<span class="number">10</span> ,<span class="number">10</span> ,<span class="number">11</span> ,<span class="number">10</span> ,<span class="number">10</span> , <span class="number">9</span> , <span class="number">7</span> , <span class="number">6</span> ,<span class="number">4</span> ,<span class="number">3</span>,</div><div class="line">            <span class="number">2</span> ,<span class="number">3</span> , <span class="number">4</span> , <span class="number">5</span> , <span class="number">7</span> , <span class="number">7</span> , <span class="number">8</span> , <span class="number">8</span> , <span class="number">8</span> , <span class="number">7</span> , <span class="number">7</span> , <span class="number">5</span> , <span class="number">4</span> ,<span class="number">3</span> ,<span class="number">2</span>,</div><div class="line">            <span class="number">2</span> ,<span class="number">2</span> , <span class="number">3</span> , <span class="number">4</span> , <span class="number">5</span> , <span class="number">5</span> , <span class="number">6</span> , <span class="number">6</span> , <span class="number">6</span> , <span class="number">5</span> , <span class="number">5</span> , <span class="number">4</span> , <span class="number">3</span> ,<span class="number">2</span> ,<span class="number">2</span></div><div class="line">        ];</div><div class="line">        <span class="variable">divisor =</span> <span class="number">2044</span>;</div><div class="line">        break;</div><div class="line">    default:</div><div class="line">        <span class="variable">size =</span> <span class="number">3</span>;</div><div class="line">        <span class="variable">matrix =</span> [</div><div class="line">            <span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>,</div><div class="line">            <span class="number">2</span>, <span class="number">4</span>, <span class="number">2</span>,</div><div class="line">            <span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span></div><div class="line">        ];</div><div class="line">        <span class="variable">divisor =</span> <span class="number">16</span>;</div><div class="line">        break;</div><div class="line">    }</div><div class="line">    return this.ConvolutionFilter(srcImageData, size, size, matrix, divisor, <span class="number">0</span>, <span class="constant">false</span>);</div><div class="line">};</div><div class="line"></div><div class="line">var <span class="variable">result =</span> ImageFilters.GaussianBlur(this.defaultImage);</div><div class="line">context.clearRect(<span class="number">0</span>, <span class="number">0</span>, this.canvas.width, this.canvas.height);</div><div class="line">try {</div><div class="line">    context.putImageData(result, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">}</div><div class="line">catch (e) {</div><div class="line">    trace(e);</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>上面是做高斯模糊处理的例子。使用的对图像数据卷积的操作，类似的可以做出很多效果。最后使用clearRect函数清除画布，使用putImageData函数将处理结果像素矩阵绘制到画布上。</p>
+<h3 id="谢谢！">谢谢！</h3>
+<p>有问题请留言。T_T  I am teacher Chale.  T_T</p>
+
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://yoursite.com">皓眸IT</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/08/05/2014_canvas/">Canvas标签图像处理/滤镜特效</a></div>
+</div></div><div class="widget" id="widget_after_content_ujian>">
+<div class="ujian-hook"></div>
+</div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/HTML5/" itemprop="url"><span itemprop="title" >HTML5</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/图像处理/" class="label label-primary" itemprop="url"><span itemprop="title">图像处理</span></a><a href="/tags/canvas/" class="label label-success" itemprop="url"><span itemprop="title">canvas</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-08-06 17:53:43"datetime="2014-08-06 17:53:43"> Aug 6 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://yoursite.com/2014/08/05/2014_canvas/#comments" class="ds-thread-count comment-link" data-thread-key="2014_canvas" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  <li class="previous"><a href="/2014/08/05/2014_theory/" title="图像处理的数学理论">&larr; 图像处理的数学理论</a></li>
+  
+  
+  <li class="next"><a href="/2014/08/05/2014_js/" title="JS常用函数">JS常用函数 &rarr;</a></li>
+  
+</ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="2014_canvas"  data-url="http://yoursite.com/2014/08/05/2014_canvas/" data-title="Canvas标签图像处理/滤镜特效"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_search" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">搜索</div>  <form action="//google.com/search" method="get" accept-charset="utf-8">
+  <div class="input-group">
+    <input class="form-control" id="searchbox" type="search" name="q" results="0" placeholder="搜索">
+    <span class="input-group-btn">
+      <button class="btn btn-default" type="submit">Go!</button>
+    </span>
+    <input type="hidden" name="q" value="site:yoursite.com">
+  </div>
+</form>
+</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_recent_comments" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近评论</div>  
+
+<div class="list-group-item ds-recent-comments" data-num-items="6" data-show-avatars="1" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="50"></div>
+
+
+
+</div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2014 Chale Cao
+  
+    &nbsp;&nbsp;</span>
+  <a href='http://www.miibeian.gov.cn/'>苏ICP备13018740号-6</a></span>
+  <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'>
+<script>
+var _hmt = _hmt || [];
+_js2load.push({src:"//hm.baidu.com/hm.js?d4bd99741b546509c094cd1b0bf951c4"});
+</script>
+</span>  </div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-08-06 17:53:43</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haomou"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://yoursite.com/2014/08/05/2014_canvas/";
+    var wumiiTitle = "Canvas标签图像处理/滤镜特效";
+    var wumiiTags = "图像处理,canvas";
+    var wumiiCategories = ["HTML5"];
+    var wumiiSitePrefix = "http://yoursite.com";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+            
+<script type="text/javascript">var ujian_config = {num:6,showType:0,picSize:84,textHeight:45};_js2load.push({src:'http://v1.ujian.cc/code/ujian.js?uid=1952516'});</script>
+<a href="http://www.ujian.cc" style="border:0;"><img src="http://img.ujian.cc/pixel.png" alt="友荐云推荐" style="border:0;padding:0;margin:0;" /></a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />').wrap('<div class="img_block"></div>');
+     
+      if(alt){$(this).after('<span class="caption">' + alt + '</span>')};
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script src="/js/chenall.js" type="text/javascript"></script>
+
+
+  </body>
+</html>
