@@ -179,7 +179,7 @@ article a.more-link {
   width: 210px;
   height: 100%;
   display: block;
-  position: fixed;
+  position: absolute;
   top: 0px;
   margin-left: -130px;
   z-index: 9;
@@ -395,4 +395,10 @@ dd {
 }
 .tagcloud {
   word-break: break-all;
+}
+.navbar-right {
+  border-top: 1px solid;
+}
+.list-group-item {
+  padding: 10px 5px;
 }
