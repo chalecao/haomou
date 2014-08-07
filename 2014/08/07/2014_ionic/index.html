@@ -137,13 +137,13 @@
 <p>该命令会自动启动流浏览器，查看当前效果。</p>
 <h3 id="添加Android平台">添加Android平台</h3>
 <p>执行下面的命令,</p>
-<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd myApp</div><div class="line">ionic <span class="built_in">platform</span> <span class="built_in">add</span> ios<span class="comment"> //这行可能会报错</span></div><div class="line">ionic build ios</div><div class="line">ionic emulate ios</div></pre></td></tr></table></figure>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd myApp</div><div class="line">ionic <span class="built_in">platform</span> <span class="built_in">add</span> android<span class="comment"> //这行可能会报错</span></div><div class="line">ionic build android</div><div class="line">ionic emulate android</div></pre></td></tr></table></figure>
 
 <p>其实上面的使用方法和cordova差不多，添加android的时候可能会报错，如下：</p>
 <figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="header">The error is:</span></div><div class="line">=======================================</div><div class="line">events.js:72</div><div class="line">throw er; // Unhandled <span class="emphasis">'error'</span> event</div><div class="line">^</div><div class="line">Error: spawn ENOENT</div><div class="line">at errnoException (child<span class="emphasis">_process.js:1000:11)</span></div><div class="line">at Process.ChildProcess._handle.onexit (child<span class="emphasis">_process.js:791:34)</span></div></pre></td></tr></table></figure>
 
 <p>解决的方法很简单，将ionic换成cordova即可，经测试works fine。</p>
-<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd myApp</div><div class="line">cordova <span class="built_in">platform</span> <span class="built_in">add</span> ios<span class="comment"> //这行可能会报错</span></div><div class="line">cordova build ios</div><div class="line">cordova emulate ios</div></pre></td></tr></table></figure>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd myApp</div><div class="line">cordova <span class="built_in">platform</span> <span class="built_in">add</span> android<span class="comment"> //这行可能会报错</span></div><div class="line">cordova build android</div><div class="line">cordova emulate android</div></pre></td></tr></table></figure>
 
 <h3 id="其他常见错误">其他常见错误</h3>
 <ol>
@@ -170,7 +170,7 @@
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/ionic/" itemprop="url"><span itemprop="title" >ionic</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/ionic/" class="label label-primary" itemprop="url"><span itemprop="title">ionic</span></a><a href="/tags/PhoneGap/" class="label label-success" itemprop="url"><span itemprop="title">PhoneGap</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-08-07 17:36:53"datetime="2014-08-07 17:36:53"> Aug 7 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/ionic/" itemprop="url"><span itemprop="title" >ionic</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/ionic/" class="label label-primary" itemprop="url"><span itemprop="title">ionic</span></a><a href="/tags/PhoneGap/" class="label label-success" itemprop="url"><span itemprop="title">PhoneGap</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-08-07 17:45:36"datetime="2014-08-07 17:45:36"> Aug 7 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://yoursite.com/2014/08/07/2014_ionic/#comments" class="ds-thread-count comment-link" data-thread-key="2014_ionic" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -243,7 +243,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?d4bd99741b546509c094cd1b0bf951c4"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-08-07 17:36:53</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-08-07 17:45:36</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
