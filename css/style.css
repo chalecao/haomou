@@ -48,13 +48,13 @@ body {
 .widget .list-group {
   margin-bottom: 0px;
 }
-.widget ul >li {
+.widget ul > li {
   overflow: hidden;
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.widget ul >a {
+.widget ul > a {
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
 }
@@ -131,7 +131,7 @@ article .categories .breadcrumb {
   padding: 5px 5px;
   margin-bottom: 0px;
 }
-article .categories .breadcrumb>li+li:before {
+article .categories .breadcrumb > li + li:before {
   padding: 0px 2px;
   content: '/';
 }
@@ -146,7 +146,7 @@ article a.more-link {
   color: #808;
   text-decoration: none;
 }
-#sidebar .tagcloud .entry>a {
+#sidebar .tagcloud .entry > a {
   padding-left: 5px;
   display: inline-block;
 }
@@ -200,6 +200,9 @@ article a.more-link {
   -ms-transition: all 0.5s;
   transition: all 0.5s;
   -webkit-transform: translate3d(131px, 0, 0);
+  -moz-transform: translate3d(131px, 0, 0);
+  -ms-transform: translate3d(131px, 0, 0);
+  -o-transform: translate3d(131px, 0, 0);
 }
 .zhankai_hou {
   left: 131px;
@@ -213,6 +216,9 @@ article a.more-link {
   -ms-transition: all 0.5s;
   transition: all 0.5s;
   -webkit-transform: translate3d(0px, 0, 0);
+  -moz-transform: translate3d(0px, 0, 0);
+  -ms-transform: translate3d(0px, 0, 0);
+  -o-transform: translate3d(0px, 0, 0);
 }
 .shouqi_hou {
   left: 131px;
@@ -262,11 +268,8 @@ article a.more-link {
 .navbar-nav {
   float: none !important;
 }
-.hm-logo-zhankai {
-  margin-left: -200px;
-}
 .navbar-collapse {
-  top: 75px;
+/*top: 75px;*/
   position: relative;
   width: 150px;
 }
@@ -353,7 +356,51 @@ article a.more-link {
     color: #fb6580;
   }
 }
+@-moz-keyframes shineRed {
+  from {
+    color: #fb6580;
+  }
+  50% {
+    color: #67a9d2;
+  }
+  to {
+    color: #fb6580;
+  }
+}
+@-o-keyframes shineRed {
+  from {
+    color: #fb6580;
+  }
+  50% {
+    color: #67a9d2;
+  }
+  to {
+    color: #fb6580;
+  }
+}
 @-webkit-keyframes shineBlue {
+  from {
+    color: #67a9d2;
+  }
+  50% {
+    color: #fb6580;
+  }
+  to {
+    color: #67a9d2;
+  }
+}
+@-moz-keyframes shineBlue {
+  from {
+    color: #67a9d2;
+  }
+  50% {
+    color: #fb6580;
+  }
+  to {
+    color: #67a9d2;
+  }
+}
+@-o-keyframes shineBlue {
   from {
     color: #67a9d2;
   }
@@ -368,11 +415,59 @@ article a.more-link {
   -webkit-animation-name: shineRed;
   -webkit-animation-duration: 3s;
   -webkit-animation-iteration-count: infinite;
+  -moz-animation-name: shineRed;
+  -moz-animation-duration: 3s;
+  -moz-animation-iteration-count: infinite;
+  -ms-animation-name: shineRed;
+  -ms-animation-duration: 3s;
+  -ms-animation-iteration-count: infinite;
+  -o-animation-name: shineRed;
+  -o-animation-duration: 3s;
+  -o-animation-iteration-count: infinite;
+  -webkit-animation-name: shineRed;
+  -moz-animation-name: shineRed;
+  -o-animation-name: shineRed;
+  -ms-animation-name: shineRed;
+  animation-name: shineRed;
+  -webkit-animation-duration: 3s;
+  -moz-animation-duration: 3s;
+  -o-animation-duration: 3s;
+  -ms-animation-duration: 3s;
+  animation-duration: 3s;
+  -webkit-animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+  -o-animation-iteration-count: infinite;
+  -ms-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
 }
 .shine_blue {
   -webkit-animation-name: shineBlue;
   -webkit-animation-duration: 3s;
   -webkit-animation-iteration-count: infinite;
+  -moz-animation-name: shineBlue;
+  -moz-animation-duration: 3s;
+  -moz-animation-iteration-count: infinite;
+  -ms-animation-name: shineBlue;
+  -ms-animation-duration: 3s;
+  -ms-animation-iteration-count: infinite;
+  -o-animation-name: shineBlue;
+  -o-animation-duration: 3s;
+  -o-animation-iteration-count: infinite;
+  -webkit-animation-name: shineBlue;
+  -moz-animation-name: shineBlue;
+  -o-animation-name: shineBlue;
+  -ms-animation-name: shineBlue;
+  animation-name: shineBlue;
+  -webkit-animation-duration: 3s;
+  -moz-animation-duration: 3s;
+  -o-animation-duration: 3s;
+  -ms-animation-duration: 3s;
+  animation-duration: 3s;
+  -webkit-animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+  -o-animation-iteration-count: infinite;
+  -ms-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
 }
 article .entry .img_block {
   float: left;
