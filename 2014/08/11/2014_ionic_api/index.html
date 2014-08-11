@@ -1,0 +1,363 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ionic中文javascript API | 皓眸IT</title>
+<meta name="author" content="Chale Cao">
+
+<meta name="description" content="简介ionic除了提供css框架以外，参看ionic中文详解CSS组件,还是提供了javascript UI库。许多组件都是需要通过javascript来产生比较炫的效果。ionic遵循了mvc的设计模式，这一点可以通过通过创建tab栏的官方例子项目来体会view之间的控制与切换。下面就是关于ionic的中文javascript API介绍。其实官方已经写的比较详细了，只是国内访问网速不好的地方，那个js菜单栏一直展不开，加载慢，所以自己做一个中文的，方便以后查找。">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="ionic中文javascript API"/>
+<meta property="og:site_name" content="皓眸IT"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css">
+<![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="皓眸IT Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+
+<link rel="stylesheet" href="/css/nprogress.css" type="text/css">
+
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.bootcss.com/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+  
+  <header id="header" class="hm-menu-left-container"><nav id="main-nav" class="navbar navbar-default hm-navbar-menu-left  " role="navigation">
+    <div class="hm-navbar-header">
+    <a href="http://haomou.net" ><img class="hm-logo" src="/images/haomou.png" title="皓眸IT" width="64" height="64" /></a>
+    <br/>|<br/><span class="fa fa-tint hm-black shine_blue" ></span><br/>|<br/><span class="fa fa-heart hm-black shine_red" ></span><br/>|<br/>
+        <i class="fa fa-bars fa-2x hm-black hm-menu shine_blue" ></i><br/><div class="hm-line"></div>
+    </div>
+    <div class="collapse navbar-collapse">
+      <h1 style="color:black">皓眸IT</h1>
+      <ul class="nav navbar-nav hm-left-nav">
+  
+        <li item='2014/08/11/2014_ionic_api/' class='active'><a href="/" title="首页">首页</a></li>      
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>关于我<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://home.ustc.edu.cn/~chh1990/chero/chero.html" title="个人主页">个人主页</a></li>    
+        </ul>
+      </li>
+    
+      </ul>
+
+        
+        <div id="widget_category" class="widget hm-left-widget">
+            <div class="panel-heading">分类：</div>            <div data-src='category' class='ajax_widgets'>正在加载...</div>
+        </div>
+        
+        <div id="widget_tagcloud" class="widget hm-left-widget">
+            <div class="panel-heading">标签云：</div>            <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div>        </div>
+        
+
+
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/chalecao">github</a></li>
+      
+      </ul>
+    </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div style="" id="headflash" class="headflash hm_container"><embed pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="/images/bck.swf" width="100%" height="313" style="undefined" id="headflash_f" name="headflash_f" bgcolor="#000" quality="high" allowscriptaccess="false" wmode="transparent" allowfullscreen="false"></div>
+  <div id='content' class=" container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>皓眸IT <small>写清楚，说明白</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article class="hm-article">
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left hm-article-w"></i>
+      <h1 class="title">ionic中文javascript API</h1>
+      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-08-11T01:40:49.000Z"> <a href="/2014/08/11/2014_ionic_api/">Aug 11 2014</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry"  data-spy="scroll" data-target="#toc" >
+      
+        <h3 id="简介">简介</h3>
+<p>ionic除了提供css框架以外，参看<a href="http://www.haomou.net/2014/08/07/2014_ionic_api_css/" target="_blank" rel="external">ionic中文详解CSS组件</a>,还是提供了javascript UI库。许多组件都是需要通过javascript来产生比较炫的效果。ionic遵循了mvc的设计模式，这一点可以通过通过创建tab栏的官方例子项目来体会view之间的控制与切换。下面就是关于ionic的中文javascript API介绍。其实官方已经写的比较详细了，只是国内访问网速不好的地方，那个js菜单栏一直展不开，加载慢，所以自己做一个中文的，方便以后查找。<br><a id="more"></a></p>
+<h3 id="作者">作者</h3>
+<p><img alt="皓眸GEEK" src="/images/hm.jpg" width="150" height="200"><br>Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域<br>毕业于中国科学技术大学，硕士研究生。单身，喜欢真诚，善良的女孩子。<br>擅长：JAVA，PHP，C#，JS，WebGL，WebRTC …<br>Mail To: chh1990@mail.ustc.edu.cn<br>WebSite：<a href="http://www.haomou.net" target="_blank" rel="external">http://www.haomou.net</a></p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/08/07/2014_ionic_api/" target="_blank" rel="external">http://www.haomou.net/2014/08/07/2014_ionic_api/</a></p>
+<h3 id="Tabs">Tabs</h3>
+<ol>
+<li>ion-tabs 通过tab栏切换不同的page，注意：不要将ion-tabs放在ion-content里面，会导致一个css错误。<br><strong><em>用法</em></strong></li>
+</ol>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="title">ion-tabs</span> <span class="attribute">class</span>=<span class="value">"tabs-positive tabs-icon-only"</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="tag">&lt;<span class="title">ion-tab</span> <span class="attribute">title</span>=<span class="value">"Home"</span> <span class="attribute">icon-on</span>=<span class="value">"ion-ios7-filing"</span> <span class="attribute">icon-off</span>=<span class="value">"ion-ios7-filing-outline"</span>&gt;</span></div><div class="line">    <span class="comment">&lt;!-- Tab 1 content --&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="title">ion-tab</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="tag">&lt;<span class="title">ion-tab</span> <span class="attribute">title</span>=<span class="value">"About"</span> <span class="attribute">icon-on</span>=<span class="value">"ion-ios7-clock"</span> <span class="attribute">icon-off</span>=<span class="value">"ion-ios7-clock-outline"</span>&gt;</span></div><div class="line">    <span class="comment">&lt;!-- Tab 2 content --&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="title">ion-tab</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="tag">&lt;<span class="title">ion-tab</span> <span class="attribute">title</span>=<span class="value">"Settings"</span> <span class="attribute">icon-on</span>=<span class="value">"ion-ios7-gear"</span> <span class="attribute">icon-off</span>=<span class="value">"ion-ios7-gear-outline"</span>&gt;</span></div><div class="line">    <span class="comment">&lt;!-- Tab 3 content --&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="title">ion-tab</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="title">ion-tabs</span>&gt;</span></div></pre></td></tr></table></figure>
+
+<p><strong><em>API</em></strong></p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Attr	</div><div class="line"><span class="keyword">Type</span>	</div><div class="line">Details</div><div class="line"></div><div class="line">delegate<span class="attribute">-handle</span>(optional)</div><div class="line"><span class="built_in">string</span>	</div><div class="line">The <span class="keyword">handle</span> used <span class="keyword">to</span> identify these tabs <span class="keyword">with</span> <span class="variable">$ionicTabsDelegate.</span></div></pre></td></tr></table></figure>
+
+<p><strong><em>实例</em></strong><br>html</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div></pre></td><td class="code"><pre><div class="line">&lt;html <span class="variable">ng-app=</span><span class="string">"ionicApp"</span>&gt;</div><div class="line">  &lt;head&gt;</div><div class="line">    &lt;meta <span class="variable">charset=</span><span class="string">"utf-8"</span>&gt;</div><div class="line">    &lt;meta <span class="variable">name=</span><span class="string">"viewport"</span> <span class="variable">content=</span><span class="string">"initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width"</span>&gt;</div><div class="line">    &lt;title&gt;Inline Tabs&lt;/title&gt;</div><div class="line"></div><div class="line">    &lt;link <span class="variable">href=</span><span class="string">"http://code.ionicframework.com/1.0.0-beta.1/css/ionic.min.css"</span> <span class="variable">rel=</span><span class="string">"stylesheet"</span>&gt;</div><div class="line">    &lt;script <span class="variable">src=</span><span class="string">"http://code.ionicframework.com/1.0.0-beta.1/js/ionic.bundle.min.js"</span>&gt;&lt;/script&gt;</div><div class="line">  &lt;/head&gt;</div><div class="line">  &lt;body <span class="variable">ng-controller=</span><span class="string">"RootCtrl"</span>&gt;</div><div class="line">    </div><div class="line">    &lt;ion-tabs <span class="variable">class=</span><span class="string">"tabs-icon-only tabs-positive"</span>&gt;</div><div class="line"></div><div class="line">      &lt;ion-tab <span class="variable">title=</span><span class="string">"Home"</span> </div><div class="line">               <span class="variable">icon-on=</span><span class="string">"ion-ios7-filing"</span> </div><div class="line">               <span class="variable">icon-off=</span><span class="string">"ion-ios7-filing-outline"</span> </div><div class="line">               <span class="variable">ng-controller=</span><span class="string">"HomeCtrl"</span>&gt;</div><div class="line">        </div><div class="line">        &lt;ion-header-bar <span class="variable">class=</span><span class="string">"bar-positive"</span>&gt;</div><div class="line">          &lt;button <span class="variable">class=</span><span class="string">"button button-clear"</span> <span class="variable">ng-click=</span><span class="string">"newTask()"</span>&gt;New&lt;/button&gt;</div><div class="line">          &lt;h1 <span class="variable">class=</span><span class="string">"title"</span>&gt;Tasks&lt;/h1&gt;</div><div class="line">        &lt;/ion-header-bar&gt;</div><div class="line">        </div><div class="line">        &lt;ion-content <span class="variable">has-tabs=</span><span class="string">"true"</span> <span class="variable">on-refresh=</span><span class="string">"onRefresh()"</span>&gt;</div><div class="line"></div><div class="line">          &lt;ion-refresher&gt;&lt;/ion-refresher&gt;</div><div class="line">          &lt;ion-list <span class="variable">scroll=</span><span class="string">"false"</span> <span class="variable">on-refresh=</span><span class="string">"onRefresh()"</span></div><div class="line">                    <span class="variable">s-editing=</span><span class="string">"isEditingItems"</span> </div><div class="line">                    <span class="variable">animation=</span><span class="string">"fade-out"</span></div><div class="line">                    <span class="variable">delete-icon=</span><span class="string">"icon ion-minus-circled"</span>&gt;</div><div class="line">            &lt;ion-item <span class="variable">ng-repeat=</span><span class="string">"item in items"</span></div><div class="line">                      <span class="variable">item=</span><span class="string">"item"</span></div><div class="line">                      <span class="variable">buttons=</span><span class="string">"item.buttons"</span></div><div class="line">                      <span class="variable">can-delete=</span><span class="string">"true"</span></div><div class="line">                      <span class="variable">can-swipe=</span><span class="string">"true"</span></div><div class="line">                      <span class="variable">on-delete=</span><span class="string">"deleteItem(item)"</span></div><div class="line">                      <span class="variable">ng-class=</span><span class="string">"{completed: item.isCompleted}"</span>&gt;</div><div class="line">              </div><div class="line">              &lt;i <span class="variable">class=</span><span class="string">""</span>&gt;&lt;/i&gt;</div><div class="line">            &lt;/ion-item&gt;</div><div class="line">          &lt;/ion-list&gt;</div><div class="line">        &lt;/ion-content&gt;</div><div class="line">      &lt;/ion-tab&gt;</div><div class="line"></div><div class="line">      &lt;ion-tab <span class="variable">title=</span><span class="string">"About"</span> <span class="variable">icon-on=</span><span class="string">"icon ion-ios7-clock"</span> <span class="variable">icon-off=</span><span class="string">"icon ion-ios7-clock-outline"</span>&gt;</div><div class="line">        &lt;header <span class="variable">class=</span><span class="string">"bar bar-header bar-positive"</span>&gt;</div><div class="line">          &lt;h1 <span class="variable">class=</span><span class="string">"title"</span>&gt;Deadlines&lt;/h1&gt;</div><div class="line">        &lt;/header&gt;</div><div class="line">        &lt;ion-content <span class="variable">has-header=</span><span class="string">"true"</span>&gt;</div><div class="line">          &lt;h1&gt;Deadlines&lt;/h1&gt;</div><div class="line">        &lt;/ion-content&gt;</div><div class="line">      &lt;/ion-tab&gt;</div><div class="line"></div><div class="line">      &lt;ion-tab <span class="variable">title=</span><span class="string">"Settings"</span> <span class="variable">icon-on=</span><span class="string">"icon ion-ios7-gear"</span> <span class="variable">icon-off=</span><span class="string">"icon ion-ios7-gear-outline"</span>&gt;</div><div class="line">        &lt;header <span class="variable">class=</span><span class="string">"bar bar-header bar-positive"</span>&gt;</div><div class="line">          &lt;h1 <span class="variable">class=</span><span class="string">"title"</span>&gt;Settings&lt;/h1&gt;</div><div class="line">        &lt;/header&gt;</div><div class="line">        &lt;ion-content <span class="variable">has-header=</span><span class="string">"true"</span>&gt;</div><div class="line">          &lt;h1&gt;Settings&lt;/h1&gt;</div><div class="line">        &lt;/ion-content&gt;</div><div class="line">      &lt;/ion-tab&gt;</div><div class="line">      </div><div class="line">    &lt;/ion-tabs&gt;</div><div class="line"></div><div class="line">    &lt;script <span class="variable">id=</span><span class="string">"newTask.html"</span> <span class="variable">type=</span><span class="string">"text/ng-template"</span>&gt;</div><div class="line">      &lt;div <span class="variable">id=</span><span class="string">"task-view"</span> <span class="variable">class=</span><span class="string">"modal slide-in-up"</span> <span class="variable">ng-controller=</span><span class="string">"TaskCtrl"</span>&gt;</div><div class="line">        &lt;header <span class="variable">class=</span><span class="string">"bar bar-header bar-secondary"</span>&gt;</div><div class="line">          &lt;h1 <span class="variable">class=</span><span class="string">"title"</span>&gt;New Task&lt;/h1&gt;</div><div class="line">          &lt;button <span class="variable">class=</span><span class="string">"button button-clear button-primary"</span> <span class="variable">ng-click=</span><span class="string">"close()"</span>&gt;Done&lt;/button&gt;</div><div class="line">        &lt;/header&gt;</div><div class="line">        &lt;ion-content <span class="variable">class=</span><span class="string">"padding has-header"</span>&gt;</div><div class="line">          &lt;input <span class="variable">type=</span><span class="string">"text"</span> <span class="variable">placeholder=</span><span class="string">"I need to do this..."</span>&gt;</div><div class="line">        &lt;/ion-content&gt;</div><div class="line">      &lt;/div&gt;</div><div class="line">    &lt;/script&gt;</div><div class="line"></div><div class="line">  &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
+
+<p>app.js</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div></pre></td><td class="code"><pre><div class="line">angular.module(<span class="string">'ionicApp'</span>, [<span class="string">'ionic'</span>])</div><div class="line"></div><div class="line">.controller(<span class="string">'RootCtrl'</span>, <span class="function"><span class="keyword">function</span><span class="params">(<span class="variable">$scope</span>)</span> </span>{</div><div class="line">  <span class="variable">$scope</span>.onControllerChanged = <span class="function"><span class="keyword">function</span><span class="params">(oldController, oldIndex, newController, newIndex)</span> </span>{</div><div class="line">    console.log(<span class="string">'Controller changed'</span>, oldController, oldIndex, newController, newIndex);</div><div class="line">    console.log(arguments);</div><div class="line">  };</div><div class="line">})</div><div class="line"></div><div class="line"></div><div class="line">.controller(<span class="string">'HomeCtrl'</span>, <span class="function"><span class="keyword">function</span><span class="params">(<span class="variable">$scope</span>, <span class="variable">$timeout</span>, <span class="variable">$ionicModal</span>, <span class="variable">$ionicActionSheet</span>)</span> </span>{</div><div class="line">  <span class="variable">$scope</span>.items = [];</div><div class="line"></div><div class="line">  <span class="variable">$ionicModal</span>.fromTemplateUrl(<span class="string">'newTask.html'</span>, <span class="function"><span class="keyword">function</span><span class="params">(modal)</span> </span>{</div><div class="line">    <span class="variable">$scope</span>.settingsModal = modal;</div><div class="line">  });</div><div class="line"></div><div class="line">  <span class="keyword">var</span> removeItem = <span class="function"><span class="keyword">function</span><span class="params">(item, button)</span> </span>{</div><div class="line">    <span class="variable">$ionicActionSheet</span>.show({</div><div class="line">      buttons: [],</div><div class="line">      destructiveText: <span class="string">'Delete Task'</span>,</div><div class="line">      cancelText: <span class="string">'Cancel'</span>,</div><div class="line">      cancel: <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">      },</div><div class="line">      destructiveButtonClicked: <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">        <span class="variable">$scope</span>.items.splice(<span class="variable">$scope</span>.items.indexOf(item), <span class="number">1</span>);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">      }</div><div class="line">    });</div><div class="line">  };</div><div class="line"></div><div class="line">  <span class="keyword">var</span> completeItem = <span class="function"><span class="keyword">function</span><span class="params">(item, button)</span> </span>{</div><div class="line">    item.isCompleted = <span class="keyword">true</span>;</div><div class="line">  };</div><div class="line"></div><div class="line">  <span class="variable">$scope</span>.onReorder = <span class="function"><span class="keyword">function</span><span class="params">(el, start, end)</span> </span>{</div><div class="line">    ionic.Utils.arrayMove(<span class="variable">$scope</span>.items, start, end);</div><div class="line">  };</div><div class="line"></div><div class="line">  <span class="variable">$scope</span>.onRefresh = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    console.log(<span class="string">'ON REFRESH'</span>);</div><div class="line"></div><div class="line">    <span class="variable">$timeout</span>(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">      <span class="variable">$scope</span>.<span class="variable">$broadcast</span>(<span class="string">'scroll.refreshComplete'</span>);</div><div class="line">    }, <span class="number">1000</span>);</div><div class="line">  }</div><div class="line"></div><div class="line"></div><div class="line">  <span class="variable">$scope</span>.removeItem = <span class="function"><span class="keyword">function</span><span class="params">(item)</span> </span>{</div><div class="line">    removeItem(item);</div><div class="line">  };</div><div class="line"></div><div class="line">  <span class="variable">$scope</span>.newTask = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="variable">$scope</span>.settingsModal.show();</div><div class="line">  };</div><div class="line"></div><div class="line">  <span class="comment">// Create the items</span></div><div class="line">  <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">25</span>; i++) {</div><div class="line">    <span class="variable">$scope</span>.items.push({</div><div class="line">      title: <span class="string">'Task '</span> + (i + <span class="number">1</span>),</div><div class="line">      buttons: [{</div><div class="line">        text: <span class="string">'Done'</span>,</div><div class="line">        type: <span class="string">'button-success'</span>,</div><div class="line">        onButtonClicked: completeItem,</div><div class="line">      }, {</div><div class="line">        text: <span class="string">'Delete'</span>,</div><div class="line">        type: <span class="string">'button-danger'</span>,</div><div class="line">        onButtonClicked: removeItem,</div><div class="line">      }]</div><div class="line">    });</div><div class="line">  }</div><div class="line"></div><div class="line">})</div><div class="line"></div><div class="line">.controller(<span class="string">'TaskCtrl'</span>, <span class="function"><span class="keyword">function</span><span class="params">(<span class="variable">$scope</span>)</span> </span>{</div><div class="line">  <span class="variable">$scope</span>.close = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="variable">$scope</span>.modal.hide();</div><div class="line">  }</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<p><strong><em>效果</em></strong><br><img class="floatnone" src="/images/ionic_js1.jpg"></p>
+<ol>
+<li>ion-tab ，作为ion-tabs的tab项，用于切换选择tab的内容，只有当tab被选中时，其对应的内容content才会存在。每个ion tab都有自己的查看历史。<br><strong><em>用法</em></strong></li>
+</ol>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;ion-<span class="constant">tab</span></div><div class="line">  title=<span class="string">"Tab!"</span></div><div class="line">  icon=<span class="string">"my-icon"</span></div><div class="line">  href=<span class="string">"#/tab/tab-link"</span></div><div class="line">  <span class="command"><span class="keyword">on</span>-select=<span class="string">"onTabSelected()"</span></span></div><div class="line">  <span class="command"><span class="keyword">on</span>-deselect=<span class="string">"onTabDeselected()"</span>&gt;</span></div><div class="line">&lt;/ion-<span class="constant">tab</span>&gt;</div></pre></td></tr></table></figure>
+
+<p><strong><em> API </em></strong></p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">Attr	</div><div class="line">Type	</div><div class="line">Details</div><div class="line"></div><div class="line">title	</div><div class="line"><span class="type">string</span>	</div><div class="line">The title <span class="keyword">of</span> <span class="keyword">the</span> <span class="constant">tab</span>.</div><div class="line"></div><div class="line">href(optional)</div><div class="line"><span class="type">string</span>	</div><div class="line">The link <span class="keyword">that</span> this <span class="constant">tab</span> will navigate <span class="keyword">to</span> when tapped.</div><div class="line"></div><div class="line">icon(optional)</div><div class="line"><span class="type">string</span>	</div><div class="line">The icon <span class="keyword">of</span> <span class="keyword">the</span> <span class="constant">tab</span>. If <span class="keyword">given</span>, this will become <span class="keyword">the</span> default <span class="keyword">for</span> icon-<span class="function_start"><span class="keyword">on</span></span> <span class="keyword">and</span> icon-off.</div><div class="line"></div><div class="line">icon-<span class="function_start"><span class="keyword">on</span><span class="params">(optional)</span></span></div><div class="line"><span class="type">string</span>	</div><div class="line">The icon <span class="keyword">of</span> <span class="keyword">the</span> <span class="constant">tab</span> <span class="keyword">while</span> <span class="keyword">it</span> <span class="keyword">is</span> selected.</div><div class="line"></div><div class="line">icon-off(optional)</div><div class="line"><span class="type">string</span>	</div><div class="line">The icon <span class="keyword">of</span> <span class="keyword">the</span> <span class="constant">tab</span> <span class="keyword">while</span> <span class="keyword">it</span> <span class="keyword">is</span> <span class="keyword">not</span> selected.</div><div class="line"></div><div class="line">badge(optional)</div><div class="line">expression	</div><div class="line">The badge <span class="keyword">to</span> <span class="keyword">put</span> <span class="function_start"><span class="keyword">on</span></span> this <span class="constant">tab</span> (usually a <span class="type">number</span>).</div><div class="line"></div><div class="line">badge-style(optional)</div><div class="line">expression	</div><div class="line">The style <span class="keyword">of</span> badge <span class="keyword">to</span> <span class="keyword">put</span> <span class="function_start"><span class="keyword">on</span></span> this <span class="constant">tab</span> (eg tabs-positive).</div><div class="line"></div><div class="line"><span class="function_start"><span class="keyword">on</span></span>-select(optional)</div><div class="line">expression	</div><div class="line">Called when this <span class="constant">tab</span> <span class="keyword">is</span> selected.</div><div class="line"></div><div class="line"><span class="function_start"><span class="keyword">on</span></span>-deselect(optional)</div><div class="line">expression	</div><div class="line">Called when this <span class="constant">tab</span> <span class="keyword">is</span> deselected.</div><div class="line"></div><div class="line">ng-click(optional)</div><div class="line">expression	</div><div class="line">By default, <span class="keyword">the</span> <span class="constant">tab</span> will be selected <span class="function_start"><span class="keyword">on</span></span> click. If ngClick <span class="keyword">is</span> <span class="keyword">set</span>, <span class="keyword">it</span> will <span class="keyword">not</span>. You can explicitly switch tabs using $ionicTabsDelegate.select().</div></pre></td></tr></table></figure>
+
+<ol>
+<li>$ionicTabsDelegate 是ion-tabs的一个api参数，通过这个可以选择切换不同的tab,可以通过$getByHandle 方法获取不同的tab的实例。<br><strong><em>用法</em></strong></li>
+</ol>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&lt;body ng-controller=<span class="string">"MyCtrl"</span>&gt;</div><div class="line">  &lt;ion-<span class="keyword">tabs</span>&gt;</div><div class="line"></div><div class="line">    &lt;ion-<span class="keyword">tab</span> title=<span class="string">"Tab 1"</span>&gt;</div><div class="line">      Hello <span class="keyword">tab</span> <span class="number">1</span>!</div><div class="line">      &lt;button ng-click=<span class="string">"selectTabWithIndex(1)"</span>&gt;Select <span class="keyword">tab</span> <span class="number">2</span>!&lt;/button&gt;</div><div class="line">    &lt;/ion-<span class="keyword">tab</span>&gt;</div><div class="line">    &lt;ion-<span class="keyword">tab</span> title=<span class="string">"Tab 2"</span>&gt;Hello <span class="keyword">tab</span> <span class="number">2</span>!&lt;/ion-<span class="keyword">tab</span>&gt;</div><div class="line"></div><div class="line">  &lt;/ion-<span class="keyword">tabs</span>&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyCtrl</span><span class="params">($scope, $ionicTabsDelegate)</span> {</span></div><div class="line">  $scope.selectTabWithIndex = <span class="function"><span class="keyword">function</span><span class="params">(index)</span> {</span></div><div class="line">    $ionicTabsDelegate.select(<span class="built_in">index</span>);</div><div class="line">  }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p><strong><em>参数</em></strong><br>select(index, [shouldChangeHistory])</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Select <span class="keyword">the</span> <span class="constant">tab</span> matching <span class="keyword">the</span> <span class="keyword">given</span> index.</div><div class="line"></div><div class="line">Param	</div><div class="line">Type	</div><div class="line">Details</div><div class="line"></div><div class="line">index	</div><div class="line"><span class="type">number</span>	</div><div class="line">Index <span class="keyword">of</span> <span class="keyword">the</span> <span class="constant">tab</span> <span class="keyword">to</span> select.</div><div class="line"></div><div class="line">shouldChangeHistory</div><div class="line">(optional)</div><div class="line"><span class="type">boolean</span>	</div><div class="line">Whether this selection should load this <span class="constant">tab</span>'s view history (<span class="keyword">if</span> <span class="keyword">it</span> exists) <span class="keyword">and</span> use <span class="keyword">it</span>, <span class="keyword">or</span> just load <span class="keyword">the</span> default page. Default <span class="constant">false</span>. Hint: you probably want this <span class="keyword">to</span> be <span class="constant">true</span> <span class="keyword">if</span> you have an ionNavView inside your <span class="constant">tab</span>.</div></pre></td></tr></table></figure>
+
+<p>selectedIndex()<br>Returns: number The index of the selected tab, or -1.</p>
+<p>$getByHandle(handle)</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">Param	</div><div class="line"><span class="keyword">Type</span>	</div><div class="line">Details</div><div class="line"></div><div class="line"><span class="keyword">handle</span>	</div><div class="line"><span class="built_in">string</span>	</div><div class="line">Returns: delegateInstance A delegate instance that controls only the ionTabs directives <span class="keyword">with</span> delegate<span class="attribute">-handle</span> matching the given <span class="keyword">handle</span><span class="built_in">.</span></div><div class="line"></div><div class="line">Example: <span class="variable">$ionicTabsDelegate.</span><span class="variable">$getByHandle</span>(<span class="string">'my-handle'</span>)<span class="built_in">.</span><span class="keyword">select</span>(<span class="number">0</span>);</div></pre></td></tr></table></figure>
+
+<h3 id="ion-side-menus">ion-side-menus</h3>
+<p>ion-side-menus 是一个带有边栏菜单的容器，可以通过点击按钮或者滑动屏幕来展开菜单。在js中可以通过$ionicSideMenuDelegate来获取该组件对应的实例。为了自动关闭已打开的menu，可以通过在ion-side-menu-content中的按钮或link添加menu-close样式。<br><strong><em>用法</em></strong></p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="title">ion-side-menus</span>&gt;</span></div><div class="line">  <span class="comment">&lt;!-- Center content --&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="title">ion-side-menu-content</span> <span class="attribute">ng-controller</span>=<span class="value">"ContentController"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="title">ion-side-menu-content</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="comment">&lt;!-- Left menu --&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="title">ion-side-menu</span> <span class="attribute">side</span>=<span class="value">"left"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="title">ion-side-menu</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="comment">&lt;!-- Right menu --&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="title">ion-side-menu</span> <span class="attribute">side</span>=<span class="value">"right"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="title">ion-side-menu</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="title">ion-side-menus</span>&gt;</span></div><div class="line">function ContentController($scope, $ionicSideMenuDelegate) {</div><div class="line">  $scope.toggleLeft = function() {</div><div class="line">    $ionicSideMenuDelegate.toggleLeft();</div><div class="line">  };</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p><strong><em>API</em></strong></p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">API</div><div class="line">Attr	</div><div class="line"><span class="keyword">Type</span>	</div><div class="line">Details</div><div class="line"></div><div class="line">delegate<span class="attribute">-handle</span>(optional)</div><div class="line"><span class="built_in">string</span>	</div><div class="line">The <span class="keyword">handle</span> used <span class="keyword">to</span> identify this side menu <span class="keyword">with</span> <span class="variable">$ionicSideMenuDelegate.</span></div></pre></td></tr></table></figure>
+
+<p><strong><em>效果</em></strong><br><img class="floatnone" src="/images/sidemenu.gif"></p>
+<h3 id="待续">待续</h3>
+<h3 id="谢谢！">谢谢！</h3>
+<p>有问题请留言。T_T  I am teacher Chale.  T_T</p>
+
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://haomou.net">皓眸IT</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/08/11/2014_ionic_api/">ionic中文javascript API</a></div>
+</div></div><div class="widget" id="widget_after_content_ujian>">
+<div class="ujian-hook"></div>
+</div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/ionic/" itemprop="url"><span itemprop="title" >ionic</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/ionic/" class="label label-primary" itemprop="url"><span itemprop="title">ionic</span></a><a href="/tags/API/" class="label label-success" itemprop="url"><span itemprop="title">API</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-08-11 09:13:20"datetime="2014-08-11 09:13:20"> Aug 11 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://haomou.net/2014/08/11/2014_ionic_api/#comments" class="ds-thread-count comment-link" data-thread-key="2014_ionic_api" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  
+  <li class="next"><a href="/2014/08/09/2014_ionic_api_css/" title="ionic中文详解CSS组件">ionic中文详解CSS组件 &rarr;</a></li>
+  
+</ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="2014_ionic_api"  data-url="http://haomou.net/2014/08/11/2014_ionic_api/" data-title="ionic中文javascript API"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_search" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">搜索</div>  <form action="//google.com/search" method="get" accept-charset="utf-8">
+  <div class="input-group">
+    <input class="form-control" id="searchbox" type="search" name="q" results="0" placeholder="搜索">
+    <span class="input-group-btn">
+      <button class="btn btn-default" type="submit">Go!</button>
+    </span>
+    <input type="hidden" name="q" value="site:haomou.net">
+  </div>
+</form>
+</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_recent_comments" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近评论</div>  
+
+<div class="list-group-item ds-recent-comments" data-num-items="6" data-show-avatars="1" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="50"></div>
+
+
+
+</div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2014 Chale Cao
+  
+    &nbsp;&nbsp;</span>
+  <a href='http://www.miibeian.gov.cn/'>苏ICP备13018740号-6</a></span>
+  <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'>
+<script>
+var _hmt = _hmt || [];
+_js2load.push({src:"//hm.baidu.com/hm.js?d4bd99741b546509c094cd1b0bf951c4"});
+</script>
+</span>  </div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-08-11 09:13:20</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haomou"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://haomou.net/2014/08/11/2014_ionic_api/";
+    var wumiiTitle = "ionic中文javascript API";
+    var wumiiTags = "ionic,API";
+    var wumiiCategories = ["ionic"];
+    var wumiiSitePrefix = "http://haomou.net";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+            
+<script type="text/javascript">var ujian_config = {num:6,showType:0,picSize:84,textHeight:45};_js2load.push({src:'http://v1.ujian.cc/code/ujian.js?uid=1952516'});</script>
+<a href="http://www.ujian.cc" style="border:0;"><img src="http://img.ujian.cc/pixel.png" alt="友荐云推荐" style="border:0;padding:0;margin:0;" /></a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />').wrap('<div class="img_block"></div>');
+     
+      if(alt){$(this).after('<span class="caption">' + alt + '</span>')};
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script src="/js/chenall.js" type="text/javascript"></script>
+
+
+  </body>
+</html>
