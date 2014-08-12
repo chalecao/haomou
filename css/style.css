@@ -497,3 +497,6 @@ dd {
 .list-group-item {
   padding: 10px 5px;
 }
+.prettyprint {
+  height: 100%;
+}
