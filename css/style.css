@@ -107,6 +107,14 @@ article .entry h3 {
   background-color: #e2e2e2;
   font-size: 160%;
 }
+article .entry h4 {
+  color: #080;
+  margin: 40px 0px 10px 0px;
+  border-left: #ffa500 solid;
+  padding: 5px 0px 5px 10px;
+  background-color: #e2e2e2;
+  font-size: 120%;
+}
 article .entry blockquote footer {
   cite: before;
   content: "—";
