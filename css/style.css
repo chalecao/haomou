@@ -508,3 +508,10 @@ dd {
 .prettyprint {
   height: 100%;
 }
+em {
+  color: #f00;
+  background: rgba(225,225,225,0.9);
+}
+strong {
+  color: #008000;
+}
