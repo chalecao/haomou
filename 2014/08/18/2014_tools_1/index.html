@@ -121,7 +121,7 @@
 <p>一个应用开发到一定阶段，普遍会遇到一个问题。当功能越来越多，代码量越来越大，bug修复越来越频繁，开发人员一波一波的交替，…..应该用会向着越来越不可控发展。我们不能再准确估计新功能的开发时间，也不知道一个bug修复后是否会引发另一个bug出现。所有的程序开发，都会面临着这样的问题。C/C++程序通过makefile管理编译测试打包的过程，Java程序通过Maven,Ant实现项目构建管理功能，Python有pip，Ruby有gem。在Nodejs的领域，我们同样需要一个项目构建工具。</p>
 <p>本节主要介绍两种自动化构建工具，包括Grunt和Gulp，后续篇章中还会介绍bower包管理工具和Yeoman构建工具。这里先详细介绍这两种自动化构建工具，gulp.js 是一种基于流的，代码优于配置的新一代构建工具。Gulp 和 Grunt 类似。但相比于 Grunt 的频繁的 IO 操作，Gulp 的流操作，能更快地完成构建。<br><a id="more"></a></p>
 <h3 id="作者">作者</h3>
-<p><img alt="皓眸GEEK" src="/images/hm.jpg" width="150" height="200"><br>Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域<br>毕业于中国科学技术大学，硕士研究生。单身，喜欢真诚，善良的女孩子。<br>擅长：JAVA，PHP，C#，JS，WebGL，WebRTC …<br>Mail To: chh1990@mail.ustc.edu.cn<br>WebSite：<a href="http://www.haomou.net" target="_blank" rel="external">http://www.haomou.net</a></p>
+<p><img alt="皓眸GEEK" src="/images/hm.jpg" width="150" height="200"><br>Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域<br>毕业于中国科学技术大学，硕士研究生。<br>单身，喜欢真诚，善良的女孩子。<br>擅长：JAVA，PHP，C#，JS，WebGL，WebRTC …<br>Mail To: chh1990@mail.ustc.edu.cn<br>WebSite：<a href="http://www.haomou.net" target="_blank" rel="external">http://www.haomou.net</a></p>
 <p>转载请注明出处：<a href="http://www.haomou.net/2014/07/29/2014_nodejs_1/" target="_blank" rel="external">http://www.haomou.net/2014/07/29/2014_nodejs_1/</a></p>
 <h3 id="Grunt配置及安装">Grunt配置及安装</h3>
 <p>Grunt是一个自动化的项目构建工具. 如果你需要重复的执行像压缩, 编译, 单元测试, 代码检查以及打包发布的任务. 那么你可以使用Grunt来处理这些任务, 你所需要做的只是配置好Grunt, 这样能很大程度的简化你的工作.如果在团队中使用Grunt, 你只需要与其他人员约定好使用Grunt应该规避的问题, 就能够很方便的自动化的处理大部分的常见工作任务, 你所付出的努力几乎为0.</p>
@@ -154,15 +154,16 @@
 <p>这个在执行<strong>grunt test</strong>时会自动匹配这个任务，执行相应的动作。</p>
 <h4 id="配置示例">配置示例</h4>
 <p>按照上面的方法配置完之后，执行<strong>npm install</strong>会安装相应的依赖模块，然后可以输入<em>grunt</em>或者<em>grunt default</em>或者<em>grunt uglify</em>，三者的效果是一样的。</p>
-<h4 id="Grunt常用插件">Grunt常用插件</h4>
+<h3 id="Grunt常用插件">Grunt常用插件</h3>
 <ul>
 <li>grunt-contrib-uglify：压缩js代码</li>
 <li>grunt-contrib-concat：合并js文件</li>
 <li>grunt-contrib-qunit：单元测试</li>
 <li>grunt-contrib-jshint：js代码检查</li>
-<li>grunt-contrib-watch：监控文件修改并重新执行注册的任务<h4 id="grunt-contrib-concat">grunt-contrib-concat</h4>
-如果你的package.json中没有添加这个依赖，可以直接使用如下命令安装，该命令通过—save-dev会更新package的配置。</li>
+<li>grunt-contrib-watch：监控文件修改并重新执行注册的任务</li>
 </ul>
+<h4 id="grunt-contrib-concat">grunt-contrib-concat</h4>
+<p>如果你的package.json中没有添加这个依赖，可以直接使用如下命令安装，该命令通过—save-dev会更新package的配置。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm <span class="operator"><span class="keyword">install</span> grunt-contrib-<span class="keyword">concat</span> <span class="comment">--save-dev</span></span></div></pre></td></tr></table></figure>
 
 <p>修改GruntFile.js：</p>
@@ -201,9 +202,10 @@
 <li>使用方便，通过代码优于配置的策略，Gulp可以让简单的任务简单，复杂的任务更可管理。</li>
 <li>构建快速，通过流式操作，减少频繁的 IO 操作，更快地构建项目。</li>
 <li>插件高质，Gulp 有严格的插件指导策略，确保插件能简单高质的工作。</li>
-<li>易于学习，少量的API，掌握Gulp可以毫不费力。构建就像流管道一样，轻松加愉快。<h4 id="Gulp安装与使用">Gulp安装与使用</h4>
-执行如下命令安装，并更新依赖包配置：</li>
+<li>易于学习，少量的API，掌握Gulp可以毫不费力。构建就像流管道一样，轻松加愉快。</li>
 </ul>
+<h4 id="Gulp安装与使用">Gulp安装与使用</h4>
+<p>执行如下命令安装，并更新依赖包配置：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm <span class="operator"><span class="keyword">install</span> —-save-dev gulp</span></div></pre></td></tr></table></figure>
 
 <p>Gulp中同样存在许多插件（可以在<a href="http://gratimax.net/search-gulp-plugins/" target="_blank" rel="external">这里</a>查找），完成不同的任务。 gulp-jshint插件，类似于grunt-contrib-jshint，用于js代码检查，下面以这个为例子。<br>先安装gulp-jshint插件:</p>
@@ -233,7 +235,7 @@
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/自动化工具/" itemprop="url"><span itemprop="title" >自动化工具</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/Grunt/" class="label label-primary" itemprop="url"><span itemprop="title">Grunt</span></a><a href="/tags/Gulp/" class="label label-success" itemprop="url"><span itemprop="title">Gulp</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-08-18 16:51:43"datetime="2014-08-18 16:51:43"> Aug 18 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/自动化工具/" itemprop="url"><span itemprop="title" >自动化工具</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/Grunt/" class="label label-primary" itemprop="url"><span itemprop="title">Grunt</span></a><a href="/tags/Gulp/" class="label label-success" itemprop="url"><span itemprop="title">Gulp</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-08-18 16:55:36"datetime="2014-08-18 16:55:36"> Aug 18 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/08/18/2014_tools_1/#comments" class="ds-thread-count comment-link" data-thread-key="2014_tools_1" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -245,6 +247,8 @@
 
     <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
 <ul class="pager">
+  
+  <li class="previous"><a href="/2014/08/19/2014_js1/" title="JS闭包与原型链">&larr; JS闭包与原型链</a></li>
   
   
   <li class="next"><a href="/2014/08/13/2014_bare_token/" title="Bearer Token">Bearer Token &rarr;</a></li>
@@ -304,7 +308,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?d4bd99741b546509c094cd1b0bf951c4"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-08-18 16:51:43</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-08-18 16:55:36</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
