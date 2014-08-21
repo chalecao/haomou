@@ -142,17 +142,15 @@ Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域�
 <p>实例化obj对象有三步：</p>
 <ol>
 <li>创建obj对象：obj=new Object();</li>
-<li>将obj的内部<strong>proto</strong>指向构造他的函数A的prototype，同时，obj.constructor===A.prototype.constructor(这个是永远成立的，即使A.prototype不再指向原来的A原型，也就是说：类的实例对象的constructor属性永远指向”构造函数”的prototype.constructor)，从而使得obj.constructor.prototype指向A.prototype（obj.constructor.prototype===A.prototype，当A.prototype改变时则不成立，下文有遇到）。obj.constructor.prototype与的内部<em>proto</em>是两码事，实例化对象时用的是<em>proto</em>，obj是没有prototype属性的，但是有内部的<strong>proto</strong>，通过<strong>proto</strong>来取得原型链上的原型属性和原型方法，FireFox公开了<strong>proto</strong>，可以在FireFox中alert（obj.<strong>proto</strong>）；</li>
+<li>将obj的内部 <em>_proto_</em> 指向构造他的函数A的prototype，同时，obj.constructor===A.prototype.constructor(这个是永远成立的，即使A.prototype不再指向原来的A原型，也就是说：类的实例对象的constructor属性永远指向”构造函数”的prototype.constructor)，从而使得obj.constructor.prototype指向A.prototype（obj.constructor.prototype===A.prototype，当A.prototype改变时则不成立，下文有遇到）。obj.constructor.prototype与的内部<em>_proto_</em>是两码事，实例化对象时用的是<em>_proto_</em>，obj是没有prototype属性的，但是有内部的<em>_proto_</em>，通过<em>_proto_</em>来取得原型链上的原型属性和原型方法，FireFox公开了<em>_proto_</em>，可以在FireFox中alert（<em>obj._proto_</em>）；</li>
 <li>将obj作为this去调用构造函数A，从而设置成员（即对象属性和对象方法）并初始化。</li>
 </ol>
-<p>　　当这3步完成，这个obj对象就与构造函数A再无联系，这个时候即使构造函数A再加任何成员，都不再影响已经实例化的obj对象了。此时，obj对象具有了x属性，同时具有了构造函数A的原型对象的所有成员，当然，此时该原型对象是没有成员的。</p>
-<p>　　原型对象初始是空的，也就是没有一个成员（即原型属性和原型方法）。可以通过如下方法验证原型对象具有多少成员。</p>
+<p>当这3步完成，这个obj对象就与构造函数A再无联系，这个时候即使构造函数A再加任何成员，都不再影响已经实例化的obj对象了。此时，obj对象具有了x属性，同时具有了构造函数A的原型对象的所有成员，当然，此时该原型对象是没有成员的。</p>
+<p>原型对象初始是空的，也就是没有一个成员（即原型属性和原型方法）。可以通过如下方法验证原型对象具有多少成员。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> num=<span class="number">0</span>;</div><div class="line"><span class="keyword">for</span>(o <span class="keyword">in</span> A.prototype) {</div><div class="line">　　alert(o);<span class="comment">//alert出原型属性名字</span></div><div class="line">　　num++;</div><div class="line">}</div><div class="line">alert(<span class="string">"member: "</span> + num);<span class="comment">//alert出原型所有成员个数。</span></div></pre></td></tr></table></figure>
 
 
-
-<p>　　但是，一旦定义了原型属性或原型方法，则所有通过该构造函数实例化出来的所有对象，都继承了这些原型属性和原型方法，这是通过内部的<em>proto</em>链来实现的。</p>
-<p>　　譬如</p>
+<p>但是，一旦定义了原型属性或原型方法，则所有通过该构造函数实例化出来的所有对象，都继承了这些原型属性和原型方法，这是通过内部的<em>_proto_</em>链来实现的。<br>譬如</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">　　A.prototype.say=<span class="function"><span class="keyword">function</span><span class="params">()</span></span>{alert(<span class="string">"Hi"</span>)};</div></pre></td></tr></table></figure>
 
 <p>　　那所有的A的对象都具有了say方法，这个原型对象的say方法是唯一的副本给大家共享的，而不是每一个对象都有关于say方法的一个副本。</p>
@@ -171,7 +169,7 @@ Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域�
 <p>alert(B.prototype.constructor)出来后就是”function A(x){…}” 。同样地，obj.constructor也是A构造对象，alert(obj.constructor)出来后就是”function A(x){…}” ，也就是说B.prototype.constructor===obj.constructor（true），但是B.prototype===obj.constructor.prototype（false），因为前者是B的原型，具有成员：x,a,b2，后者是A的原型，具有成员：a。如何修正这个问题呢，就在第16行，将B原型的构造器重新指向了B构造函数，那么B.prototype===obj.constructor.prototype（true），都具有成员：x,a,b2。</p>
 <p>　　如果没有第16行，那是不是obj = new B(1,3)会去调用A构造函数实例化呢？答案是否定的，你会发现obj.y=3，所以仍然是调用的B构造函数实例化的。虽然obj.constructor===A(true)，但是对于new B()的行为来说，执行了上面所说的通过构造函数创建实例对象的3个步骤，第一步，创建空对象；第二步，obj.<strong>proto</strong> === B.prototype，B.prototype是具有x,a,b2成员的，obj.constructor指向了B.prototype.constructor，即构造函数A；第三步，调用的构造函数B去设置和初始化成员，具有了属性x,y。虽然不加16行不影响obj的属性，但如上一段说，却影响obj.constructor和obj.constructor.prototype。所以在使用了原型继承后，要进行修正的操作。</p>
 <p>　　关于第12、16行，总言之，第12行使得B原型继承了A的原型对象的所有成员，但是也使得B的实例对象的构造器的原型指向了A原型，所以要通过第16行修正这个缺陷。</p>
-<h3 id="原形使用">原形使用</h3>
+<h3 id="原型使用">原型使用</h3>
 <h4 id="原型使用方式1">原型使用方式1</h4>
 <p>个人理解，之前写JS都是这样:</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> decimalDigits = <span class="number">2</span>,</div><div class="line">            tax = <span class="number">5</span>;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">function</span> <span class="title">add</span><span class="params">(x, y)</span> </span>{</div><div class="line">            <span class="keyword">return</span> x + y;</div><div class="line">        }</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">function</span> <span class="title">subtract</span><span class="params">(x, y)</span> </span>{</div><div class="line">            <span class="keyword">return</span> x - y;</div><div class="line">        }</div><div class="line"></div><div class="line">        <span class="comment">//alert(add(1, 3));</span></div></pre></td></tr></table></figure>
@@ -238,7 +236,7 @@ Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域�
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/JavaScript/" itemprop="url"><span itemprop="title" >JavaScript</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/JavaScript/" class="label label-primary" itemprop="url"><span itemprop="title">JavaScript</span></a><a href="/tags/闭包/" class="label label-success" itemprop="url"><span itemprop="title">闭包</span></a><a href="/tags/原型链/" class="label label-info" itemprop="url"><span itemprop="title">原型链</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-08-19 19:27:59"datetime="2014-08-19 19:27:59"> Aug 19 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/JavaScript/" itemprop="url"><span itemprop="title" >JavaScript</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/JavaScript/" class="label label-primary" itemprop="url"><span itemprop="title">JavaScript</span></a><a href="/tags/闭包/" class="label label-success" itemprop="url"><span itemprop="title">闭包</span></a><a href="/tags/原型链/" class="label label-info" itemprop="url"><span itemprop="title">原型链</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-08-20 10:10:39"datetime="2014-08-20 10:10:39"> Aug 20 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/08/19/2014_js1/#comments" class="ds-thread-count comment-link" data-thread-key="2014_js1" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -280,6 +278,9 @@ Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域�
 <div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
   <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
 
+<div id="widget_sina_weiboshow" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">新浪微搏秀</div>  <iframe width="100%" height="600" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=600&fansRow=2&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=1&isFans=1&uid=1721150073&verifier=1ccfb61e&dpc=1"></iframe></div>
+
 <div id="widget_recent_comments" class="widget hm-left-widget" style="clear:both">
   <div class="panel-heading">最近评论</div>  
 
@@ -311,7 +312,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?d4bd99741b546509c094cd1b0bf951c4"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-08-19 19:27:59</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-08-20 10:10:39</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>

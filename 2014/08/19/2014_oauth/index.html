@@ -136,8 +136,11 @@ Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域�
 <li>授权码模式（authorization code）</li>
 <li>简化模式（implicit）</li>
 <li>密码模式（resource owner password credentials）</li>
-<li>客户端模式（client credentials）<h4 id="授权码模式">授权码模式</h4>
-授权码模式（authorization code）是功能最完整、流程最严密的授权模式。它的特点就是通过客户端的后台服务器，与”服务提供商”的认证服务器进行互动。<br><img class="floatnone" src="/images/oauth2.png"><br>它的步骤如下：<br>（A）用户访问客户端，后者将前者导向认证服务器。<br>（B）用户选择是否给予客户端授权。<br>（C）假设用户给予授权，认证服务器将用户导向客户端事先指定的”重定向URI”（redirection URI），同时附上一个授权码。<br>（D）客户端收到授权码，附上早先的”重定向URI”，向认证服务器申请令牌。这一步是在客户端的后台的服务器上完成的，对用户不可见。<br>（E）认证服务器核对了授权码和重定向URI，确认无误后，向客户端发送访问令牌（access token）和更新令牌（refresh token）。<br>下面是上面这些步骤所需要的参数。<br>A步骤中，客户端申请认证的URI，包含以下参数：</li>
+<li>客户端模式（client credentials）</li>
+</ul>
+<h4 id="授权码模式">授权码模式</h4>
+<p>授权码模式（authorization code）是功能最完整、流程最严密的授权模式。它的特点就是通过客户端的后台服务器，与”服务提供商”的认证服务器进行互动。<br><img class="floatnone" src="/images/oauth2.png"><br>它的步骤如下：<br>（A）用户访问客户端，后者将前者导向认证服务器。<br>（B）用户选择是否给予客户端授权。<br>（C）假设用户给予授权，认证服务器将用户导向客户端事先指定的”重定向URI”（redirection URI），同时附上一个授权码。<br>（D）客户端收到授权码，附上早先的”重定向URI”，向认证服务器申请令牌。这一步是在客户端的后台的服务器上完成的，对用户不可见。<br>（E）认证服务器核对了授权码和重定向URI，确认无误后，向客户端发送访问令牌（access token）和更新令牌（refresh token）。<br>下面是上面这些步骤所需要的参数。<br>A步骤中，客户端申请认证的URI，包含以下参数：</p>
+<ul>
 <li>response_type：表示授权类型，必选项，此处的值固定为”code”</li>
 <li>client_id：表示客户端的ID，必选项</li>
 <li>redirect_uri：表示重定向URI，可选项</li>
@@ -220,15 +223,13 @@ Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域�
 <p>无论是邮件列表、会议讨论、特别设计委员会还是秘密渠道，无数次艰难的争论和妥协，最终产出的规范却在两个最重要目标上双缺失——安全性和互操作性。实际上，有一份折中方案将它从“协议”重新命名为“框架”，而<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-30#section-1.8" target="_blank" rel="external">另一份</a>则添加了一个免责声明，警告这份规范并不能阐述互操作性的实现。<br>和Oauth 1.0相比，Oauth 2.0规范更复杂，缺乏互操作性，实用性打折扣，更加不完整，最重要的是，更加不安全。<br>说得更明确些，Oauth 2.0如果在一个对互联网安全有深入了解开发者手上，实现结果大抵是安全的。然而，就这两年经历的情况来看，Oauth 2.0在大部分开发者手中明显出现了不安全的实现结果。</p>
 <p>要明白OAuth 2.0的问题，你需要了解它相比OAuth 1.0在核心架构上有哪些变化:</p>
 <h4 id="无绑定token（Unbounded_tokens）">无绑定token（Unbounded tokens）</h4>
-<ul>
-<li>在1.0中，client若要访问受保护资源（protected resource），则必须提供两组凭据：token凭据（the token credentials，即Access Token和Access Token Secret）和client凭据（the client credentials，即常说的应用APP KEY和APP SECRET）。在2.0中，client凭据已经不再被使用了，意味着token已经不再绑定于任何一个特定的client类型或者实例。这样的结果，既削弱了access token作为一种认证（authentication）手段的作用，同时也增加了出现安全问题的可能性。[5]<h4 id="无记名token（Bearer_tokens[8]）">无记名token（Bearer tokens[8]）</h4>
-</li>
-<li>2.0在协议层去掉所有签名和加密要求，而仅仅依赖于传输层的TLS[6]。这意味着2.0的token在本质上处于更低安全系数的情况。任何想提高token安全性的行为必然要求额外的规范，而从目前提案展示的情况来看，工作组仅仅着眼于企业应用范畴。<h4 id="token失效（Expiring_tokens）">token失效（Expiring tokens）</h4>
-</li>
-<li>2.0的token存在过期时效，并且必须在过期时进行刷新。这对从1.0过来的client开发者而言是最大的改变，现在他们需要自行实现token状态管理。之所以有token过期一说，是因为要适应自编码token的实现——一种在服务器端无需进行数据库查找即可进行认证的加密token。正因为这种自编码token的存在，他们不可能被回收，只能强制为短时效存在，以此减少遭受危险时带来的损失。无论怎样从（server端）去掉签名所带来的好处，都要在（client端）实现token状态管理面前输了两回。<h4 id="准许类型（Grant_types[7]）">准许类型（Grant types[7]）</h4>
-</li>
-<li>在2.0中，授权准许（authorization grants）被用于交换获取access token。准许是一种抽象概念，代表最终用户已同意授权。它可以是用户在访问许可授权页中点击“Approve（同意）”后获取的一个code，也可以是用户实际的用户名和密码。之所以有这个概念，是为了实现多重认证流程。1.0着眼于用1个认证流程适应于多种client类型，而2.0则是明显为不同的client类型增加多个特殊化认证流程。</li>
-</ul>
+<p>在1.0中，client若要访问受保护资源（protected resource），则必须提供两组凭据：token凭据（the token credentials，即Access Token和Access Token Secret）和client凭据（the client credentials，即常说的应用APP KEY和APP SECRET）。在2.0中，client凭据已经不再被使用了，意味着token已经不再绑定于任何一个特定的client类型或者实例。这样的结果，既削弱了access token作为一种认证（authentication）手段的作用，同时也增加了出现安全问题的可能性。[5]</p>
+<h4 id="无记名token（Bearer_tokens[8]）">无记名token（Bearer tokens[8]）</h4>
+<p>2.0在协议层去掉所有签名和加密要求，而仅仅依赖于传输层的TLS[6]。这意味着2.0的token在本质上处于更低安全系数的情况。任何想提高token安全性的行为必然要求额外的规范，而从目前提案展示的情况来看，工作组仅仅着眼于企业应用范畴。</p>
+<h4 id="token失效（Expiring_tokens）">token失效（Expiring tokens）</h4>
+<p>2.0的token存在过期时效，并且必须在过期时进行刷新。这对从1.0过来的client开发者而言是最大的改变，现在他们需要自行实现token状态管理。之所以有token过期一说，是因为要适应自编码token的实现——一种在服务器端无需进行数据库查找即可进行认证的加密token。正因为这种自编码token的存在，他们不可能被回收，只能强制为短时效存在，以此减少遭受危险时带来的损失。无论怎样从（server端）去掉签名所带来的好处，都要在（client端）实现token状态管理面前输了两回。</p>
+<h4 id="准许类型（Grant_types[7]）">准许类型（Grant types[7]）</h4>
+<p>在2.0中，授权准许（authorization grants）被用于交换获取access token。准许是一种抽象概念，代表最终用户已同意授权。它可以是用户在访问许可授权页中点击“Approve（同意）”后获取的一个code，也可以是用户实际的用户名和密码。之所以有这个概念，是为了实现多重认证流程。1.0着眼于用1个认证流程适应于多种client类型，而2.0则是明显为不同的client类型增加多个特殊化认证流程。</p>
 <p>以上的那些改变，若在一个良好定义的协议上实施是可控管理的。然而由于工作组的组成性质，导致了问题（issue）要不陷在细节纠缠不清，要不就只能保持开放等待所有执行成员共同决定。以下仅是工作组无法达成共识的一小部分例子：</p>
 <ul>
 <li>不强制要求token类型</li>
@@ -261,7 +262,7 @@ Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域�
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/token/" itemprop="url"><span itemprop="title" >token</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/OAuth/" class="label label-primary" itemprop="url"><span itemprop="title">OAuth</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-08-19 18:21:39"datetime="2014-08-19 18:21:39"> Aug 19 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/token/" itemprop="url"><span itemprop="title" >token</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/OAuth/" class="label label-primary" itemprop="url"><span itemprop="title">OAuth</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-08-20 08:16:43"datetime="2014-08-20 08:16:43"> Aug 20 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/08/19/2014_oauth/#comments" class="ds-thread-count comment-link" data-thread-key="2014_oauth" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -273,6 +274,8 @@ Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域�
 
     <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
 <ul class="pager">
+  
+  <li class="previous"><a href="/2014/08/20/2014_nodejs_2/" title="NodeJS 网络爬虫">&larr; NodeJS 网络爬虫</a></li>
   
   
   <li class="next"><a href="/2014/08/19/2014_js1/" title="JS闭包与原型链">JS闭包与原型链 &rarr;</a></li>
@@ -300,6 +303,9 @@ Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域�
 
 <div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
   <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_sina_weiboshow" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">新浪微搏秀</div>  <iframe width="100%" height="600" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=600&fansRow=2&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=1&isFans=1&uid=1721150073&verifier=1ccfb61e&dpc=1"></iframe></div>
 
 <div id="widget_recent_comments" class="widget hm-left-widget" style="clear:both">
   <div class="panel-heading">最近评论</div>  
@@ -332,7 +338,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?d4bd99741b546509c094cd1b0bf951c4"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-08-19 18:21:39</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-08-20 08:16:43</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>

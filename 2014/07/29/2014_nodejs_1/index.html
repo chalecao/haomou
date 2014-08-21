@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>NodeJS最新教程（1） | 皓眸IT</title>
+<title>NodeJS Express运行实例 | 皓眸IT</title>
 <meta name="author" content="Chale Cao">
 
 <meta name="description" content="前言最近在学NodeJS，其实以前学过，好长时间没有用，就忘记了。想想还是比较可惜的。最近学习也是从看资料开始，偶尔看到一些博客写的真的很不错。但是都是零零碎碎的。而且很多都是老版本的，按照博客的写法一步一步走过来，很多地方要么报错，要么都不能用。自己也是找了很多资料，所以打算把这些更改的地方写一下，正确的写法记录一下，分享给想学的同学，让大家都少走弯路，节省学习成本。">
@@ -14,7 +14,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-<meta property="og:title" content="NodeJS最新教程（1）"/>
+<meta property="og:title" content="NodeJS Express运行实例"/>
 <meta property="og:site_name" content="皓眸IT"/>
 
 <!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
@@ -109,7 +109,7 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left hm-article-w"></i>
-      <h1 class="title">NodeJS最新教程（1）</h1>
+      <h1 class="title">NodeJS Express运行实例</h1>
       
         <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-07-29T08:40:49.000Z"> <a href="/2014/07/29/2014_nodejs_1/">Jul 29 2014</a></time></span>      
     </header>
@@ -207,14 +207,14 @@
 <div class="panel panel-success">
     <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
     <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://haomou.net">皓眸IT</a> ，请勿用于任何商业用途</div>
-    <div class="panel-body">本文链接: <a href="/2014/07/29/2014_nodejs_1/">NodeJS最新教程（1）</a></div>
+    <div class="panel-body">本文链接: <a href="/2014/07/29/2014_nodejs_1/">NodeJS Express运行实例</a></div>
 </div></div><div class="widget" id="widget_after_content_ujian>">
 <div class="ujian-hook"></div>
 </div></section>
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/NodeJS/" itemprop="url"><span itemprop="title" >NodeJS</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/NodeJS/" class="label label-primary" itemprop="url"><span itemprop="title">NodeJS</span></a><a href="/tags/教程/" class="label label-success" itemprop="url"><span itemprop="title">教程</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-08-14 08:50:58"datetime="2014-08-14 08:50:58"> Aug 14 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/NodeJS/" itemprop="url"><span itemprop="title" >NodeJS</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/NodeJS/" class="label label-primary" itemprop="url"><span itemprop="title">NodeJS</span></a><a href="/tags/教程/" class="label label-success" itemprop="url"><span itemprop="title">教程</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-08-20 16:05:34"datetime="2014-08-20 16:05:34"> Aug 20 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/07/29/2014_nodejs_1/#comments" class="ds-thread-count comment-link" data-thread-key="2014_nodejs_1" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -233,7 +233,7 @@
 </ul></div></section>    
 	<div id="comments"><!-- Duoshuo Comment BEGIN -->
 
-<div class="ds-thread"  data-thread-key="2014_nodejs_1"  data-url="http://haomou.net/2014/07/29/2014_nodejs_1/" data-title="NodeJS最新教程（1）"></div>
+<div class="ds-thread"  data-thread-key="2014_nodejs_1"  data-url="http://haomou.net/2014/07/29/2014_nodejs_1/" data-title="NodeJS Express运行实例"></div>
 <!-- Duoshuo Comment END -->
 
 </div></div><!--wapper-->
@@ -253,6 +253,9 @@
 
 <div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
   <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_sina_weiboshow" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">新浪微搏秀</div>  <iframe width="100%" height="600" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=600&fansRow=2&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=1&isFans=1&uid=1721150073&verifier=1ccfb61e&dpc=1"></iframe></div>
 
 <div id="widget_recent_comments" class="widget hm-left-widget" style="clear:both">
   <div class="panel-heading">最近评论</div>  
@@ -285,7 +288,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?d4bd99741b546509c094cd1b0bf951c4"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-08-14 08:50:58</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-08-20 16:05:34</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
@@ -337,7 +340,7 @@ _js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
 
 <script type="text/javascript">
     var wumiiPermaLink = "http://haomou.net/2014/07/29/2014_nodejs_1/";
-    var wumiiTitle = "NodeJS最新教程（1）";
+    var wumiiTitle = "NodeJS Express运行实例";
     var wumiiTags = "NodeJS,教程";
     var wumiiCategories = ["NodeJS"];
     var wumiiSitePrefix = "http://haomou.net";
