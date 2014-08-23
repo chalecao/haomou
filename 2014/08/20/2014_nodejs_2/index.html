@@ -127,9 +127,10 @@
 <ol>
 <li>web项目，基于express3, ejs模板</li>
 <li>通过request抓取网页</li>
-<li>通过jQuery, jsdom, htmlparser提取网页内容<br>首先按照 <a href="http://www.haomou.net/2014/07/29/2014_nodejs_1/" target="_blank" rel="external">NodeJS Express运行实例</a>上的方法创建一个Express工程。然后安装相应的依赖包。<h4 id="安装jsdom">安装jsdom</h4>
-执行如下命令安装，同时更新package.json</li>
+<li>通过jQuery, jsdom, htmlparser提取网页内容<br>首先按照 <a href="http://www.haomou.net/2014/07/29/2014_nodejs_1/" target="_blank" rel="external">NodeJS Express运行实例</a>上的方法创建一个Express工程。然后安装相应的依赖包。</li>
 </ol>
+<h4 id="安装jsdom">安装jsdom</h4>
+<p>执行如下命令安装，同时更新package.json</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm <span class="operator"><span class="keyword">install</span> jsdom <span class="comment">--save-dev</span></span></div></pre></td></tr></table></figure>
 
 <p>这个安装的时候可能会报如下错误：</p>
@@ -139,9 +140,10 @@
 <ol>
 <li>python 2.7版本，这个版本最好不要太高。</li>
 <li>Visual C++ 2010 Express，这个主要安装c++编译器</li>
-<li>安装node-gyp编译插件，<em>npm install -g node-gyp</em><br>然后就可以安装jsdom了。<h4 id="安装jQuery，xmlhttprequest，request，htmlparser">安装jQuery，xmlhttprequest，request，htmlparser</h4>
-依次安装并更新package.json：</li>
+<li>安装node-gyp编译插件，<em>npm install -g node-gyp</em><br>然后就可以安装jsdom了。</li>
 </ol>
+<h4 id="安装jQuery，xmlhttprequest，request，htmlparser">安装jQuery，xmlhttprequest，request，htmlparser</h4>
+<p>依次安装并更新package.json：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">npm <span class="operator"><span class="keyword">install</span> jQuery <span class="comment">--save-dev</span></span></div><div class="line">npm <span class="keyword">install</span> xmlhttprequest <span class="comment">--save-dev</span></div><div class="line">npm <span class="keyword">install</span> request <span class="comment">--save-dev</span></div><div class="line">npm <span class="keyword">install</span> htmlparser <span class="comment">--save-dev</span></div></pre></td></tr></table></figure>
 
 <h3 id="爬虫实例">爬虫实例</h3>
@@ -178,7 +180,7 @@
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/NodeJS/" itemprop="url"><span itemprop="title" >NodeJS</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/NodeJS/" class="label label-primary" itemprop="url"><span itemprop="title">NodeJS</span></a><a href="/tags/爬虫/" class="label label-success" itemprop="url"><span itemprop="title">爬虫</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-08-21 11:38:33"datetime="2014-08-21 11:38:33"> Aug 21 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/NodeJS/" itemprop="url"><span itemprop="title" >NodeJS</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/NodeJS/" class="label label-primary" itemprop="url"><span itemprop="title">NodeJS</span></a><a href="/tags/爬虫/" class="label label-success" itemprop="url"><span itemprop="title">爬虫</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-08-21 11:50:55"datetime="2014-08-21 11:50:55"> Aug 21 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/08/20/2014_nodejs_2/#comments" class="ds-thread-count comment-link" data-thread-key="2014_nodejs_2" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -190,6 +192,8 @@
 
     <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
 <ul class="pager">
+  
+  <li class="previous"><a href="/2014/08/23/2014_web_question/" title="手机网页开发问题集锦">&larr; 手机网页开发问题集锦</a></li>
   
   
   <li class="next"><a href="/2014/08/19/2014_oauth/" title="OAuth 2.0详细解析">OAuth 2.0详细解析 &rarr;</a></li>
@@ -252,7 +256,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?d4bd99741b546509c094cd1b0bf951c4"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-08-21 11:38:33</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-08-21 11:50:55</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>

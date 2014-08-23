@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Canvas标签图像处理/滤镜特效 | 皓眸IT</title>
+<title>皓眸IT</title>
 <meta name="author" content="Chale Cao">
 
 <meta name="description" content="简介这段时间做了一个手机WebRTC拍照加特效的应用，主要用到canvas标签获取图像矩阵（这个在上一篇博客中已经详细介绍过：），然后做图像处理，例如滤镜特效（马赛克，浮雕，衬底，反色等），这里我们详细介绍相关的知识。其实从原理上讲，大部分的图像处理都是对图像像素矩阵和某个特效矩阵做卷积，得到新的像素矩阵，就是处理后的效果。关于这个大学课程《数字信息处理》里面有详细介绍。">
@@ -14,7 +14,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-<meta property="og:title" content="Canvas标签图像处理/滤镜特效"/>
+
 <meta property="og:site_name" content="皓眸IT"/>
 
 <!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
@@ -109,7 +109,7 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left hm-article-w"></i>
-      <h1 class="title">Canvas标签图像处理/滤镜特效</h1>
+      <h1 class="title"></h1>
       
         <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-08-05T10:40:49.000Z"> <a href="/2014/08/05/2014_canvas/">Aug 5 2014</a></time></span>      
     </header>
@@ -132,7 +132,7 @@
 <figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="doctype">&lt;!DOCTYPE HTML&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="title">html</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="title">body</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="title">canvas</span> <span class="attribute">id</span>=<span class="value">"lesson"</span> <span class="attribute">width</span>=<span class="value">"300"</span><span class="value">height="200"</span>&gt;</span>      </div><div class="line">         <span class="tag">&lt;<span class="title">p</span>&gt;</span>Your browser does not support the canvas element!<span class="tag">&lt;/<span class="title">p</span>&gt;</span>      </div><div class="line"><span class="tag">&lt;/<span class="title">canvas</span>&gt;</span>            </div><div class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript">      </span></div><div class="line">  <span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{      </div><div class="line">         <span class="keyword">var</span> canvas =<span class="built_in">document</span>.getElementById(<span class="string">"lesson"</span>);      </div><div class="line">         <span class="keyword">var</span> context =canvas.getContext(<span class="string">"2d"</span>);      </div><div class="line">              </div><div class="line">         context.font =<span class="string">"30px Times New Roman"</span>;      </div><div class="line">         context.fillText(<span class="string">"HelloCanvas!"</span>, <span class="number">10</span>, <span class="number">35</span>);      </div><div class="line">  }      </div><div class="line"><span class="tag">&lt;/<span class="title">script</span>&gt;</span>      </div><div class="line"><span class="tag">&lt;/<span class="title">body</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="title">html</span>&gt;</span></div></pre></td></tr></table></figure>
 
 <h3 id="canas绘制图片">canas绘制图片</h3>
-<p>绘制原图：context.drawImage(image, dx, dy)<br>缩放绘图：context.drawImage(image, dx, dy, dw, dh)<br>切片绘图：context.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh)<br>合理的绘制多幅图像可以做出漂亮的组合效果，比如常见的画廊就是框图片与照片的叠加，只不过要注意绘制的先后顺序。<br>第一个参数image代表图片的来源，可以是下列几种：<br>　　(1)页面内的图片:我们可以通过 document.images 集合、document.getElementsByTagName 方法又或者 document.getElementById 方法来获取页面内的图片。<br>　　(2)已经完备的canvas：可以使用document.getElementsByTagName或document.getElementById方法来获取已经准备好的canvas元素。一个常用的场景就是为另一个大的canvas做缩略图。<br>　　(3)通过data:url方式(<a href="http://en.wikipedia.org/wiki/Data:_URL)嵌入图像：Data" target="_blank" rel="external">http://en.wikipedia.org/wiki/Data:_URL)嵌入图像：Data</a> urls允许用一串Base64编码的字符串的方式来定义一个图片。其优点就是图片内容即时可用，无须再到服务器兜一圈。(还有一个优点是，可以将CSS，JavaScript，HTML和图片全部封装在一起，迁移起来十分方便。)缺点就是图像没法缓存，图片大的话内嵌的url数据会相当的长。例如：</p>
+<p>绘制原图：context.drawImage(image, dx, dy)<br>缩放绘图：context.drawImage(image, dx, dy, dw, dh)<br>切片绘图：context.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh)<br>合理的绘制多幅图像可以做出漂亮的组合效果，比如常见的画廊就是框图片与照片的叠加，只不过要注意绘制的先后顺序。<br>第一个参数image代表图片的来源，可以是下列几种：<br>　　(1)页面内的图片:我们可以通过 document.images 集合、document.getElementsByTagName 方法又或者 document.getElementById 方法来获取页面内的图片。<br>　　(2)已经完备的canvas：可以使用document.getElementsByTagName或document.getElementById方法来获取已经准备好的canvas元素。一个常用的场景就是为另一个大的canvas做缩略图。<br>　　(3)通过data:url方式(<a href="http://en.wikipedia.org/wiki/Data:_URL" target="_blank" rel="external">http://en.wikipedia.org/wiki/Data:_URL</a> )嵌入图像：Data urls允许用一串Base64编码的字符串的方式来定义一个图片。其优点就是图片内容即时可用，无须再到服务器兜一圈。(还有一个优点是，可以将CSS，JavaScript，HTML和图片全部封装在一起，迁移起来十分方便。)缺点就是图像没法缓存，图片大的话内嵌的url数据会相当的长。例如：</p>
 <figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> img_src = <span class="string">'data:image/gif;base64,R0lGODlhCwALAIAAAAAA3pn/ZiH5BAEAAAEALAAAAAALAAsAAAIUhA+hkcuO4lmNVindo7qyrIXiGBYAOw=='</span>;</div></pre></td></tr></table></figure>
 
 <p>　　(4)动态创建的图片：我们可以用脚本创建一个新的Image对象，但这种方法的主要缺点是如果不希望脚本因为等待图片装置而暂停，还得需要突破预装载。<br>var img = new Image();<br>img.src = ‘myImage.png’;<br>　　当脚本执行后，图片开始装载。若调用drawImage时，图片没装载完，脚本会等待直至装载完毕。如果不希望这样的效果，则需要使用图片的onload事件。(见下面的例子)。其他几个参数的含义：sx,sy是Image在源中的起始坐标，sw/sWidth,sh/sHeight是源中图片的宽和高，dx,dy是在目标中的坐标，dw/dWidth,dh/dHeight是目标的宽和高。具体可以参看下图：<br><img alt="示例" src="/images/Canvas_drawimage.jpg" width="300" height="290"><br>代码：</p>
@@ -154,14 +154,14 @@
 <div class="panel panel-success">
     <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
     <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://haomou.net">皓眸IT</a> ，请勿用于任何商业用途</div>
-    <div class="panel-body">本文链接: <a href="/2014/08/05/2014_canvas/">Canvas标签图像处理/滤镜特效</a></div>
+    <div class="panel-body">本文链接: <a href="/2014/08/05/2014_canvas/"></a></div>
 </div></div><div class="widget" id="widget_after_content_ujian>">
 <div class="ujian-hook"></div>
 </div></section>
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/HTML5/" itemprop="url"><span itemprop="title" >HTML5</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/图像处理/" class="label label-primary" itemprop="url"><span itemprop="title">图像处理</span></a><a href="/tags/canvas/" class="label label-success" itemprop="url"><span itemprop="title">canvas</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-08-06 17:53:43"datetime="2014-08-06 17:53:43"> Aug 6 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/HTML5/" itemprop="url"><span itemprop="title" >HTML5</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/图像处理/" class="label label-primary" itemprop="url"><span itemprop="title">图像处理</span></a><a href="/tags/canvas/" class="label label-success" itemprop="url"><span itemprop="title">canvas</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-08-21 17:30:28"datetime="2014-08-21 17:30:28"> Aug 21 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/08/05/2014_canvas/#comments" class="ds-thread-count comment-link" data-thread-key="2014_canvas" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -174,15 +174,15 @@
     <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
 <ul class="pager">
   
-  <li class="previous"><a href="/2014/08/05/2014_theory/" title="图像处理的数学理论">&larr; 图像处理的数学理论</a></li>
+  <li class="previous"><a href="/2014/08/06/2014_phonegap_android/" title="phoneGap之Android环境搭建">&larr; phoneGap之Android环境搭建</a></li>
   
   
-  <li class="next"><a href="/2014/08/05/2014_js/" title="JS常用函数">JS常用函数 &rarr;</a></li>
+  <li class="next"><a href="/2014/08/05/2014_theory/" title="图像处理的数学理论">图像处理的数学理论 &rarr;</a></li>
   
 </ul></div></section>    
 	<div id="comments"><!-- Duoshuo Comment BEGIN -->
 
-<div class="ds-thread"  data-thread-key="2014_canvas"  data-url="http://haomou.net/2014/08/05/2014_canvas/" data-title="Canvas标签图像处理/滤镜特效"></div>
+<div class="ds-thread"  data-thread-key="2014_canvas"  data-url="http://haomou.net/2014/08/05/2014_canvas/" data-title=""></div>
 <!-- Duoshuo Comment END -->
 
 </div></div><!--wapper-->
@@ -237,7 +237,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?d4bd99741b546509c094cd1b0bf951c4"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-08-06 17:53:43</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-08-21 17:30:28</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
@@ -289,7 +289,7 @@ _js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
 
 <script type="text/javascript">
     var wumiiPermaLink = "http://haomou.net/2014/08/05/2014_canvas/";
-    var wumiiTitle = "Canvas标签图像处理/滤镜特效";
+    var wumiiTitle = "";
     var wumiiTags = "图像处理,canvas";
     var wumiiCategories = ["HTML5"];
     var wumiiSitePrefix = "http://haomou.net";
