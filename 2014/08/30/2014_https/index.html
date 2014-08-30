@@ -139,23 +139,73 @@
 <p><img class="floatnone" src="/images/https1.png"></p>
 <p>“握手阶段”涉及四次通信，我们一个个来看。需要注意的是，”握手阶段”的所有通信都是明文的。</p>
 <h4 id="客户端发出请求（ClientHello）">客户端发出请求（ClientHello）</h4>
-<p>首先，客户端（通常是浏览器）先向服务器发出加密通信的请求，这被叫做ClientHello请求。<br>在这一步，客户端主要向服务器提供以下信息。<br>    （1） 支持的协议版本，比如TLS 1.0版。<br>    （2） 一个客户端生成的随机数，稍后用于生成”对话密钥”。<br>    （3） 支持的加密方法，比如RSA公钥加密。<br>    （4） 支持的压缩方法。</p>
+<p>首先，客户端（通常是浏览器）先向服务器发出加密通信的请求，这被叫做ClientHello请求。<br>在这一步，客户端主要向服务器提供以下信息。<br>    （1） 支持的协议版本，比如TLS 1.0版。<br>    （2） 一个客户端生成的随机数，稍后用于生成”会话密钥”(session secret)。<br>    （3） 支持的加密方法，比如RSA公钥加密。<br>    （4） 支持的压缩方法。</p>
 <p>这里需要注意的是，客户端发送的信息之中不包括服务器的域名。也就是说，理论上服务器只能包含一个网站，否则会分不清应该向客户端提供哪一个网站的数字证书。这就是为什么通常一台服务器只能有一张数字证书的原因。<br>对于虚拟主机的用户来说，这当然很不方便。2006年，TLS协议加入了一个Server Name Indication扩展，允许客户端向服务器提供它所请求的域名。</p>
 <h4 id="服务器回应（SeverHello）">服务器回应（SeverHello）</h4>
 <p>服务器收到客户端请求后，向客户端发出回应，这叫做SeverHello。服务器的回应包含以下内容。</p>
 <pre><code>（<span class="number">1</span>） 确认使用的加密通信协议版本，比如TLS <span class="number">1.0</span>版本。如果浏览器与服务器支持的版本不一致，服务器关闭加密通信。
-（<span class="number">2</span>） 一个服务器生成的随机数，稍后用于生成<span class="string">"对话密钥"</span>。
+（<span class="number">2</span>） 一个服务器生成的随机数，稍后用于生成<span class="string">"会话密钥"</span>(session secret)。
 （<span class="number">3</span>） 确认使用的加密方法，比如RSA公钥加密。
 （<span class="number">4</span>） 服务器证书。
 </code></pre><p>除了上面这些信息，如果服务器需要确认客户端的身份，就会再包含一项请求，要求客户端提供”客户端证书”。比如，金融机构往往只允许认证客户连入自己的网络，就会向正式客户提供USB密钥，里面就包含了一张客户端证书。</p>
 <h4 id="客户端回应">客户端回应</h4>
 <p>客户端收到服务器回应以后，首先验证服务器证书。如果证书不是可信机构颁布、或者证书中的域名与实际域名不一致、或者证书已经过期，就会向访问者显示一个警告，由其选择是否还要继续通信。<br>如果证书没有问题，客户端就会从证书中取出服务器的公钥。然后，向服务器发送下面三项信息。<br>    （1） 一个随机数。该随机数用服务器公钥加密，防止被窃听。<br>    （2） 编码改变通知，表示随后的信息都将用双方商定的加密方法和密钥发送。<br>    （3） 客户端握手结束通知，表示客户端的握手阶段已经结束。这一项同时也是前面发送的所有内容的hash值，用来供服务器校验。<br>上面第一项的随机数，是整个握手阶段出现的第三个随机数，又称”pre-master key”。有了它以后，客户端和服务器就同时有了三个随机数，接着双方就用事先商定的加密方法，各自生成本次会话所用的同一把”会话密钥”。<br>至于为什么一定要用三个随机数，来生成”会话密钥”，dog250解释得很好：</p>
 <pre><code><span class="string">"不管是客户端还是服务器，都需要随机数，这样生成的密钥才不会每次都一样。由于SSL协议中证书是静态的，因此十分有必要引入一种随机因素来保证协商出来的密钥的随机性。
-</span>对于RSA密钥交换算法来说，<span class="keyword">pre</span>-master-key本身就是一个随机数，再加上hello消息中的随机，三个随机数通过一个密钥导出器最终导出一个对称密钥。
+</span>对于RSA密钥交换算法来说，<span class="keyword">pre</span>-master-key本身就是一个随机数，再加上hello消息中的随机，三个随机数通过一个密钥导出器（Master Secret）最终导出一个对称密钥。
 <span class="keyword">pre</span> master的存在在于SSL协议不信任每个主机都能产生完全随机的随机数，如果随机数不随机，那么<span class="keyword">pre</span> master secret就有可能被猜出来，那么仅适用<span class="keyword">pre</span> master secret作为密钥就不合适了，因此必须引入新的随机因素，那么客户端和服务器加上<span class="keyword">pre</span> master secret三个随机数一同生成的密钥就不容易被猜出了，一个伪随机可能完全不随机，可是是三个伪随机就十分接近随机了，每增加一个自由度，随机性增加的可不是一。"
 </code></pre><p>此外，如果前一步，服务器要求客户端证书，客户端会在这一步发送证书及相关信息。</p>
 <h4 id="服务器的最后回应">服务器的最后回应</h4>
 <p>服务器收到客户端的第三个随机数pre-master key之后，计算生成本次会话所用的”会话密钥”。然后，向客户端最后发送下面信息。<br>    （1）编码改变通知，表示随后的信息都将用双方商定的加密方法和密钥发送。<br>    （2）服务器握手结束通知，表示服务器的握手阶段已经结束。这一项同时也是前面发送的所有内容的hash值，用来供客户端校验。<br>至此，整个握手阶段全部结束。接下来，客户端与服务器进入加密通信，就完全是使用普通的HTTP协议，只不过用”会话密钥”加密内容。<br><img class="floatnone" src="/images/https2.gif"></p>
+<h3 id="Secret_Keys产生与使用">Secret Keys产生与使用</h3>
+<p>上面的分析和讲解主要是为了突出握手的过程，所以PreMaster secret，Master secret，session secret都是一代而过，但是对于Https，SSL/TLS深入的理解和掌握，这些Secret Keys是非常重要的部分。所以，准备把这些Secret Keys抽出来单独分析和讲解。</p>
+<p>我们先来看看这些Secret Keys的的生成过程以及作用流程图：<br><img class="floatnone" src="/images/https4.svg"><br>reMaster secret是在客户端使用RSA或者Diffie-Hellman等加密算法生成的。它将用来跟服务端和客户端在Hello阶段产生的随机数结合在一起生成Master secret。在客户端使用服务单的公钥对PreMaster secret进行加密之后传送给服务端，服务端将使用私钥进行解密得到PreMaster secret。也就是说服务端和客户端都有一份相同的PreMaster secret和随机数。</p>
+<p>PreMaster secret前两个字节是TLS的版本号，这是一个比较重要的用来核对握手数据的版本号，因为在Client Hello阶段，客户端会发送一份加密套件列表和当前支持的SSL/TLS的版本号给服务端，而且是使用明文传送的，如果握手的数据包被破解之后，攻击者很有可能串改数据包，选择一个安全性较低的加密套件和版本给服务端，从而对数据进行破解。所以，服务端需要对密文中解密出来对的PreMaster版本号跟之前Client Hello阶段的版本号进行对比，如果版本号变低，则说明被串改，则立即停止发送任何消息。</p>
+<p>关于PreMaster Secret(Key)的计算请参考<a href="http://www.fenesky.com/blog/2014/07/25/how-premaster-secret.html" target="_blank" rel="external">《Htttps SSL/TLS PreMaster/Master Secret(Key)计算》</a>。</p>
+<p>上面已经提到，由于服务端和客户端都有一份相同的PreMaster secret和随机数，这个随机数将作为后面产生Master secret的种子，结合PreMaster secret，客户端和服务端将计算出同样的Master secret。</p>
+<p>Master secret是有系列的hash值组成的，它将作为数据加解密相关的secret的Key Material。Master secret最终解析出来的数据如下：<br><img class="floatnone" src="/images/https5.svg"><br>其中，write MAC key，就是session secret或者说是session key。Client write MAC key是客户端发数据的session secret，Server write MAC secret是服务端发送数据的session key。MAC(Message Authentication Code)，是一个数字签名，用来验证数据的完整性，可以检测到数据是否被串改。关于MAC的工作原理详见<a href="http://en.wikipedia.org/wiki/Message_authentication_code" target="_blank" rel="external">MAC</a>。</p>
+<p>关于Session Secret(Key)的计算请参考<a href="http://www.fenesky.com/blog/2014/07/25/how-session-secret.html" target="_blank" rel="external">《Htttps SSL/TLS Session Secret(Key)计算》</a>。</p>
+<h3 id="加密算法">加密算法</h3>
+<p><strong>加密算法有俩大类，第一种是不基于KEY的，另一种是不基于KEY的。</strong></p>
+<pre><code>基于<span class="keyword">KEY</span>的，举个简单的例子，我要加密<span class="string">"fordesign"</span>这么一串字符，就把每个字符都变成它的后一个字符，那么就是<span class="string">"gpseftjhm"</span>了，这样的东西人家当然看不明白，接收方用相反的方法就可以得到原文。当然这只是个例子，现在应该没人用这么搞笑的加密算法了吧。
+
+不基于<span class="keyword">KEY</span>，好象一直用到了计算机出现。我记得古中国军事机密都是用这种方式加密的。打战的时候好象军队那些电报员也要带着密码本，也应该是用这种方式加密的。这种算法的安全性以保持算法的保密为前提。
+这种加密算法的缺点太明显了，就是一旦你的加密算法给人家知道，就肯定挂。日本中途岛惨败好象就是密码给老米破了。设计一种算法是很麻烦的，一旦给人破了就没用了，这也忑浪费。
+
+我们现在使用的加密算法一般是基于<span class="keyword">key</span>的，也就是说在加密过程中需要一个<span class="keyword">key</span>，用这个<span class="keyword">key</span>来对明文进行加密。这样的算法即使一次被破，下次改个<span class="keyword">key</span>，还可以继续用。<span class="keyword">key</span>是一个什么东西呢？随便你，可以是一个随机产生的数字，或者一个单词，啥都行，只要你用的算法认为你选来做<span class="keyword">key</span>的那玩意合法就行。
+
+这样的算法最重要的是：其安全性取决于<span class="keyword">key</span>，一般来说取决于<span class="keyword">key</span>的长度。也就是说应该保证人家在知道这个算法而不知道<span class="keyword">key</span>的情况下，破解也相当困难。其实现在常用的基于<span class="keyword">KEY</span>的加密算法在网络上都可以找到。
+</code></pre><p><strong>基于key的加密算法又包括俩类：对称加密和不对称加密。</strong></p>
+<pre><code>对称加密指的是双方使用完全相同的key， 最常见的是DES. DES3, RC4等。对称加密算法的原理很容易理解，通信一方用KEK加密明文，另一方收到之后用同样的KEY来解密就可以得到明文。
+
+不对称加密指双方用不同的KEY加密和解密明文，通信双方都要有自己的公共密钥和私有密钥。 
+举个例子比较容易理解， 我们们假设通信双方分别是<span class="literal">A</span>、B。
+<span class="literal">A</span> 拥有 KEY_A1、KEY_A2, 其中KEY_A1是<span class="literal">A</span>的私有密钥，KEY_A2是<span class="literal">A</span>的公共密钥。
+B 拥有 KEY_B1、KEY_B2, 其中KEY_B1是B的私有密钥，KEY_B2是B的公共密钥。
+公共密钥和私有密钥的特点是，经过其中任何一把加密过的明文，只能用另外一把才能够解开。也就是说经过KEY_A1加密过的明文，只有KEY_A2才能够解密，反之亦然。
+</code></pre><p>通信过程如下：</p>
+<pre><code><span class="comment">A</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span>&gt;<span class="comment">KEY_A2</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span>&gt;<span class="comment">B</span>
+<span class="comment">A</span>&lt;<span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="comment">KEY_B2</span>&lt;<span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="comment">A</span>
+
+<span class="comment">这个过程叫做公共密钥交换，老外管这叫key</span> <span class="comment">exchange。</span>
+<span class="comment">之后A和B就分别用对方的公共密钥加密，用自己的私有密钥解密。</span>
+<span class="comment">一般公共密钥是要发布出去的，然后你通过自己的私有密钥加密明文，人家用你的公共密钥解密，如果能解开，那么说明你是加密人，这就是SSL使用的验证机制。</span>
+</code></pre><p>我如果要发给你，我就用你的公钥加密，这让只有你能用自己的私钥解密。如果我用自己的私钥加密，然后发布出去，这就不属于保密，而是属于认证，证明这条信息是我发的，而且我不能赖帐，因为私钥只有我自己知道。</p>
+<p>常用的不对称加密一般有RSA、 DSA、 DH等。我们一般使用RSA。</p>
+<h3 id="数字签名">数字签名</h3>
+<p>数字签名也是不对称加密算法的一个重要应用，理解它对于理解SSL很重要的，放在这里一起介绍一下。</p>
+<p>签名是什么大家都很熟悉吧？证明该东西是你写的，是你发布的，你就用签名搞定。看看那些重要文件都要头头签名。数字签名就是数字化的签名了。记得公用密钥和私有密钥的特征吗？只有你一个人有你自己的私有密钥。而你的公用密钥是其他人都知道的 了。那么你在写完一封邮件之后，用自己的私有密钥加密自己的名字，接收人用你的公共密钥解开一看，哦，是你发的。这就是你的数字签名过程了。</p>
+<p>上面的解释是很简化的了，其实数字签名比这个复杂多了，但我们没有了解的必要，知道数字签名是这么一回事就可以了。</p>
+<p>还有一种我们需要知道的加密算法，其实我不觉得那是加密算法 ，应该叫哈希算法，英文是message digest, 是用来把任何长度的一串明文以一定规则变成固定长度的一串字符串。它在SSL中的作用也很重要，以后会慢慢提及的。一般使用的是MD5、SHA、base64不是加密算法，但也是SSL经常使用的一种算法，它是编码方式，用来把asc码和二进制码转来转去的。</p>
+<p>具体的加密解密过程我们不需要了解，因为SSL根本不关心。但了解加密算法的一些基本原理是必要的，否则很难理解SSL。</p>
+<h3 id="关于证书">关于证书</h3>
+<p>为了能实施SSL，一个web服务器对每个接受安全连接的外部接口(IP地址)必须要有相应的认证书(Certificate)。关于这个设计的理论是一个服务器必须提供某种合理的保证以证明这个服务器的主人就是你所认为的那个人，特别是在接收任何敏感信息之前要这样做。关于Certificates的更广泛的解释超过了这个文档资料的范围，就把一个认证书当作一个英特网地址的“数码驾驶执照”。这个认证书要陈述与这个网站相关联的公司，以及这个网站的所有者或系统管理员的一些基本联系信息。</p>
+<p>这个”驾驶执照”由所有人以密码方式签字，其他人非常难伪造。对于进行电子商务 (e-commerce)的网站，或其他身份认证至关重要的任何商业交易，认证书要向大家所熟知的认证权威 (Certificate Authority (CA))如VeriSign或Thawte来购买。这样的认证书可用电子技术证明属实——实际上，认证权威单位会担保它发出的认证书的真实性，如果你信任发出认证书的认证权威单位的话，你就可以相信这个认证书是有效的。</p>
+<p>从技术上说，SSL 证书（也称为数字证书）将身份与一对可用于加密和签名数字信息的电子密钥绑定。SSL 证书能够实现对某人自称有权使用特定密钥的声明的验证，有助于防止有人使用欺骗性密钥来模拟其他用户。当与加密配合使用时，SSL 证书可提供完整的安全解决方案，可以保证参与事务的一方或各方的身份。</p>
+<p>SSL 证书是由受信任的第三方（称为证书颁发机构 (CA)）发放的。CA 的作用有些像护照办理处。CA 必须采取一些措施来确定要向其发放 ID 的人或组织的身份。一旦 CA 建立某个组织的身份后，就可以发出一个包含该组织的公钥的证书，并用 CA 的私钥对其签名。</p>
+<p>通过使用 SSL 证书，您就能在自己的站点上开展验证身份的、加密的在线商务活动。访问您站点的用户将可以向站点提交信用卡号或其他个人信息，从而保证他们真心实意与您进行业务交易（并非是骗子），并且他们发送给您的信息不会被目标接收者以外的任何人截取或解密。您的 SSL 证书将包含下列信息：</p>
+<p>您的组织的公用名称（如 www.bea.com）<br>1)其它标识性信息（如 IP 和物理地址）<br>2)您的公钥<br>3)公钥的到期日期<br>4)发出此 ID 的 CA 的名称（如 VeriSign）<br>5)一个唯一的序列号<br>6)VeriSign 的数字签名</p>
+<p>主要的证书类型有：PEM、DER、PKCS#12<br>PEM<br>    可以包括所有私钥（RSA 和 DSA）、公钥（RSA 和 DSA）和 (x509) 证书。它存储用 Base64 编码的 DER 格式数据，用 ascii 报头包围，因此适合系统之间的文本模式传输。<br>——-BEGIN CERTIFICATE——-<br>MIICJjCCAdCgAwIBAgIBITANBgkqhkiG9w0BAQQFADCBqTELMAkGA1UEBhMCVVMx<br>EzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBGcmFuY2lzY28xFTAT<br>BgNVBAoTDEJFQSBXZWJMb2dpYzERMA8GA1UECxMIU2VjdXJpdHkxIzAhBgNVBAMT<br>GkRlbW8gQ2VydGlmaWNhdGUgQXV0aG9yaXR5MR4wHAYJKoZIhvcNAQkBFg9zdXBw<br>b3J0QGJlYS5jb20wHhcNMDAwNTMwMjEzODAxWhcNMDQwNTEzMjEzODAxWjCBjDEL<br>MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG<br>cmFuY2lzY28xFTATBgNVBAoTDEJFQSBXZWJMb2dpYzEZMBcGA1UEAxMQd2VibG9n<br>aWMuYmVhLmNvbTEeMBwGCSqGSIb3DQEJARYPc3VwcG9ydEBiZWEuY29tMFwwDQYJ<br>KoZIhvcNAQEBBQADSwAwSAJBALdsXEHqKHgs6zj0hU5sXMAUHzoT8kgWXmNkKHXH<br>79qbPh6EfdlriW9G/AbRF/pKrCQu7hhllAxREbqTuSlf2EMCAwEAATANBgkqhkiG<br>9w0BAQQFAANBACgmqflL5m5LNeJGpWx9aIoABCiuDcpw1fFyegsqGX7CBhffcruS<br>1p8h5vkHVbMu1frD1UgGnPlOO/K7Ig/KrsU=<br>——-END CERTIFICATE——-<br>DER<br>    辨别编码规则 (DER) 可包含所有私钥、公钥和证书。它是大多数浏览器的缺省格式，并按 ASN1 DER 格式存储。它是无报头的 － PEM 是用文本报头包围的 DER。</p>
+<p>PKCS#12<br>    公钥加密标准 #12 (PKCS#12) 可包含所有私钥、公钥和证书。其以二进制格式存储，也称为 PFX 文件。</p>
 <h3 id="参考链接">参考链接</h3>
 <p>MicroSoft TechNet, <a href="http://technet.microsoft.com/en-us/library/cc785811(v=ws.10" target="_blank" rel="external">SSL/TLS in Detail</a>.aspx )<br>Jeff Moser, <a href="http://www.moserware.com/2009/06/first-few-milliseconds-of-https.html" target="_blank" rel="external">The First Few Milliseconds of an HTTPS Connection</a><br>Wikipedia, <a href="http://en.wikipedia.org/wiki/Transport_Layer_Security" target="_blank" rel="external">Transport Layer Security</a><br>StackExchange, <a href="http://security.stackexchange.com/questions/20803/how-does-ssl-work" target="_blank" rel="external">How does SSL work?</a></p>
 <h3 id="谢谢！">谢谢！</h3>
@@ -176,7 +226,7 @@
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/网络协议/" itemprop="url"><span itemprop="title" >网络协议</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/HTTPS/" class="label label-primary" itemprop="url"><span itemprop="title">HTTPS</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-08-30 17:21:44"datetime="2014-08-30 17:21:44"> Aug 30 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/网络协议/" itemprop="url"><span itemprop="title" >网络协议</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/HTTPS/" class="label label-primary" itemprop="url"><span itemprop="title">HTTPS</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-08-30 17:58:57"datetime="2014-08-30 17:58:57"> Aug 30 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/08/30/2014_https/#comments" class="ds-thread-count comment-link" data-thread-key="2014_https" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -190,7 +240,7 @@
 <ul class="pager">
   
   
-  <li class="next"><a href="/2014/08/27/2014_rsa/" title="RSA加密算法详解">RSA加密算法详解 &rarr;</a></li>
+  <li class="next"><a href="/2014/08/29/2014_arm/" title="双核好？四核好？八核好？">双核好？四核好？八核好？ &rarr;</a></li>
   
 </ul></div></section>    
 	<div id="comments"><!-- Duoshuo Comment BEGIN -->
@@ -250,7 +300,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?d4bd99741b546509c094cd1b0bf951c4"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-08-30 17:21:44</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-08-30 17:58:57</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
