@@ -1,0 +1,407 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NodeJS的buffer使用总结 | 皓眸IT</title>
+<meta name="author" content="Chale Cao">
+
+<meta name="description" content="buffer拼接数据写网页爬虫，或者读取文件流，接收网络数据流的时候，我们经常使用buffer来拼接接受的数据块。关于这个字符串拼接，在java中的字符流或者字节流是可以指定编码的，或者接收后转换编码，而在NodeJS中的处理就有些不同了。">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="NodeJS的buffer使用总结"/>
+<meta property="og:site_name" content="皓眸IT"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css">
+<![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="皓眸IT Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+
+<link rel="stylesheet" href="/css/nprogress.css" type="text/css">
+
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.bootcss.com/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+  
+  <header id="header" class="hm-menu-left-container"><nav id="main-nav" class="navbar navbar-default hm-navbar-menu-left  " role="navigation">
+    <div class="hm-navbar-header">
+    <a href="http://haomou.net" ><img class="hm-logo" src="/images/haomou.png" title="皓眸IT" width="64" height="64" /></a>
+    <br/>|<br/><span class="fa fa-tint hm-black shine_blue" ></span><br/>|<br/><span class="fa fa-heart hm-black shine_red" ></span><br/>|<br/>
+        <i class="fa fa-bars fa-2x hm-black hm-menu shine_blue" ></i><br/><div class="hm-line"></div>
+    </div>
+    <div class="collapse navbar-collapse">
+      <h1 style="color:black">皓眸IT</h1>
+      <ul class="nav navbar-nav hm-left-nav">
+  
+        <li item='2014/09/09/2014_nodejs_buffer/' class='active'><a href="/" title="首页">首页</a></li>      
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>关于我<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://home.ustc.edu.cn/~chh1990/chero/chero.html" title="个人主页">个人主页</a></li>    
+        </ul>
+      </li>
+    
+      </ul>
+
+        
+        <div id="widget_category" class="widget hm-left-widget">
+            <div class="panel-heading">分类：</div>            <div data-src='category' class='ajax_widgets'>正在加载...</div>
+        </div>
+        
+        <div id="widget_tagcloud" class="widget hm-left-widget">
+            <div class="panel-heading">标签云：</div>            <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div>        </div>
+        
+
+
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/chalecao">github</a></li>
+      
+      </ul>
+    </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div style="" id="headflash" class="headflash hm_container"><embed pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="/images/bck.swf" width="100%" height="313" style="undefined" id="headflash_f" name="headflash_f" bgcolor="#000" quality="high" allowscriptaccess="false" wmode="transparent" allowfullscreen="false"></div>
+  <div id='content' class=" container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>皓眸IT <small>写清楚，说明白</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article class="hm-article">
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left hm-article-w"></i>
+      <h1 class="title">NodeJS的buffer使用总结</h1>
+      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-09-09T05:40:49.000Z"> <a href="/2014/09/09/2014_nodejs_buffer/">Sep 9 2014</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry"  data-spy="scroll" data-target="#toc" >
+      
+        <h3 id="buffer拼接数据">buffer拼接数据</h3>
+<p>写网页爬虫，或者读取文件流，接收网络数据流的时候，我们经常使用buffer来拼接接受的数据块。关于这个字符串拼接，在java中的字符流或者字节流是可以指定编码的，或者接收后转换编码，而在NodeJS中的处理就有些不同了。<br><a id="more"></a><br><img class="floatnone" alt="皓眸GEEK" src="/images/buffer1.png"></p>
+<h3 id="作者">作者</h3>
+<p><img alt="皓眸GEEK" src="/images/hm.jpg" width="150" height="200"><br>Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域<br>毕业于中国科学技术大学，硕士研究生。单身，喜欢真诚，善良的女孩子。<br>擅长：JAVA，PHP，C#，JS，WebGL，WebRTC …<br>Mail To: chh1990@mail.ustc.edu.cn<br>WebSite：<a href="http://www.haomou.net" target="_blank" rel="external">http://www.haomou.net</a></p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/09/09/2014_nodejs_buffer/" target="_blank" rel="external">http://www.haomou.net/2014/09/09/2014_nodejs_buffer/</a></p>
+<h3 id="字符串长度">字符串长度</h3>
+<p>看看PHP对字符串长度的判断结果：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="php"><span class="preprocessor">&lt;?</span> php </span></div><div class="line"><span class="keyword">echo</span> strlen(<span class="string">"0123456789"</span>);     </div><div class="line"><span class="keyword">echo</span> strlen(<span class="string">"零一二三四五六七八九"</span>);     </div><div class="line"><span class="keyword">echo</span> mb_strlen(<span class="string">"零一二三四五六七八九"</span>, <span class="string">"utf-8"</span>);      </div><div class="line"><span class="keyword">echo</span> <span class="string">"\n"</span>; </div><div class="line"><span class="preprocessor">?&gt;</span></div></pre></td></tr></table></figure>
+
+<p>以上三行判断分别返回10、30、10。对于中国人而言，strlen这个方法对于Unicode的判断结果是非常让人疑惑。而看看JavaScript中对字符串长度的判断，就知道这个length属性对调用者而言是多么友好。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">console.<span class="built_in">log</span>(<span class="string">"0123456789"</span>.<span class="built_in">length</span>); <span class="comment">// 10</span></div><div class="line">console.<span class="built_in">log</span>(<span class="string">"零一二三四五六七八九"</span>.<span class="built_in">length</span>); /<span class="number">10</span></div><div class="line">console.<span class="built_in">log</span>(<span class="string">"\u00bd"</span>.<span class="built_in">length</span>); <span class="comment">// 1</span></div></pre></td></tr></table></figure>
+
+<p>尽管在计算机内部，一个中文字和一个英文字占用的字节位数是不同的，但对于用户而言，它们拥有相同的长度。我认为这是JavaScript中 String处理得精彩的一个点。正是由于这个原因，所有的数据从后端传输到前端被调用时，都是这般友好的字符串。所以对于前端工程师而言，他们是没有字符串Buffer的概念的。如果你是一名前端工程师，那么从此在与Node.js打交道的过程中，一定要小心Buffer啦，因为它比传统的String 要调皮一点。</p>
+<h3 id="Buffer使用">Buffer使用</h3>
+<p>像许多计算机的技术一样，都是从国外传播过来的。那些以英文作为母语的传道者们应该没有考虑过英文以外的使用者，所以你有可能看到如下这样一段代码在向你描述如何在data事件中连接字符串。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</div><div class="line"><span class="keyword">var</span> rs = fs.createReadStream(<span class="string">'testdata.md'</span>);</div><div class="line"><span class="keyword">var</span> data = <span class="string">''</span>;</div><div class="line">rs.on(<span class="string">"data"</span>, <span class="function"><span class="keyword">function</span> <span class="params">(trunk)</span></span>{</div><div class="line">    data += trunk;</div><div class="line">});</div><div class="line">rs.on(<span class="string">"end"</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    <span class="built_in">console</span>.log(data);</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<p>如果这个文件读取流读取的是一个纯英文的文件，这段代码是能够正常输出的。但是如果我们再改变一下条件，将每次读取的buffer大小变成一个奇数，以模拟一个字符被分配在两个trunk中的场景。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> rs = fs.createReadStream(<span class="string">'testdata.md'</span>, {bufferSize: <span class="number">11</span>});</div></pre></td></tr></table></figure>
+
+<p>我们将会得到以下这样的乱码输出：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">事件循���和请求���象构成了Node.js���异步<span class="keyword">I</span>/<span class="keyword">O</span>模型的���个基本���素，这也是典���的消费���生产者场景。</div></pre></td></tr></table></figure>
+
+<p>造成这个问题的根源在于data += trunk语句里隐藏的错误，在默认的情况下，trunk是一个Buffer对象。这句话的实质是隐藏了toString的变换的：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="typedef"><span class="keyword">data</span> = <span class="keyword">data</span>.toString<span class="container">()</span> + trunk.toString<span class="container">()</span>;</span></div></pre></td></tr></table></figure>
+
+<p>由于汉字不是用一个字节来存储的，导致有被截破的汉字的存在，于是出现乱码。解决这个问题有一个简单的方案，是设置编码集：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> rs = fs.createReadStream(<span class="string">'testdata.md'</span>, {encoding: <span class="string">'utf-8'</span>, bufferSize: <span class="number">11</span>});</div></pre></td></tr></table></figure>
+
+<p>这将得到一个正常的字符串响应：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">事件循环和请求对象构成了Node.js的异步<span class="keyword">I</span>/<span class="keyword">O</span>模型的两个基本元素，这也是典型的消费者生产者场景。</div></pre></td></tr></table></figure>
+
+<p>遗憾的是目前Node.js仅支持hex、utf8、ascii、binary、base64、ucs2几种编码的转换。对于那些因为历史遗留问题依旧还生存着的GBK，GB2312等编码，该方法是无能为力的</p>
+<h3 id="string_decoder">string_decoder</h3>
+<p>在这个例子中，如果仔细观察，会发现一件有趣的事情发生在设置编码集之后。我们提到data += trunk等价于data = data.toString() + trunk.toString()。通过以下的代码可以测试到一个汉字占用三个字节，而我们按11个字节来截取trunk的话，依旧会存在一个汉字被分割在两个trunk中的情景。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">console.<span class="built_in">log</span>(<span class="string">"事件循环和请求对象"</span>.<span class="built_in">length</span>);<span class="comment"> //9</span></div><div class="line">console.<span class="built_in">log</span>(<span class="built_in">new</span> Buffer(<span class="string">"事件循环和请求对象"</span>).<span class="built_in">length</span>)<span class="comment">;//27</span></div></pre></td></tr></table></figure>
+
+<p>按照猜想的toString()方式，应该返回的是事件循xxx和请求xxx象才对，其中“环”字应该变成乱码才对，但是在设置了encoding（默认的utf8）之后，结果却正常显示了，这个结果十分有趣。<br><img class="floatnone" alt="皓眸GEEK" src="/images/buffer1.png"><br>在好奇心的驱使下可以探查到data事件调用了string_decoder来进行编码补足的行为。通过string_decoder对象输出第一个截取Buffer(事件循xx)时，只返回事件循这个字符串，保留xx。第二次通过string_decoder对象输出时检测到上次保留的xx，将上次剩余内容和本次的Buffer进行重新拼接输出。于是达到正常输出的目的。</p>
+<p>string_decoder，目前在文件流读取和网络流读取中都有应用到，一定程度上避免了粗鲁拼接trunk导致的乱码错误。但是，遗憾在于string_decoder目前只支持utf8编码。它的思路其实还可以扩展到其他编码上，只是最终是否会支持目前尚不可得知。</p>
+<h3 id="buffer正确使用">buffer正确使用</h3>
+<p>那么万能的适应各种编码而且正确的拼接Buffer对象的方法是什么呢？我们从Node.js在github上的源码中找出这样一段正确读取文件，并连接buffer对象的方法：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> buffers = [];</div><div class="line"><span class="keyword">var</span> nread = <span class="number">0</span>;</div><div class="line">readStream.on(<span class="string">'data'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(chunk)</span> </span>{</div><div class="line">    buffers.push(chunk);</div><div class="line">    nread += chunk.length;</div><div class="line">});</div><div class="line">readStream.on(<span class="string">'end'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">var</span> buffer = <span class="literal">null</span>;</div><div class="line">    <span class="keyword">switch</span>(buffers.length) {</div><div class="line">        <span class="keyword">case</span> <span class="number">0</span>: buffer = <span class="keyword">new</span> Buffer(<span class="number">0</span>);</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">case</span> <span class="number">1</span>: buffer = buffers[<span class="number">0</span>];</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">default</span>:</div><div class="line">            buffer = <span class="keyword">new</span> Buffer(nread);</div><div class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, pos = <span class="number">0</span>, l = buffers.length; i &lt; l; i++) {</div><div class="line">                <span class="keyword">var</span> chunk = buffers[i];</div><div class="line">                chunk.copy(buffer, pos);</div><div class="line">                pos += chunk.length;</div><div class="line">            }</div><div class="line">        <span class="keyword">break</span>;</div><div class="line">    }</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<p>在end事件中通过细腻的连接方式，最后拿到理想的Buffer对象。这时候无论是在支持的编码之间转换，还是在不支持的编码之间转换（利用iconv模块转换），都不会导致乱码。<br>上述一大段代码仅只完成了一件事情，就是连接多个Buffer对象，而这种场景需求将会在多个地方发生，所以，采用一种更优雅的方式来完成该过程是必要的。笔者基于以上的代码封装出一个bufferhelper模块，用于更简洁地处理Buffer对象。可以通过NPM进行安装：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm <span class="operator"><span class="keyword">install</span> bufferhelper</span></div></pre></td></tr></table></figure>
+
+<p>下面的例子演示了如何调用这个模块。与传统data += trunk之间只是bufferHelper.concat(chunk)的差别，既避免了错误的出现，又使得代码可以得到简化而有效地编写。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);  </div><div class="line"><span class="keyword">var</span> BufferHelper = <span class="built_in">require</span>(<span class="string">'bufferhelper'</span>);</div><div class="line">http.createServer(<span class="function"><span class="keyword">function</span> <span class="params">(request, response)</span> </span>{</div><div class="line">    <span class="keyword">var</span> bufferHelper = <span class="keyword">new</span> BufferHelper();</div><div class="line">    request.on(<span class="string">"data"</span>, <span class="function"><span class="keyword">function</span> <span class="params">(chunk)</span> </span>{</div><div class="line">    bufferHelper.concat(chunk);</div><div class="line">    });</div><div class="line">    request.on(<span class="string">'end'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">var</span> html = bufferHelper.toBuffer().toString();</div><div class="line">    response.writeHead(<span class="number">200</span>);</div><div class="line">    response.end(html);</div><div class="line">    });</div><div class="line"></div><div class="line">}).listen(<span class="number">8001</span>);</div></pre></td></tr></table></figure>
+
+<p>所以关于Buffer对象的操作的最佳实践是：</p>
+<p>保持编码不变，以利于后续编码转换<br>使用封装方法达到简洁代码的目的</p>
+<h3 id="NodeJS提供的buffer">NodeJS提供的buffer</h3>
+<p>参考buffer API: <a href="http://nodejs.org/api/buffer.html" target="_blank" rel="external">http://nodejs.org/api/buffer.html</a><br>最后我们看一下buffer的读取是如何进行的，buffer的读取主要包括以下几个api:<br>1、buf = new Buffer()，然后就可以直接读取buf<br>2、buf.toString([encoding], [start], [end])<br>3、buf.toJSON()<br>4、buf[index]<br>5、buf.slice([start], [end])<br>6、buf.readUInt8(offset, [noAssert])等其他read操作</p>
+<h4 id="buf_=_new_Buffer()_和_buf[index]">buf = new Buffer() 和 buf[index]</h4>
+<p>创建一个buf实例，会返回一个buf数组给这个实例，就像我们直接打印buf会出现以下内容：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var buf = new Buffer(<span class="number">100</span>)</div><div class="line">console.log(buf)</div><div class="line">//输出随机的一些<span class="number">16</span>进制内存单元</div><div class="line">&lt;Buffer 8b <span class="number">42</span> 0f 4d 8b <span class="number">55</span> <span class="number">08</span> 4c <span class="number">39</span> <span class="number">50</span> ff 0f <span class="number">85</span> <span class="number">61</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">48</span> 3b <span class="number">48</span> <span class="number">07</span> 0f <span class="number">83</span> <span class="number">26</span> <span class="number">01</span> <span class="number">00</span> <span class="number">00</span> <span class="number">48</span> 8b d9 <span class="number">48</span> c1 fb 1d <span class="number">48</span> 8b 5c <span class="number">18</span> 0f <span class="number">49</span> 3b 5d b0 0f <span class="number">84</span> <span class="number">10</span> <span class="number">01</span> <span class="number">00</span> <span class="number">00</span> <span class="number">48</span> 8b <span class="keyword">...</span>&gt;</div></pre></td></tr></table></figure>
+
+<p>通过 Buffer::MakeFastBuffer 这个方法来关联起来的，我们看主要代码：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">Handle&lt;Value&gt; Buffer::MakeFastBuffer(<span class="keyword">const</span> Arguments &args) {</div><div class="line">  HandleScope scope;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (!Buffer::HasInstance(args[<span class="number">0</span>])) {</div><div class="line">    <span class="keyword">return</span> ThrowTypeError(<span class="string">"First argument must be a Buffer"</span>);</div><div class="line">  }</div><div class="line"></div><div class="line">  Buffer *buffer = ObjectWrap::Unwrap&lt;Buffer&gt;(args[<span class="number">0</span>]-&gt;ToObject());</div><div class="line">  Local&lt;Object&gt; fast_buffer = args[<span class="number">1</span>]-&gt;ToObject();;</div><div class="line">  uint32_t offset = args[<span class="number">2</span>]-&gt;Uint32Value();</div><div class="line">  uint32_t length = args[<span class="number">3</span>]-&gt;Uint32Value();</div><div class="line"></div><div class="line">  <span class="comment">// ..省略了一些验证代码</span></div><div class="line">  </div><div class="line">  <span class="comment">//最主要是下面这句，将this关联索引属性</span></div><div class="line">  fast_buffer-&gt;SetIndexedPropertiesToExternalArrayData(buffer-&gt;data_ + offset,</div><div class="line">                                                       kExternalUnsignedByteArray,</div><div class="line">                                                       length);</div><div class="line"></div><div class="line">  <span class="keyword">return</span> Undefined();</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>这样我们的buf实例看起来就像是一个数组了</p>
+<h4 id="buf-toString([encoding],_[start],_[end])">buf.toString([encoding], [start], [end])</h4>
+<p>这个是我们读取buf最常用的方法，我们可以将一些字符串存入buf，然后使用toString方法将他们取出来。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// toString(encoding, start=0, end=buffer.length)</span></div><div class="line">Buffer.prototype.toString = <span class="function"><span class="keyword">function</span><span class="params">(encoding, start, end)</span> </span>{</div><div class="line">  encoding = <span class="built_in">String</span>(encoding || <span class="string">'utf8'</span>).toLowerCase(); <span class="comment">//将encoding参数小写</span></div><div class="line"></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> start !== <span class="string">'number'</span> || start &lt; <span class="number">0</span>) { <span class="comment">//将start参数合法化</span></div><div class="line">    start = <span class="number">0</span>;</div><div class="line">  } <span class="keyword">else</span> <span class="keyword">if</span> (start &gt; <span class="keyword">this</span>.length) {</div><div class="line">    start = <span class="keyword">this</span>.length;</div><div class="line">  }</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> end !== <span class="string">'number'</span> || end &gt; <span class="keyword">this</span>.length) { <span class="comment">//将end参数合法化</span></div><div class="line">    end = <span class="keyword">this</span>.length;</div><div class="line">  } <span class="keyword">else</span> <span class="keyword">if</span> (end &lt; <span class="number">0</span>) {</div><div class="line">    end = <span class="number">0</span>;</div><div class="line">  }</div><div class="line"></div><div class="line">  start = start + <span class="keyword">this</span>.offset; <span class="comment">//加上偏移量，这个offset很重要，代表共享buffer的偏移</span></div><div class="line">  end = end + <span class="keyword">this</span>.offset;</div><div class="line"></div><div class="line">  <span class="keyword">switch</span> (encoding) {</div><div class="line">    <span class="keyword">case</span> <span class="string">'hex'</span>:</div><div class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.parent.hexSlice(start, end);</div><div class="line"></div><div class="line">    <span class="keyword">case</span> <span class="string">'utf8'</span>:</div><div class="line">    <span class="keyword">case</span> <span class="string">'utf-8'</span>:</div><div class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.parent.utf8Slice(start, end); <span class="comment">//我们主要看这个，utf8用的比较多</span></div><div class="line"></div><div class="line">    <span class="keyword">case</span> <span class="string">'ascii'</span>:</div><div class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.parent.asciiSlice(start, end);</div><div class="line"></div><div class="line">    <span class="keyword">case</span> <span class="string">'binary'</span>:</div><div class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.parent.binarySlice(start, end);</div><div class="line"></div><div class="line">    <span class="keyword">case</span> <span class="string">'base64'</span>:</div><div class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.parent.base64Slice(start, end);</div><div class="line"></div><div class="line">    <span class="keyword">case</span> <span class="string">'ucs2'</span>:</div><div class="line">    <span class="keyword">case</span> <span class="string">'ucs-2'</span>:</div><div class="line">    <span class="keyword">case</span> <span class="string">'utf16le'</span>:</div><div class="line">    <span class="keyword">case</span> <span class="string">'utf-16le'</span>:</div><div class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.parent.ucs2Slice(start, end);</div><div class="line"></div><div class="line">    <span class="keyword">default</span>:</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'Unknown encoding: '</span> + encoding);</div><div class="line">  }</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<h4 id="buf-slice([start],_[end])">buf.slice([start], [end])</h4>
+<p>这个是对buf进行剪切的功能，我们看下代码：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// slice(<span class="operator"><span class="keyword">start</span>, <span class="keyword">end</span>)</span></div><div class="line">Buffer.prototype.slice = <span class="keyword">function</span>(<span class="keyword">start</span>, <span class="keyword">end</span>) {</div><div class="line">  <span class="keyword">var</span> <span class="keyword">len</span> = this.length; //合法性验证</div><div class="line">  <span class="operator"><span class="keyword">start</span> = clamp(<span class="keyword">start</span>, <span class="keyword">len</span>, <span class="number">0</span>);</span> //clamp函数也是做合法性验证的，会返回合适的<span class="operator"><span class="keyword">start</span>和<span class="keyword">end</span>值</span></div><div class="line">  <span class="keyword">end</span> = clamp(<span class="keyword">end</span>, <span class="keyword">len</span>, <span class="keyword">len</span>);</div><div class="line">  return new Buffer(this.parent, <span class="operator"><span class="keyword">end</span> - <span class="keyword">start</span>, <span class="keyword">start</span> + this.offset);</span> //最后slice是依靠重新创建一个buffer实例来完成剪切工作的</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>然后可以参考buffer的构造函数来追踪slice的创建</p>
+<h3 id="总结">总结</h3>
+<p>我们大致了解了buffer的工作机制之后，我们的日常工作有了一些注意，什么时候该用buffer，什么时候不该用，使用buffer应该注意哪些问题？</p>
+<h4 id="写入速度的测试">写入速度的测试</h4>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> <span class="built_in">string</span>,string2,string3;</div><div class="line"><span class="keyword">var</span> bufstr,bufstr2,bufstr3;</div><div class="line"><span class="keyword">var</span> j;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.time(<span class="string">'write 100 string'</span>)</div><div class="line"><span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;<span class="number">1000</span>;j++){</div><div class="line">	<span class="keyword">var</span> x = j+<span class="string">''</span>;</div><div class="line">	<span class="built_in">string</span> += x;</div><div class="line">}</div><div class="line"><span class="built_in">console</span>.timeEnd(<span class="string">'write 100 string'</span>)</div><div class="line"></div><div class="line"><span class="built_in">console</span>.time(<span class="string">'write 100 buffer'</span>)</div><div class="line">bufstr = <span class="keyword">new</span> Buffer(<span class="number">100</span>)</div><div class="line"><span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;<span class="number">1000</span>;j++){</div><div class="line">	<span class="keyword">var</span> x = j+<span class="string">''</span>;</div><div class="line">	bufstr.write(x,j);</div><div class="line">}</div><div class="line"><span class="built_in">console</span>.timeEnd(<span class="string">'write 100 buffer'</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="built_in">console</span>.time(<span class="string">'write 100000 string'</span>)</div><div class="line"><span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;<span class="number">100000</span>;j++){</div><div class="line">	<span class="keyword">var</span> x = j+<span class="string">''</span>;</div><div class="line">	string2 += x;</div><div class="line">}</div><div class="line"><span class="built_in">console</span>.timeEnd(<span class="string">'write 100000 string'</span>)</div><div class="line"></div><div class="line"><span class="built_in">console</span>.time(<span class="string">'write 100000 buffer'</span>)</div><div class="line">bufstr2 = <span class="keyword">new</span> Buffer(<span class="number">100000</span>)</div><div class="line"><span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;<span class="number">100000</span>;j++){</div><div class="line">	<span class="keyword">var</span> x = j+<span class="string">''</span>;</div><div class="line">	bufstr2.write(x,j);</div><div class="line">}</div><div class="line"><span class="built_in">console</span>.timeEnd(<span class="string">'write 100000 buffer'</span>)</div><div class="line"></div><div class="line"><span class="built_in">console</span>.time(<span class="string">'write 1024*1024*10 string'</span>)</div><div class="line"><span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;<span class="number">1024</span>*<span class="number">1024</span>*<span class="number">10</span>;j++){</div><div class="line">	<span class="keyword">var</span> x = j+<span class="string">''</span>;</div><div class="line">	string3 += x;</div><div class="line">}</div><div class="line"><span class="built_in">console</span>.timeEnd(<span class="string">'write 1024*1024*10 string'</span>)</div><div class="line"></div><div class="line"><span class="built_in">console</span>.time(<span class="string">'write 1024*1024*10 buffer'</span>)</div><div class="line">bufstr3 = <span class="keyword">new</span> Buffer(<span class="number">1024</span>*<span class="number">1024</span>*<span class="number">10</span>)</div><div class="line"><span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;<span class="number">1024</span>*<span class="number">1024</span>*<span class="number">10</span>;j++){</div><div class="line">	<span class="keyword">var</span> x = j+<span class="string">''</span>;</div><div class="line">	bufstr3.write(x,j);</div><div class="line">}</div><div class="line"><span class="built_in">console</span>.timeEnd(<span class="string">'write 1024*1024*10 buffer'</span>)</div><div class="line">---------------------------------------------------</div><div class="line">write <span class="number">100</span> <span class="built_in">string</span>: <span class="number">0</span>ms</div><div class="line">write <span class="number">100</span> buffer: <span class="number">6</span>ms</div><div class="line">write <span class="number">100000</span> <span class="built_in">string</span>: <span class="number">37</span>ms</div><div class="line">write <span class="number">100000</span> buffer: <span class="number">150</span>ms</div><div class="line">write <span class="number">1024</span>*<span class="number">1024</span>*<span class="number">10</span> <span class="built_in">string</span>: <span class="number">4262</span>ms</div><div class="line">write <span class="number">1024</span>*<span class="number">1024</span>*<span class="number">10</span> buffer: <span class="number">8904</span>ms</div></pre></td></tr></table></figure>
+
+<p>读取速度都不需要测试了，肯定string更快，buffer还需要toString()的操作。<br>所以我们在保存字符串的时候，该用string还是要用string，就算大字符串拼接string的速度也不会比buffer慢。<br>那什么时候我们又需要用buffer呢？没办法的时候，当我们保存非utf-8字符串，2进制等等其他格式的时候，我们就必须得使用了。</p>
+<h4 id="buffer不得不提的8KB">buffer不得不提的8KB</h4>
+<p>buffer著名的8KB载体，举个例子好比，node把一幢大房子分成很多小房间，每个房间能容纳8个人，为了保证房间的充分使用，只有当一个房间塞满8个人后才会去开新的房间，但是当一次性有多个人来入住，node会保证要把这些人放到一个房间中，比如当前房间A有4个人住，但是一下子来了5个人，所以node不得不新开一间房间B，把这5个人安顿下来，此时又来了4个人，发现5个人的B房间也容纳不下了，只能再开一间房间C了，这样所有人都安顿下来了。但是之前的两间房A和B都各自浪费了4个和3个位置，而房间C就成为了当前的房间。</p>
+<p>具体点说就是当我们实例化一个新的Buffer类，会根据实例化时的大小去申请内存空间，如果需要的空间小于8KB，则会多一次判定，判定当前的8KB载体剩余容量是否够新的buffer实例，如果够用，则将新的buffer实例保存在当前的8KB载体中，并且更新剩余的空间。</p>
+<p>buffer会存在内存泄露情况，所以一定要注意，就算只有1byte的buffer空间没释放掉，整个8KB的内存都不会被V8释放。</p>
+<h4 id="buffer字符串的连接">buffer字符串的连接</h4>
+<p>在我们接受post数据时，node是以流的形式发送上来的，会触发ondata事件，所以我们见到很多代码是这样写的：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</div><div class="line"> http.createServer(<span class="function"><span class="keyword">function</span> <span class="params">(req, res)</span> </span>{</div><div class="line">  </div><div class="line">  <span class="keyword">var</span> body = <span class="string">''</span>;</div><div class="line">  req.on(<span class="string">'data'</span>,<span class="function"><span class="keyword">function</span><span class="params">(chunk)</span></span>{</div><div class="line">	<span class="comment">//console.log(Buffer.isBuffer(chunk))</span></div><div class="line">	body +=chunk</div><div class="line">  })</div><div class="line">  req.on(<span class="string">'end'</span>,<span class="function"><span class="keyword">function</span><span class="params">()</span></span>{</div><div class="line">	 <span class="built_in">console</span>.log(body)</div><div class="line">	 res.writeHead(<span class="number">200</span>, {<span class="string">'Content-Type'</span>: <span class="string">'text/plain'</span>});</div><div class="line">         res.end(<span class="string">'Hello World\n'</span>);</div><div class="line">  })</div><div class="line">  </div><div class="line"> </div><div class="line">}).listen(<span class="number">8124</span>);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="string">'Server running at http://127.0.0.1:8124/'</span>);</div></pre></td></tr></table></figure>
+
+<p>下面我们比较一下两者的性能区别：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> buf = <span class="keyword">new</span> Buffer(<span class="string">'nodejsv0.10.4&nodejsv0.10.4&nodejsv0.10.4&nodejsv0.10.4&'</span>);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.time(<span class="string">'string += buf'</span>)</div><div class="line"><span class="keyword">var</span> s = <span class="string">''</span>;</div><div class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;<span class="number">10000</span>;i++){</div><div class="line">	s += buf;</div><div class="line">}</div><div class="line">s;</div><div class="line"><span class="built_in">console</span>.timeEnd(<span class="string">'string += buf'</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="built_in">console</span>.time(<span class="string">'buf concat'</span>)</div><div class="line"><span class="keyword">var</span> list = [];</div><div class="line"><span class="keyword">var</span> len=<span class="number">0</span>;</div><div class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;<span class="number">10000</span>;i++){</div><div class="line">	list.push(buf);</div><div class="line">	len += buf.length;</div><div class="line">}</div><div class="line"><span class="keyword">var</span> s2 = Buffer.concat(list, len).toString();</div><div class="line"><span class="built_in">console</span>.timeEnd(<span class="string">'buf concat'</span>)</div><div class="line">输出结果：</div><div class="line"><span class="built_in">string</span> += buf: <span class="number">15</span>ms</div><div class="line">buf concat: <span class="number">8</span>ms</div></pre></td></tr></table></figure>
+
+<p>在1000次拼接过程中，两者的性能几乎相差一倍，而且当客户上传的是非UTF8的字符串时，直接+=还容易出现错误。</p>
+<h4 id="独享的空间">独享的空间</h4>
+<p>如果你想创建一个独享的空间，独立的对这块内存空间进行读写，有两种办法，1是实例化一个超过8KB长度的buffer，另外一个就是使用slowbuffer类。</p>
+<h4 id="buffer的释放">buffer的释放</h4>
+<p>很遗憾，我们无法手动对buffer实例进行GC，只能依靠V8来进行，我们唯一能做的就是解除对buffer实例的引用。</p>
+<h4 id="快速刷掉buffer">快速刷掉buffer</h4>
+<p>最快的方法就是buffer.fill</p>
+<h3 id="谢谢！">谢谢！</h3>
+<p>有问题请留言。T_T  I am teacher Chale.  T_T</p>
+
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://haomou.net">皓眸IT</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/09/09/2014_nodejs_buffer/">NodeJS的buffer使用总结</a></div>
+</div></div><div class="widget" id="widget_after_content_ujian>">
+<div class="ujian-hook"></div>
+</div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/NodeJS/" itemprop="url"><span itemprop="title" >NodeJS</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/NodeJS/" class="label label-primary" itemprop="url"><span itemprop="title">NodeJS</span></a><a href="/tags/buffer/" class="label label-success" itemprop="url"><span itemprop="title">buffer</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-09-29 15:42:50"datetime="2014-09-29 15:42:50"> Sep 29 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://haomou.net/2014/09/09/2014_nodejs_buffer/#comments" class="ds-thread-count comment-link" data-thread-key="2014_nodejs_buffer" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  
+  <li class="next"><a href="/2014/09/08/2014_css1/" title="伪类使用技巧">伪类使用技巧 &rarr;</a></li>
+  
+</ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="2014_nodejs_buffer"  data-url="http://haomou.net/2014/09/09/2014_nodejs_buffer/" data-title="NodeJS的buffer使用总结"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_search" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">搜索</div>  <form action="//google.com/search" method="get" accept-charset="utf-8">
+  <div class="input-group">
+    <input class="form-control" id="searchbox" type="search" name="q" results="0" placeholder="搜索">
+    <span class="input-group-btn">
+      <button class="btn btn-default" type="submit">Go!</button>
+    </span>
+    <input type="hidden" name="q" value="site:haomou.net">
+  </div>
+</form>
+</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_recent_comments" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近评论</div>  
+
+<div class="list-group-item ds-recent-comments" data-num-items="6" data-show-avatars="1" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="50"></div>
+
+
+
+</div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2014 Chale Cao
+  
+    &nbsp;&nbsp;</span>
+  <a href='http://www.miibeian.gov.cn/'>苏ICP备13018740号-6</a></span>
+  <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'>
+<script>
+var _hmt = _hmt || [];
+_js2load.push({src:"//hm.baidu.com/hm.js?d4bd99741b546509c094cd1b0bf951c4"});
+</script>
+</span>  </div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-29 15:42:50</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haomou"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://haomou.net/2014/09/09/2014_nodejs_buffer/";
+    var wumiiTitle = "NodeJS的buffer使用总结";
+    var wumiiTags = "NodeJS,buffer";
+    var wumiiCategories = ["NodeJS"];
+    var wumiiSitePrefix = "http://haomou.net";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+            
+<script type="text/javascript">var ujian_config = {num:6,showType:0,picSize:84,textHeight:45};_js2load.push({src:'http://v1.ujian.cc/code/ujian.js?uid=1952516'});</script>
+<a href="http://www.ujian.cc" style="border:0;"><img src="http://img.ujian.cc/pixel.png" alt="友荐云推荐" style="border:0;padding:0;margin:0;" /></a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />').wrap('<div class="img_block"></div>');
+     
+      if(alt){$(this).after('<span class="caption">' + alt + '</span>')};
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script src="/js/chenall.js" type="text/javascript"></script>
+
+
+  </body>
+</html>
