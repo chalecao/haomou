@@ -276,9 +276,10 @@
 <li>ng-selected 被选择状态</li>
 <li>ng-disabled 禁用状态</li>
 <li>ng-multiple 多选状态</li>
-<li>ng-readonly 只读状态<br>注意： 上面的这些只是单向绑定，即只是从数据到展示，不能反作用于数据。要双向绑定，还是要使用 ng-model 。<br><br><h3 id="事件绑定">事件绑定</h3>
-事件绑定是模板指令中很好用的一部分。我们可以把相关事件的处理函数直接写在 DOM 中，这样做的最大好处就是可以从 DOM 结构上看出业务处理的形式，你知道当你点击这个节点时哪个函数被执行了。</li>
+<li>ng-readonly 只读状态<br>注意： 上面的这些只是单向绑定，即只是从数据到展示，不能反作用于数据。要双向绑定，还是要使用 ng-model </li>
 </ol>
+<h3 id="事件绑定">事件绑定</h3>
+<p>事件绑定是模板指令中很好用的一部分。我们可以把相关事件的处理函数直接写在 DOM 中，这样做的最大好处就是可以从 DOM 结构上看出业务处理的形式，你知道当你点击这个节点时哪个函数被执行了。</p>
 <p>ng-change<br>ng-click<br>ng-blur<br>ng-dblclick<br>ng-mousedown<br>ng-mouseenter<br>ng-mouseleave<br>ng-mousemove<br>ng-mouseover<br>ng-mouseup<br>ng-submit<br>对于事件对象本身，在函数调用时可以直接使用 $event 进行传递：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="title">p</span> <span class="attribute">ng-click</span>=<span class="value">"click($event)"</span>&gt;</span>点击<span class="tag">&lt;/<span class="title">p</span>&gt;</span></div><div class="line"> <span class="tag">&lt;<span class="title">p</span> <span class="attribute">ng-click</span>=<span class="value">"click($event.target)"</span>&gt;</span>点击<span class="tag">&lt;/<span class="title">p</span>&gt;</span></div></pre></td></tr></table></figure>
 
@@ -453,7 +454,7 @@
 <p>和其它框架一样， ng 提供了广义的异步回调管理的机制。 \$http 服务是在其之上封装出来的。这个机制就是 ng 的 \$q 服务。</p>
 <p>不过 ng 的这套机制总的来说实现得比较简单，按官方的说法，够用了。</p>
 <p>使用的方法，基本上是：</p>
-<p>通过 \$q 服务得到一个 deferred 实例<br>通过 deferred 实例的 promise 属性得到一个 promise 对象<br>promise 对象负责定义回调函数<br>deferred 实例负责触发回调</p>
+<p>通过 \$q 服务得到一个 deferred 实例<br>通过 deferred 实例的 promise 属性得到一个 promise 对象<br>promise 对象负责定义回调函数<br>deferred 实例负责触发回调,</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> TestCtrl = <span class="function"><span class="keyword">function</span><span class="params">($q)</span></span>{</div><div class="line">  <span class="keyword">var</span> defer = $q.defer();</div><div class="line">  <span class="keyword">var</span> promise = defer.promise;</div><div class="line">  promise.then(<span class="function"><span class="keyword">function</span><span class="params">(data)</span></span>{<span class="built_in">console</span>.log(<span class="string">'ok, '</span> + data)},</div><div class="line">               <span class="function"><span class="keyword">function</span><span class="params">(data)</span></span>{<span class="built_in">console</span>.log(<span class="string">'error, '</span> + data)});</div><div class="line">  <span class="comment">//defer.reject('xx');</span></div><div class="line">  defer.resolve(<span class="string">'xx'</span>);</div><div class="line">}</div></pre></td></tr></table></figure>
 
 <p>了解了上面的东西，再分别看 \$q ， deferred ， promise 这三个东西。</p>
@@ -994,7 +995,7 @@
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/AngularJS/" itemprop="url"><span itemprop="title" >AngularJS</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/AngularJS/" class="label label-primary" itemprop="url"><span itemprop="title">AngularJS</span></a><a href="/tags/笔记/" class="label label-success" itemprop="url"><span itemprop="title">笔记</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-10-04 19:13:08"datetime="2014-10-04 19:13:08"> Oct 4 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/AngularJS/" itemprop="url"><span itemprop="title" >AngularJS</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/AngularJS/" class="label label-primary" itemprop="url"><span itemprop="title">AngularJS</span></a><a href="/tags/笔记/" class="label label-success" itemprop="url"><span itemprop="title">笔记</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-10-04 22:13:30"datetime="2014-10-04 22:13:30"> Oct 4 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/09/12/2014_angularjs_2/#comments" class="ds-thread-count comment-link" data-thread-key="2014_angularjs_2" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -1006,6 +1007,8 @@
 
     <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
 <ul class="pager">
+  
+  <li class="previous"><a href="/2014/09/16/2014_jquery_defered/" title="jquery笔记deferred">&larr; jquery笔记deferred</a></li>
   
   
   <li class="next"><a href="/2014/09/09/2014_nodejs_buffer/" title="NodeJS的buffer使用总结">NodeJS的buffer使用总结 &rarr;</a></li>
@@ -1060,7 +1063,7 @@
   <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
 <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 </span><span id='analytics-baidu'></span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-10-04 19:13:08</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-10-04 22:13:30</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
