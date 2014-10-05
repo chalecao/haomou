@@ -1,0 +1,344 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AngularJS笔记-继承机制 | 皓眸IT</title>
+<meta name="author" content="Chale Cao">
+
+<meta name="description" content="继承模式AngularJS中没有提供内建的用于继承的特性，在本文中，我们将一起来学习如何在AngularJS组件中使用普通的JavaScript继承模式。
+
+作者
+Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域毕业于中国科学技术大学，硕士研究生。单身，喜欢真诚，善良的女孩子。擅长：JAVA，PHP，C#，JS，WebGL，WebRTC …Mail To: chh1990@mail.ustc.edu.cnWebSite：http://www.haomou.net">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="AngularJS笔记-继承机制"/>
+<meta property="og:site_name" content="皓眸IT"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css">
+<![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="皓眸IT Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+
+<link rel="stylesheet" href="/css/nprogress.css" type="text/css">
+
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.bootcss.com/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+  
+  <header id="header" class="hm-menu-left-container"><nav id="main-nav" class="navbar navbar-default hm-navbar-menu-left  " role="navigation">
+    <div class="hm-navbar-header">
+    <a href="http://haomou.net" ><img class="hm-logo" src="/images/haomou.png" title="皓眸IT" width="64" height="64" /></a>
+    <br/>|<br/><span class="fa fa-tint hm-black shine_blue" ></span><br/>|<br/><span class="fa fa-heart hm-black shine_red" ></span><br/>|<br/>
+        <i class="fa fa-bars fa-2x hm-black hm-menu shine_blue" ></i><br/><div class="hm-line"></div>
+    </div>
+    <div class="collapse navbar-collapse">
+      <h1 style="color:black">皓眸IT</h1>
+      <ul class="nav navbar-nav hm-left-nav">
+  
+        <li item='2014/09/17/2014_angularjs_3/' class='active'><a href="/" title="首页">首页</a></li>      
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>关于我<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://home.ustc.edu.cn/~chh1990/chero/chero.html" title="个人主页">个人主页</a></li>    
+        </ul>
+      </li>
+    
+      </ul>
+
+        
+        <div id="widget_category" class="widget hm-left-widget">
+            <div class="panel-heading">分类：</div>            <div data-src='category' class='ajax_widgets'>正在加载...</div>
+        </div>
+        
+        <div id="widget_tagcloud" class="widget hm-left-widget">
+            <div class="panel-heading">标签云：</div>            <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div>        </div>
+        
+
+
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/chalecao">github</a></li>
+      
+      </ul>
+    </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div style="" id="headflash" class="headflash hm_container"><embed pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="/images/bck.swf" width="100%" height="313" style="undefined" id="headflash_f" name="headflash_f" bgcolor="#000" quality="high" allowscriptaccess="false" wmode="transparent" allowfullscreen="false"></div>
+  <div id='content' class=" container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>皓眸IT <small>写清楚，说明白</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article class="hm-article">
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left hm-article-w"></i>
+      <h1 class="title">AngularJS笔记-继承机制</h1>
+      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-09-17T09:40:49.000Z"> <a href="/2014/09/17/2014_angularjs_3/">Sep 17 2014</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry"  data-spy="scroll" data-target="#toc" >
+      
+        <h3 id="继承模式">继承模式</h3>
+<p>AngularJS中没有提供内建的用于继承的特性，在本文中，我们将一起来学习如何在AngularJS组件中使用普通的JavaScript继承模式。<br><a id="more"></a><br><img class="floatnone" src="/images/jicheng.png"><br><br></p>
+<h3 id="作者">作者</h3>
+<p><img alt="皓眸GEEK" src="/images/hm.jpg" width="150" height="200"><br>Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域<br>毕业于中国科学技术大学，硕士研究生。单身，喜欢真诚，善良的女孩子。<br>擅长：JAVA，PHP，C#，JS，WebGL，WebRTC …<br>Mail To: chh1990@mail.ustc.edu.cn<br>WebSite：<a href="http://www.haomou.net" target="_blank" rel="external">http://www.haomou.net</a></p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/09/12/2014_angularjs_2/" target="_blank" rel="external">http://www.haomou.net/2014/09/12/2014_angularjs_2/</a></p>
+<h3 id="控制器继承">控制器继承</h3>
+<p>首先，我们来谈谈控制器。实际上控制不太可能从父控制器中进行继承。这是因为子控制器的作用域将会原型继承父控制器的作用域。因此当你需要重用来自父控制器中的功能时，你所要做的就是在父作用域中添加相应的方法。这样一来，自控制器将会通过它的作用域的原型来获取父作用域中的所有方法。例如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">myModule.controller(<span class="string">'ParentCtrl'</span>,<span class="function"><span class="keyword">function</span><span class="params">(<span class="variable">$scope</span>)</span></span>{</div><div class="line">    <span class="variable">$scope</span>.parentMethod = <span class="function"><span class="keyword">function</span><span class="params">()</span></span>{</div><div class="line">    <span class="comment">//...</span></div><div class="line">    }; </div><div class="line">});  </div><div class="line"></div><div class="line">myModule.controller(<span class="string">'ChildCtrl'</span>,<span class="function"><span class="keyword">function</span><span class="params">(<span class="variable">$scope</span>)</span></span>{</div><div class="line">    <span class="variable">$scope</span>.parentMethod();<span class="comment">//这样就可以运行</span></div><div class="line">});</div></pre></td></tr></table></figure>
+
+<p>当然，这样的继承方式创造了非常强的耦合但是仅仅是单方向的耦合，因此你不能从你的父控制器中调用子控制器中的方法。对于这种情况，你需要使用事件分发：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">myModule.controller('<span class="type">ParentCtrl</span>',function($scope){</div><div class="line">    $scope.$broadcast('event',args);</div><div class="line">    $scope.$on('event-response',function (<span class="literal">result</span>){</div><div class="line">    });</div><div class="line">});   </div><div class="line"></div><div class="line">myModule.controller('<span class="type">ChildCtrl</span>',function($scope){</div><div class="line">    $scope.$on('event',function (args){</div><div class="line">        <span class="keyword">var</span> <span class="literal">result</span>;</div><div class="line">        //...</div><div class="line">        $scope.$emit('event-response',<span class="literal">result</span>);</div><div class="line">    });</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<p>上面的代码仅作为参考使用，如果你需要从父控制器中调用子控制器的方法，那么使用上面的代码可能会发生错误。</p>
+<p>假设现在你有两个页面，它们的大部分功能都相同，其中完全相同的功能超过50%。两个页面的视图完全不同但是可能视图后面的逻辑非常相似。在这种情形中你可以创建一个基本的控制器来封装基本的逻辑，然后再创建两个自控制器来继承它。基本控制器并不需要作为一个AngularJS控制器组件来实现，你完全可以将它创建为一个构造器函数：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">function</span> BaseCtrl($scope,$location,<span class="keyword">...</span>){</div><div class="line">    $scope.commonScopeMethod = <span class="keyword">function</span>(){</div><div class="line">        //<span class="keyword">...</span></div><div class="line">    };</div><div class="line">    $scope.commonVar = <span class="number">42</span>;</div><div class="line">}</div><div class="line">BaseCtrl.prototype.commonMethod1 = <span class="keyword">function</span>(){</div><div class="line">  //<span class="keyword">...</span></div><div class="line">};</div><div class="line">BaseCtrl.prototype.commonMethod2 = <span class="keyword">function</span>(){</div><div class="line">    //<span class="keyword">...</span></div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>现在子控制器可以轻松地从基本控制器中继承方法和属性：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">ChildCtrl</span><span class="params">($scope,$location,<span class="rest_arg">...){</span></span></span></div><div class="line">    BaseCtrl.call(this,$scope,$location,<span class="rest_arg">...);</span></div><div class="line">    $scope.childScopeMethod = function(){</div><div class="line">    };</div><div class="line">}</div><div class="line"></div><div class="line">ChildCtrl1.prototype = Object.create(BaseCtrl.prototype);   </div><div class="line"></div><div class="line">ChildCtrl1.prototype.chidMethod1 = <span class="function"><span class="keyword">function</span><span class="params">()</span></span>{</div><div class="line">    <span class="keyword">this</span>.commonMethod1();</div><div class="line">};</div><div class="line"></div><div class="line">myModule.controller(<span class="string">'ChildCtrl1'</span>,ChildCtrl1);</div></pre></td></tr></table></figure>
+
+<p>在这里我们使用了经典的继承模式。我们也可以使用同同样的方法来创造第二个子控制器。</p>
+<h3 id="Service继承">Service继承</h3>
+<p>正如你所了解的我们有两种方式来创建可注入（通过依赖注入）的AngularJS service：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">module</span>.<span class="title">factory</span>(<span class="title">name</span>,<span class="title">factoryFn</span>)</span></div><div class="line"><span class="class"><span class="keyword">module</span>.<span class="title">service</span>(<span class="title">name</span>,<span class="title">factoryFn</span>)</span></div><div class="line"><span class="class"><span class="keyword">module</span>.<span class="title">factory</span></span></div></pre></td></tr></table></figure>
+
+<p>在module.factory中factoryFn返回一个对象字面量，它是真正的service。幕后ANgularJS会在injector内部调用factory函数。</p>
+<p>如果我们需要在由module.factory实例化的services之间进行继承，由Object.create进行的原型继承就合适。</p>
+<p>我们先来创建基本service：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> BaseService = (<span class="function"><span class="keyword">function</span><span class="params">()</span></span>{</div><div class="line">    <span class="keyword">var</span> privateVar = <span class="number">0</span>;</div><div class="line">    <span class="keyword">return</span> {</div><div class="line">        someAwesomeStuff: <span class="function"><span class="keyword">function</span><span class="params">()</span></span>{</div><div class="line">            <span class="keyword">if</span>(privateVar === <span class="number">42</span>){</div><div class="line">                alert(<span class="string">'You reached the answer!'</span>);</div><div class="line">            }</div><div class="line">            privateVar += <span class="number">1</span>;</div><div class="line">        };</div><div class="line">    };</div><div class="line">})();</div></pre></td></tr></table></figure>
+
+<p>现在这里有一个子service：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">var ChildService = Object.create(BaseService);   </div><div class="line">ChildService.someMoreAwesomeStuff = <span class="keyword">function</span>(){</div><div class="line">    //<span class="keyword">...</span></div><div class="line">};   </div><div class="line"></div><div class="line">module.factory(<span class="string">'ChildService'</span>,<span class="keyword">function</span>(){</div><div class="line">    <span class="keyword">return</span> ChildService;</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<p>现在你可以在不同的组件中注入ChildService，并重用继承自BaseService的方法。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyCtrl</span><span class="params">(ChildService)</span></span>{</div><div class="line">    ChildService.someAwesomeStuff();</div><div class="line">}   </div><div class="line">moudle.service</div></pre></td></tr></table></figure>
+
+<p>既然我们有了factory为什么还需要service呢？假设我是一个迷糊的开发者，我并不理解原型继承的真正威力但是我想对我的模型使用经典的样式。通过使用它我们就可以创建一系列构造器函数来很好的控制我们的模型。</p>
+<p>下面是一个我们对module.service使用原型继承模式的例子：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Human</span><span class="params">(name)</span></span>{</div><div class="line">    <span class="keyword">this</span>.name = name;</div><div class="line">}</div><div class="line">Human.prototype.talk = <span class="function"><span class="keyword">function</span><span class="params">()</span></span>{</div><div class="line">    <span class="keyword">return</span> <span class="string">'My name is '</span> + <span class="keyword">this</span>.name; </div><div class="line">}   </div><div class="line">Human.$inject = [<span class="string">'name'</span>];   </div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Superhero</span> = <span class="title">function</span><span class="params">(name abilities)</span></span>{</div><div class="line">    Human.call(<span class="keyword">this</span>,name);</div><div class="line">    <span class="keyword">this</span>.abilities = abilities;</div><div class="line">}</div><div class="line"></div><div class="line">Superhero.prototype = <span class="built_in">Object</span>.create(Human.prototype);</div><div class="line">Superhero.prototype.saveTheWorld = <span class="function"><span class="keyword">function</span><span class="params">()</span></span>{</div><div class="line">    <span class="keyword">return</span> <span class="string">'Saving the world with '</span> + <span class="keyword">this</span>.abilities.join(<span class="string">', '</span>);</div><div class="line">};</div><div class="line">Super.$inject = [<span class="string">'name'</span>,<span class="string">'AbilitiesCollection'</span>];  </div><div class="line"></div><div class="line">angular.module(<span class="string">'demo'</span>).service(<span class="string">'Human'</span>,Human);</div><div class="line">angular.module(<span class="string">'demo'</span>).service(<span class="string">'Superhero'</span>,Superhero);</div><div class="line">angular.module(<span class="string">'demo'</span>).value(<span class="string">'name'</span>,<span class="string">'Super Dev'</span>);</div><div class="line">angular.module(<span class="string">'demo'</span>).value(<span class="string">'AbilitiesCollection'</span>,[<span class="string">'C++'</span>,<span class="string">'JavaScript'</span>]);</div></pre></td></tr></table></figure>
+
+<h3 id="谢谢！">谢谢！</h3>
+<p>有问题请留言。T_T  I am teacher Chale.  T_T</p>
+
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://haomou.net">皓眸IT</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/09/17/2014_angularjs_3/">AngularJS笔记-继承机制</a></div>
+</div></div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/AngularJS/" itemprop="url"><span itemprop="title" >AngularJS</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/AngularJS/" class="label label-primary" itemprop="url"><span itemprop="title">AngularJS</span></a><a href="/tags/笔记/" class="label label-success" itemprop="url"><span itemprop="title">笔记</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-10-05 23:19:26"datetime="2014-10-05 23:19:26"> Oct 5 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://haomou.net/2014/09/17/2014_angularjs_3/#comments" class="ds-thread-count comment-link" data-thread-key="2014_angularjs_3" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  
+  <li class="next"><a href="/2014/09/16/2014_jquery_defered/" title="jquery笔记deferred">jquery笔记deferred &rarr;</a></li>
+  
+</ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="2014_angularjs_3"  data-url="http://haomou.net/2014/09/17/2014_angularjs_3/" data-title="AngularJS笔记-继承机制"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_search" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">搜索</div>  <form action="//google.com/search" method="get" accept-charset="utf-8">
+  <div class="input-group">
+    <input class="form-control" id="searchbox" type="search" name="q" results="0" placeholder="搜索">
+    <span class="input-group-btn">
+      <button class="btn btn-default" type="submit">Go!</button>
+    </span>
+    <input type="hidden" name="q" value="site:haomou.net">
+  </div>
+</form>
+</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_recent_comments" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近评论</div>  
+
+<div class="list-group-item ds-recent-comments" data-num-items="6" data-show-avatars="1" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="50"></div>
+
+
+
+</div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2014 Chale Cao
+  
+    &nbsp;&nbsp;</span>
+  <a href='http://www.miibeian.gov.cn/'>苏ICP备13018740号-6</a></span>
+  <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'></span>  </div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-10-05 23:19:26</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haomou"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://haomou.net/2014/09/17/2014_angularjs_3/";
+    var wumiiTitle = "AngularJS笔记-继承机制";
+    var wumiiTags = "AngularJS,笔记";
+    var wumiiCategories = ["AngularJS"];
+    var wumiiSitePrefix = "http://haomou.net";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />').wrap('<div class="img_block"></div>');
+     
+      if(alt){$(this).after('<span class="caption">' + alt + '</span>')};
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script src="/js/chenall.js" type="text/javascript"></script>
+
+
+  </body>
+</html>
