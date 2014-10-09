@@ -1,0 +1,407 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NodeJS+mongoDB部署到Linux | 皓眸IT</title>
+<meta name="author" content="Chale Cao">
+
+<meta name="description" content="部署需求这几天把之前做的关于FIDO认证系统的DEMO程序部署到服务器上，想到去年买了一台Aliyun的服务器，应该还没有到期，所以就试着部署到服务器上。我的阿里云是RedHat 4.1.2的系统，使用起来还是很方便的。">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="NodeJS+mongoDB部署到Linux"/>
+<meta property="og:site_name" content="皓眸IT"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css">
+<![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="皓眸IT Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+
+<link rel="stylesheet" href="/css/nprogress.css" type="text/css">
+
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.bootcss.com/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+  
+  <header id="header" class="hm-menu-left-container"><nav id="main-nav" class="navbar navbar-default hm-navbar-menu-left  " role="navigation">
+    <div class="hm-navbar-header">
+    <a href="http://haomou.net" ><img class="hm-logo" src="/images/haomou.png" title="皓眸IT" width="64" height="64" /></a>
+    <br/>|<br/><span class="fa fa-tint hm-black shine_blue" ></span><br/>|<br/><span class="fa fa-heart hm-black shine_red" ></span><br/>|<br/>
+        <i class="fa fa-bars fa-2x hm-black hm-menu shine_blue" ></i><br/><div class="hm-line"></div>
+    </div>
+    <div class="collapse navbar-collapse">
+      <h1 style="color:black">皓眸IT</h1>
+      <ul class="nav navbar-nav hm-left-nav">
+  
+        <li item='2014/09/25/2014_nodejs_3/' class='active'><a href="/" title="首页">首页</a></li>      
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>关于我<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://home.ustc.edu.cn/~chh1990/chero/chero.html" title="个人主页">个人主页</a></li>    
+        </ul>
+      </li>
+    
+      </ul>
+
+        
+        <div id="widget_category" class="widget hm-left-widget">
+            <div class="panel-heading">分类：</div>            <div data-src='category' class='ajax_widgets'>正在加载...</div>
+        </div>
+        
+        <div id="widget_tagcloud" class="widget hm-left-widget">
+            <div class="panel-heading">标签云：</div>            <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div>        </div>
+        
+
+
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/chalecao">github</a></li>
+      
+      </ul>
+    </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div style="" id="headflash" class="headflash hm_container"><embed pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="/images/bck.swf" width="100%" height="313" style="undefined" id="headflash_f" name="headflash_f" bgcolor="#000" quality="high" allowscriptaccess="false" wmode="transparent" allowfullscreen="false"></div>
+  <div id='content' class=" container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>皓眸IT <small>写清楚，说明白</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article class="hm-article">
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left hm-article-w"></i>
+      <h1 class="title">NodeJS+mongoDB部署到Linux</h1>
+      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-09-25T12:38:55.000Z"> <a href="/2014/09/25/2014_nodejs_3/">Sep 25 2014</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry"  data-spy="scroll" data-target="#toc" >
+      
+        <h3 id="部署需求">部署需求</h3>
+<p>这几天把之前做的关于FIDO认证系统的DEMO程序部署到服务器上，想到去年买了一台Aliyun的服务器，应该还没有到期，所以就试着部署到服务器上。我的阿里云是RedHat 4.1.2的系统，使用起来还是很方便的。<br><a id="more"></a><br><img class="floatnone" src="/images/aliyun.jpg"></p>
+<h3 id="作者">作者</h3>
+<p><img alt="皓眸GEEK" src="/images/hm.jpg" width="150" height="200"><br>Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域<br>毕业于中国科学技术大学，硕士研究生。单身，喜欢真诚，善良的女孩子。<br>擅长：JAVA，PHP，C#，JS，WebGL，WebRTC …<br>Mail To: chh1990@mail.ustc.edu.cn<br>WebSite：<a href="http://www.haomou.net" target="_blank" rel="external">http://www.haomou.net</a></p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/07/29/2014_nodejs_2/" target="_blank" rel="external">http://www.haomou.net/2014/07/29/2014_nodejs_2/</a></p>
+<h3 id="linux安装nodejs和mongoDB">linux安装nodejs和mongoDB</h3>
+<h4 id="安装nodejs">安装nodejs</h4>
+<p>很久之前安装过windows下以及Mac下的node，感觉还是很方便的，不成想今天安装linux下的坑了老半天，特此记录。首先去官网下载代码，这里一定要注意安装分两种，一种是Source Code源码，一种是编译后的文件（Binaries）。如下图所示，带Binaries的是编译好的文件。<br><img class="floatnone" src="/images/aliyun2.png"><br>（一） 编译好的文件<br> 简单说就是解压后，在bin文件夹中已经存在node以及npm，如果你进入到对应文件的中执行命令行一点问题都没有，不过不是全局的，所以将这个设置为全局就好了。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">cd</span> node-v0.<span class="number">10.28</span>-linux-x64/bin</div><div class="line"><span class="keyword">ls</span></div><div class="line">./node -<span class="keyword">v</span></div></pre></td></tr></table></figure>
+
+<p>这就妥妥的了，node文件夹具体放在哪，叫什么名字随你怎么定。然后设置全局：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ln -s <span class="regexp">/home/</span>kun<span class="regexp">/mysofltware/</span>node-v0.<span class="number">10.28</span>-linux-x64<span class="regexp">/bin/</span>node <span class="regexp">/usr/</span>local<span class="regexp">/bin/</span>node</div><div class="line">ln -s <span class="regexp">/home/</span>kun<span class="regexp">/mysofltware/</span>node-v0.<span class="number">10.28</span>-linux-x64<span class="regexp">/bin/</span>npm <span class="regexp">/usr/</span>local<span class="regexp">/bin/</span>npm</div></pre></td></tr></table></figure>
+
+<p>这里/home/kun/mysofltware/这个路径是你自己放的，你将node文件解压到哪里就是哪里。<br>（二）通过源码编译<br>这种方式你下载的文件是Source code，我不太喜欢这种方式。。。主要是麻烦</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="preprocessor">#  tar xvf node-v0.10.28.tar.gz </span></div><div class="line"><span class="preprocessor">#  cd node-v0.10.28 </span></div><div class="line"><span class="preprocessor">#  ./configure </span></div><div class="line"><span class="preprocessor"># make </span></div><div class="line"><span class="preprocessor"># make install </span></div><div class="line"><span class="preprocessor"># cp /usr/local/bin/node /usr/sbin/</span></div></pre></td></tr></table></figure>
+
+<p>查看当前安装的Node的版本 </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="preprocessor"># node -v </span></div><div class="line"> </div><div class="line">v0<span class="number">.10</span><span class="number">.28</span></div></pre></td></tr></table></figure>
+
+<p>（三）apt-get<br>还有一种就是shell提示的apt-get方式，我之前就被这种方式坑了。。。强烈不推荐啊</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt-get <span class="operator"><span class="keyword">install</span> nodejs</span></div><div class="line">sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> npm</div></pre></td></tr></table></figure>
+
+<h4 id="安装mongoDB">安装mongoDB</h4>
+<p>1）配置官方YUM源</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># vim /etc/yum.repos.d/10gen.repo</span></div><div class="line">[root@localhost ~]<span class="comment"># cat /etc/yum.repos.d/10gen.repo </span></div><div class="line">[<span class="number">10</span>gen]</div><div class="line"><span class="variable">name=</span><span class="number">10</span>gen Repository</div><div class="line"><span class="variable">baseurl=</span>http://downloads-distro.mongodb.org/repo/redhat/os/i686</div><div class="line"><span class="variable">gpgcheck=</span><span class="number">0</span></div><div class="line"><span class="variable">enabled=</span><span class="number">1</span></div></pre></td></tr></table></figure>
+
+<p>64位机器源配置文件如下</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># vim /etc/yum.repos.d/10gen.repo</span></div><div class="line">[root@localhost ~]<span class="comment"># cat /etc/yum.repos.d/10gen.repo </span></div><div class="line">[<span class="number">10</span>gen]</div><div class="line"><span class="variable">name=</span><span class="number">10</span>gen Repository</div><div class="line"><span class="variable">baseurl=</span>http://downloads-distro.mongodb.org/repo/redhat/os/x86_64</div><div class="line"><span class="variable">gpgcheck=</span><span class="number">0</span></div><div class="line"><span class="variable">enabled=</span><span class="number">1</span></div></pre></td></tr></table></figure>
+
+<p>其中，官方源中包括以下软件包<br>#mongo-10gen 这个包包含了最新最稳定的mongodb工具<br>#mongo-server-10gen 这个包包含了最新最稳定版本的mongod和mongos守护进程及相关的配置和初始化脚本<br>#mongo18-10gen 这个包包含了之前发行版中的mongodb工具<br>#mongo18-server-10gen 这个包包含了前一个稳定版的mongod和mongos守护进程及相关的配置和初始化脚本<br>2）系统更新</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root<span class="variable">@localhost</span> ~]<span class="comment"># yum update</span></div></pre></td></tr></table></figure>
+
+<p>3）安装mongodb</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root<span class="variable">@localhost</span> ~]<span class="comment"># yum install mongo-10gen mongo-10gen-server</span></div></pre></td></tr></table></figure>
+
+<p>看到提示说明安装成功</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="tag">Installed</span>:</div><div class="line">  <span class="tag">mongo-10gen</span><span class="class">.i686</span> 0<span class="pseudo">:2</span><span class="class">.0</span><span class="class">.5-mongodb_1</span> <span class="tag">mongo-10gen-server</span><span class="class">.i686</span> 0<span class="pseudo">:2</span><span class="class">.0</span><span class="class">.5-mongodb_1</span></div></pre></td></tr></table></figure>
+
+<p>4）配置mongodb<br>配置文件为：/etc/mongod.conf<br>初始化脚本为：/etc/rc.d/init.d/mongod<br>数据存储路径：/var/lib/mongo/<br>日志文件存储路径：/var/log/mongo/<br>守护进程运行用户为：mongod<br>以上均为默认值<br>5)Mongodb控制<br>加入开机启动</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root<span class="variable">@localhost</span> ~]<span class="comment"># chkconfig mongod on</span></div><div class="line">[root<span class="variable">@localhost</span> ~]<span class="comment"># chkconfig --list | grep mongod</span></div><div class="line">mongod     <span class="number">0</span><span class="symbol">:off</span>    <span class="number">1</span><span class="symbol">:off</span>    <span class="number">2</span><span class="symbol">:on</span>    <span class="number">3</span><span class="symbol">:on</span>    <span class="number">4</span><span class="symbol">:on</span>    <span class="number">5</span><span class="symbol">:on</span>    <span class="number">6</span><span class="symbol">:off</span></div></pre></td></tr></table></figure>
+
+<p>启动mongodb</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# service mongod <span class="operator"><span class="keyword">start</span></span></div><div class="line"><span class="keyword">Starting</span> mongod: <span class="keyword">all</span> <span class="keyword">output</span> going <span class="keyword">to</span>: /<span class="keyword">var</span>/<span class="keyword">log</span>/mongo/mongod.<span class="keyword">log</span></div><div class="line">forked process: <span class="number">26351</span></div><div class="line">                                                           [ OK ]</div></pre></td></tr></table></figure>
+
+<p>停止mongodb</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root<span class="variable">@localhost</span> ~]<span class="comment"># service mongod stop</span></div><div class="line"><span class="constant">Stopping</span> <span class="symbol">mongod:</span> [ <span class="constant">OK</span> ]</div></pre></td></tr></table></figure>
+
+<p>重启mongodb</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="preprocessor"># service mongod restart</span></div><div class="line">Stopping mongod: [ OK ]</div><div class="line">Starting mongod: <span class="built_in">all</span> output going to: /var/<span class="built_in">log</span>/mongo/mongod.<span class="built_in">log</span></div><div class="line">forked process: <span class="number">26420</span></div><div class="line">							[ OK ]</div></pre></td></tr></table></figure>
+
+<h3 id="nodejs后台运行">nodejs后台运行</h3>
+<p>我们在linux中启动nodejs开发的程序后，希望web服务可以在后台运行，不会因为用户退出而停止服务。<br>  有两种方式：</p>
+<ol>
+<li>command &amp; ： 后台运行，你关掉终端会停止运行</li>
+<li>nohup command &amp; ： 后台运行，你关掉终端也会继续运行</li>
+</ol>
+<h4 id="相关命令及知识">相关命令及知识</h4>
+<p> Linux/Unix 区别于微软平台最大的优点就是真正的多用户，多任务。因此在任务管理上也有别具特色的管理思想。<br>我们知道，在 Windows 上面，我们要么让一个程序作为服务在后台一直运行，要么停止这个服务。而不能让程序在前台后台之间切换。而 Linux 提供了 fg 和bg 命令，让你轻松调度正在运行的任务。假设你发现前台运行的一个程序需要很长的时间，但是需要干其他的事情，你就可以用 Ctrl-Z ，挂起这个程序，然后可以看到系统提示：<br>[1]+ Stopped /root/bin/rsync.sh<br>然后我们可以把程序调度到后台执行：（bg 后面的数字为作业号）<br>#bg 1<br>[1]+ /root/bin/rsync.sh &amp;<br>用 jobs 命令查看正在运行的任务：<br>#jobs<br>[1]+ Running /root/bin/rsync.sh &amp;<br>如果想把它调回到前台运行，可以用<br>#fg 1<br>/root/bin/rsync.sh<br>这样，你在控制台上就只能等待这个任务完成了。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">& 将指令丢到后台中去执行</div><div class="line">[ctrl]+z 將前台任务丟到后台中暂停</div><div class="line">jobs 查看后台的工作状态</div><div class="line">fg <span class="variable">%jobnumber</span> 将后台的任务拿到前台来处理</div><div class="line">bg <span class="variable">%jobnumber</span> 将任务放到后台中去处理</div><div class="line"><span class="keyword">kill</span> 管理后台的任务</div></pre></td></tr></table></figure>
+
+<h4 id="方法一">方法一</h4>
+<p>在Linux中，当在前台运行某个作业时，终端被该作业占据；而在后台运行作业时，它不会占据终端。可以使用&amp;命令把作业放到后台执行。实际上，这样是将命令放入到一个作业队列中了：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ ./test.<span class="keyword">sh</span> &</div><div class="line">[<span class="number">1</span>] <span class="number">17208</span></div><div class="line"></div><div class="line">$ jobs -<span class="keyword">l</span></div><div class="line">[<span class="number">1</span>]+ <span class="number">17208</span> Running                 ./test.<span class="keyword">sh</span> &</div></pre></td></tr></table></figure>
+
+<p>在后台运行作业时要当心：需要用户交互的命令不要放在后台执行，因为这样你的机器就会在那里傻等。不过，作业在后台运行一样会将结果输出到屏幕上，干扰你的工作。如果放在后台运行的作业会产生大量的输出，最好使用下面的方法把它的输出重定向到某个文件中：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">command</span> &gt;out.<span class="keyword">file</span> <span class="number">2</span>&gt;&<span class="number">1</span> &</div></pre></td></tr></table></figure>
+
+<p>在上面的例子中，2&gt;&amp;1表示所有的标准输出和错误输出都将被重定向到一个叫做out.file 的文件中。 当你成功地提交进程以后，就会显示出一个进程号，可以用它来监控该进程，或杀死它。<br>例：查找名为“httpd.conf”的文件，并把所有标准输出和错误输出重定向到find.dt的文件中： </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># <span class="keyword">find</span> /etc/httpd/ -name <span class="string">"httpd.conf"</span> -<span class="keyword">print</span> &gt;<span class="keyword">find</span>.dt <span class="number">2</span>&gt;&<span class="number">1</span> & </div><div class="line">[<span class="number">2</span>] <span class="number">7832</span></div></pre></td></tr></table></figure>
+
+<p>成功提交该命令之后，系统给出了它的进程号7832。 对于已经在前台执行的命令，也可以重新放到后台执行，首先按ctrl+z暂停已经运行的进程，然后使用bg命令将停止的作业放到后台运行，例如对正在前台执行的tesh.sh使用ctrl+z挂起它：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$ ./test.<span class="keyword">sh</span></div><div class="line">[<span class="number">1</span>]+ Stopped                 ./test.<span class="keyword">sh</span></div><div class="line"></div><div class="line">$ bg %<span class="number">1</span></div><div class="line">[<span class="number">1</span>]+ ./test.<span class="keyword">sh</span> &</div><div class="line"></div><div class="line">$ jobs -<span class="keyword">l</span></div><div class="line">[<span class="number">1</span>]+ <span class="number">22794</span> Running                 ./test.<span class="keyword">sh</span> &</div></pre></td></tr></table></figure>
+
+<p>但是如上方到后台执行的进程，其父进程还是当前终端shell的进程，而一旦父进程退出，则会发送hangup信号给所有子进程，子进程收到hangup以后也会退出。如果我们要在退出shell的时候继续运行进程，则需要使用nohup忽略hangup信号，或者setsid将将父进程设为init进程(进程号为1)</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">$ echo $$</div><div class="line"><span class="number">21734</span></div><div class="line"></div><div class="line">$ nohup ./<span class="keyword">test</span>.sh &</div><div class="line">[<span class="number">1</span>] <span class="number">29016</span></div><div class="line"></div><div class="line">$ ps -ef | grep <span class="keyword">test</span></div><div class="line"><span class="number">515</span>      <span class="number">29710</span> <span class="number">21734</span> <span class="number">0</span> <span class="number">11</span>:<span class="number">47</span> pts/<span class="number">12</span>   <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> /bin/sh ./<span class="keyword">test</span>.sh</div><div class="line"><span class="number">515</span>      <span class="number">29713</span> <span class="number">21734</span> <span class="number">0</span> <span class="number">11</span>:<span class="number">47</span> pts/<span class="number">12</span>   <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> grep <span class="keyword">test</span></div><div class="line">$ setsid ./<span class="keyword">test</span>.sh &</div><div class="line">[<span class="number">1</span>] <span class="number">409</span></div><div class="line"></div><div class="line">$ ps -ef | grep <span class="keyword">test</span></div><div class="line"><span class="number">515</span>        <span class="number">410</span>     <span class="number">1</span> <span class="number">0</span> <span class="number">11</span>:<span class="number">49</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> /bin/sh ./<span class="keyword">test</span>.sh</div><div class="line"><span class="number">515</span>        <span class="number">413</span> <span class="number">21734</span> <span class="number">0</span> <span class="number">11</span>:<span class="number">49</span> pts/<span class="number">12</span>   <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> grep <span class="keyword">test</span></div></pre></td></tr></table></figure>
+
+<p>上面的试验演示了使用nohup/setsid加上&amp;使进程在后台运行，同时不受当前shell退出的影响。那么对于已经在后台运行的进程，该怎么办呢？可以使用disown命令：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$ ./<span class="keyword">test</span>.sh &</div><div class="line">[<span class="number">1</span>] <span class="number">2539</span></div><div class="line"></div><div class="line">$ jobs -l</div><div class="line">[<span class="number">1</span>]+ <span class="number">2539</span> Running                 ./<span class="keyword">test</span>.sh &</div><div class="line"></div><div class="line">$ disown -h <span class="argument">%1</span></div><div class="line"></div><div class="line">$ ps -ef | grep <span class="keyword">test</span></div><div class="line"><span class="number">515</span>        <span class="number">410</span>     <span class="number">1</span> <span class="number">0</span> <span class="number">11</span>:<span class="number">49</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> /bin/sh ./<span class="keyword">test</span>.sh</div><div class="line"><span class="number">515</span>       <span class="number">2542</span> <span class="number">21734</span> <span class="number">0</span> <span class="number">11</span>:<span class="number">52</span> pts/<span class="number">12</span>   <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> grep <span class="keyword">test</span></div></pre></td></tr></table></figure>
+
+<p>另外还有一种方法，即使将进程在一个subshell中执行，其实这和setsid异曲同工。方法很简单，将命令用括号() 括起来即可：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ (./<span class="keyword">test</span>.sh &)</div><div class="line"></div><div class="line">$ ps -ef | grep <span class="keyword">test</span></div><div class="line"><span class="number">515</span>        <span class="number">410</span>     <span class="number">1</span> <span class="number">0</span> <span class="number">11</span>:<span class="number">49</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> /bin/sh ./<span class="keyword">test</span>.sh</div><div class="line"><span class="number">515</span>      <span class="number">12483</span> <span class="number">21734</span> <span class="number">0</span> <span class="number">11</span>:<span class="number">59</span> pts/<span class="number">12</span>   <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> grep <span class="keyword">test</span></div></pre></td></tr></table></figure>
+
+<p>注：本文试验环境为Red Hat Enterprise Linux AS release 4 (Nahant Update 5),shell为/bin/bash，不同的OS和shell可能命令有些不一样。例如AIX的ksh，没有disown，但是可以使用nohup -p PID来获得disown同样的效果。</p>
+<p>还有一种更加强大的方式是使用screen，首先创建一个断开模式的虚拟终端，然后用-r选项重新连接这个虚拟终端，在其中执行的任何命令，都能达到nohup的效果，这在有多个命令需要在后台连续执行的时候比较方便：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$ screen -dmS screen_test</div><div class="line"></div><div class="line">$ screen -<span class="type">list</span></div><div class="line">There <span class="keyword">is</span> a screen <span class="function_start"><span class="keyword">on</span></span>:</div><div class="line">        <span class="number">27963.</span>screen_test       (Detached)</div><div class="line"><span class="number">1</span> Socket <span class="keyword">in</span> /tmp/uscreens/S-jiangfeng.</div><div class="line"></div><div class="line">$ screen -r screen_test</div></pre></td></tr></table></figure>
+
+<h4 id="nohup方法">nohup方法</h4>
+<p> 如果你正在运行一个进程，而且你觉得在退出帐户时该进程还不会结束，那么可以使用nohup命令。该命令可以在你退出帐户之后继续运行相应的进程。nohup就是不挂起的意思( no hang up)。 该命令的一般形式为： </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="title">nohup</span> conmmand &</div></pre></td></tr></table></figure>
+
+<p>如果使用nohup命令提交作业，那么在缺省情况下该作业的所有输出都被重定向到一个名为nohup.out的文件中，除非另外指定了输出文件：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="input"><span class="prompt">nohup command &gt;</span> myout.file <span class="number">2</span>&gt;&<span class="number">1</span></span></div></pre></td></tr></table></figure>
+
+<p>在上面的例子中，输出被重定向到myout.file文件中。</p>
+<h4 id="常用的表达式">常用的表达式</h4>
+<p>下面就是这些特殊字符： </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">* 匹配文件名中的任何字符串，包括空字符串。 </div><div class="line">？ 匹配文件名中的任何单个字符。 </div><div class="line">[<span class="keyword">...</span>] 匹配[ ]中所包含的任何字符。 </div><div class="line">[!<span class="keyword">...</span>] 匹配[ ]中非感叹号！之后的字符。</div></pre></td></tr></table></figure>
+
+<p>当s h e l l遇到上述字符时，就会把它们当作特殊字符，而不是文件名中的普通字符，这样用户就可以用它们来匹配相应的文件名。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="number">1</span>)列出以i或o开头的文件名：     #<span class="keyword">ls</span> [io]*</div><div class="line"><span class="number">2</span>)列出<span class="keyword">log</span>.开头、后面跟随一个数字、然后可以是任意字符串的文件名： #<span class="keyword">ls</span> <span class="keyword">log</span>.[<span class="number">0</span>-<span class="number">9</span>]* </div><div class="line"><span class="number">3</span>)与例二相反，列出<span class="keyword">log</span>.开头、后面不跟随一个数字、然后可以是任意字符串的文件名 : #<span class="keyword">ls</span> <span class="keyword">log</span>.[!<span class="number">0</span>-<span class="number">9</span>]* </div><div class="line"><span class="number">4</span>)列出所有以LPS开头、中间可以是任何两个字符，最后以<span class="number">1</span>结尾的文件名：#<span class="keyword">ls</span> LPS??<span class="number">1</span></div><div class="line"><span class="number">5</span>)列出所有以大写字母开头的文件名：$ <span class="keyword">ls</span> [A-Z]* <span class="number">6</span>)列出所有以. 开头的文件名（隐含文件，例如. profile、.rhosts、.histo ry等）: $ <span class="keyword">ls</span> .*</div></pre></td></tr></table></figure>
+
+<h4 id="其他相关命令">其他相关命令</h4>
+<p>jobs：查看当前有多少在后台运行的命令<br>fg：将后台中的命令调至前台继续运行。如果后台中有多个命令，可以用 fg %jobnumber将选中的命令调出，%jobnumber是通过jobs命令查到的后台正在执行的命令的序号(不是pid)<br>bg：将一个在后台暂停的命令，变成继续执行。如果后台中有多个命令，可以用bg %jobnumber将选中的命令调出，%jobnumber是通过jobs命令查到的后台正在执行的命令的序号(不是pid)<br>杀死已经启动的程序和普通方式一样：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">pkill -<span class="number">9</span> <span class="property">name</span></div><div class="line">killall <span class="property">name</span></div><div class="line">kill pid</div></pre></td></tr></table></figure>
+
+<h3 id="谢谢！">谢谢！</h3>
+<p>有问题请留言。T_T  I am teacher Chale.  T_T</p>
+
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://haomou.net">皓眸IT</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/09/25/2014_nodejs_3/">NodeJS+mongoDB部署到Linux</a></div>
+</div></div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/NodeJS/" itemprop="url"><span itemprop="title" >NodeJS</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/NodeJS/" class="label label-primary" itemprop="url"><span itemprop="title">NodeJS</span></a><a href="/tags/Linux/" class="label label-success" itemprop="url"><span itemprop="title">Linux</span></a><a href="/tags/mongoDB/" class="label label-info" itemprop="url"><span itemprop="title">mongoDB</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-10-09 14:27:55"datetime="2014-10-09 14:27:55"> Oct 9 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://haomou.net/2014/09/25/2014_nodejs_3/#comments" class="ds-thread-count comment-link" data-thread-key="2014_nodejs_3" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  
+  <li class="next"><a href="/2014/09/22/2014_Html5_storage/" title="WebStorge使用">WebStorge使用 &rarr;</a></li>
+  
+</ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="2014_nodejs_3"  data-url="http://haomou.net/2014/09/25/2014_nodejs_3/" data-title="NodeJS+mongoDB部署到Linux"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_search" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">搜索</div>  <form action="//google.com/search" method="get" accept-charset="utf-8">
+  <div class="input-group">
+    <input class="form-control" id="searchbox" type="search" name="q" results="0" placeholder="搜索">
+    <span class="input-group-btn">
+      <button class="btn btn-default" type="submit">Go!</button>
+    </span>
+    <input type="hidden" name="q" value="site:haomou.net">
+  </div>
+</form>
+</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_recent_comments" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近评论</div>  
+
+<div class="list-group-item ds-recent-comments" data-num-items="6" data-show-avatars="1" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="50"></div>
+
+
+
+</div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2014 Chale Cao
+  
+    &nbsp;&nbsp;</span>
+  <a href='http://www.miibeian.gov.cn/'>苏ICP备13018740号-6</a></span>
+  <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'></span>  </div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-10-09 14:27:55</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haomou"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://haomou.net/2014/09/25/2014_nodejs_3/";
+    var wumiiTitle = "NodeJS+mongoDB部署到Linux";
+    var wumiiTags = "NodeJS,Linux,mongoDB";
+    var wumiiCategories = ["NodeJS"];
+    var wumiiSitePrefix = "http://haomou.net";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />').wrap('<div class="img_block"></div>');
+     
+      if(alt){$(this).after('<span class="caption">' + alt + '</span>')};
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script src="/js/chenall.js" type="text/javascript"></script>
+
+
+  </body>
+</html>
