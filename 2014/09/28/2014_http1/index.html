@@ -1,0 +1,349 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>HTTP的keep-alive | 皓眸IT</title>
+<meta name="author" content="Chale Cao">
+
+<meta name="description" content="HTTP协议之Keep-AliveHTTP规范对HTTP报文解释的很多，但是很少介绍HTTP连接。HTTP连接是HTTP报文传输的关键通道，所以学习HTTP协议需要理解这些：1.HTTP如何使用TCP连接 2.TCP连接存在的时延、瓶颈，问题 3.HTTP的优化，包括并行连接，keep-alive和管道化连接 4.管理连接该怎么做">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="HTTP的keep-alive"/>
+<meta property="og:site_name" content="皓眸IT"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css">
+<![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="皓眸IT Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+
+<link rel="stylesheet" href="/css/nprogress.css" type="text/css">
+
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.bootcss.com/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+  
+  <header id="header" class="hm-menu-left-container"><nav id="main-nav" class="navbar navbar-default hm-navbar-menu-left  " role="navigation">
+    <div class="hm-navbar-header">
+    <a href="http://haomou.net" ><img class="hm-logo" src="/images/haomou.png" title="皓眸IT" width="64" height="64" /></a>
+    <br/>|<br/><span class="fa fa-tint hm-black shine_blue" ></span><br/>|<br/><span class="fa fa-heart hm-black shine_red" ></span><br/>|<br/>
+        <i class="fa fa-bars fa-2x hm-black hm-menu shine_blue" ></i><br/><div class="hm-line"></div>
+    </div>
+    <div class="collapse navbar-collapse">
+      <h1 style="color:black">皓眸IT</h1>
+      <ul class="nav navbar-nav hm-left-nav">
+  
+        <li item='2014/09/28/2014_http1/' class='active'><a href="/" title="首页">首页</a></li>      
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>关于我<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://home.ustc.edu.cn/~chh1990/chero/chero.html" title="个人主页">个人主页</a></li>    
+        </ul>
+      </li>
+    
+      </ul>
+
+        
+        <div id="widget_category" class="widget hm-left-widget">
+            <div class="panel-heading">分类：</div>            <div data-src='category' class='ajax_widgets'>正在加载...</div>
+        </div>
+        
+        <div id="widget_tagcloud" class="widget hm-left-widget">
+            <div class="panel-heading">标签云：</div>            <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div>        </div>
+        
+
+
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/chalecao">github</a></li>
+      
+      </ul>
+    </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div style="" id="headflash" class="headflash hm_container"><embed pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="/images/bck.swf" width="100%" height="313" style="undefined" id="headflash_f" name="headflash_f" bgcolor="#000" quality="high" allowscriptaccess="false" wmode="transparent" allowfullscreen="false"></div>
+  <div id='content' class=" container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>皓眸IT <small>写清楚，说明白</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article class="hm-article">
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left hm-article-w"></i>
+      <h1 class="title">HTTP的keep-alive</h1>
+      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-09-28T00:40:49.000Z"> <a href="/2014/09/28/2014_http1/">Sep 28 2014</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry"  data-spy="scroll" data-target="#toc" >
+      
+        <h3 id="HTTP协议之Keep-Alive">HTTP协议之Keep-Alive</h3>
+<p>HTTP规范对HTTP报文解释的很多，但是很少介绍HTTP连接。HTTP连接是HTTP报文传输的关键通道，所以学习HTTP协议需要理解这些：1.HTTP如何使用TCP连接 2.TCP连接存在的时延、瓶颈，问题 3.HTTP的优化，包括并行连接，keep-alive和管道化连接 4.管理连接该怎么做<br><a id="more"></a><br><img class="floatnone" alt="皓眸GEEK" src="/images/http1.jpg"></p>
+<h3 id="作者">作者</h3>
+<p><img alt="皓眸GEEK" src="/images/hm.jpg" width="150" height="200"><br>Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域<br>毕业于中国科学技术大学，硕士研究生。单身，喜欢真诚，善良的女孩子。<br>擅长：JAVA，PHP，C#，JS，WebGL，WebRTC …<br>Mail To: chh1990@mail.ustc.edu.cn<br>WebSite：<a href="http://www.haomou.net" target="_blank" rel="external">http://www.haomou.net</a></p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/09/28/2014_http1/" target="_blank" rel="external">http://www.haomou.net/2014/09/28/2014_http1/</a></p>
+<h3 id="TCP连接">TCP连接</h3>
+<p>几乎所有的HTTP通道都是有TCP/IP来承载的，TCP/IP是全球网络设备通用的分组交换网络分层协议集。客户端程序可以打开一个连到网络上的服务器的TCP/IP连接，一旦连接建立起来，在通道上交换的报文就永远不会丢失、受损或者失序。<br><img class="floatnone" alt="皓眸GEEK" src="/images/http1.jpg"><br>HTTP连接实际上是TCP连接+使用连接的规则。TCP连接是通过IP分组（IP数据报）来发送数据块的。所以，HTTP其实是HTTP over TCP over IP，HTTP是协议栈的最顶层了。HTTPS 实际上是在HTTP和TCP之间插入了TLS或者SSL密码加密层。<br><img class="floatnone" alt="皓眸GEEK" src="/images/http2.jpg"><br>TCP链接通过4个值来定义一条连接。如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;源<span class="literal">IP</span>地址     源端口号      目的<span class="literal">IP</span>地址       目的端口号&gt;</div></pre></td></tr></table></figure>
+
+<p>两个不同的连接，不能拥有相同的这4个值。ip数据包如下：<br><img class="floatnone" alt="皓眸GEEK" src="/images/http.jpg"><br>最直接的操作TCP连接的是socket编程。</p>
+<h3 id="TCP连接性能问题">TCP连接性能问题</h3>
+<p>HTTP连接是建立在TCP连接之上的，下图是HTTP事务的处理过程。<br><img class="floatnone" alt="皓眸GEEK" src="/images/http3.jpg"><br>由此可见，HTTP事务处理时间很短，大部分时间用在发送请求和接受响应报文。所以HTTP的时延，主要有TCP的网络时延构成。<br>HTTP时延主要出现在以下过程：<br>1） 根据URL确定ip地址和端口号<br>2） 发送TCP连接请求，等待应答<br>3） 连接建立起来后，通过建立的TCP管道传输请求，服务端则处理报文。<br>4） web服务器送回HTTP响应</p>
+<p>下面主要讨论几个关键的性能点：<br>1） TCP连接建立握手时延<br>2） TCP慢启动拥塞控制时延<br>3） 数据聚集的Nagle算法<br>4） 用于捎带确认的TCP延时确认算法<br>5） TIME_WAIT时延和端口耗尽</p>
+<h4 id="TCP连接建立时延">TCP连接建立时延</h4>
+<p>传送少量数据时，每次握手建立连接的时间很可观。<br><img class="floatnone" alt="皓眸GEEK" src="/images/http4.jpg"><br>TCP连接握手需要经过下面几个步骤：<br>1） 请求新的TCP连接时，客户端先向服务端发送一个小的TCP分组（通常是40-60字节）。这个分组中设置了一个特殊的SYN标记，说明这是一个连接请求。<br>2） 如果服务器接受了这个请求，就会对连接参数进行计算，并向客户端送回一个分组，这个分组中SYN和ACK都会被置位，说明连接已经被接受。<br>3） 最后，客户端向服务端发送一条确认信息，通知该链接已经成功建立。现在的TCP协议栈允许在这个确认分组中发送数据。</p>
+<h4 id="延迟确认">延迟确认</h4>
+<p>由于因特网无法确认可靠的数据传输，因为路由器超负荷的时候可以随意丢弃分组。所以TCP实现了自己的确认机制来确保数据成功传输。<br>每个TCP段都有一个序列号和数据完整性校验和。每个段的接受者收到完好的数据时，都会向发送者发送小的确认分组。如果发送者在指定的时间窗口内没有收到确认信息，发送者就认为改分组已被破坏或损毁，重发数据。<br>由于确认报文很小，所以没比较通过建立连接来发送，而是通过发往同方向的数据分组中进行“捎带”的方式，这样可以更有效的利用网络。</p>
+<h4 id="TCP慢启动策略">TCP慢启动策略</h4>
+<p>TCP的传输性能取决于TCP的使用期，TCP会随着时间自我控制传输速度，以避免网络发生堵塞。称为慢启动策略。<br>TCP慢启动策略限制了一个TCP断点在任意时刻可以传输的分组数目。简单来说，没成功接受一个分组，发送端就有权限尝试发送两个分组。如果这两个分组成功接受，发送端就有权限尝试发送4个分组。这个阶段称为打开阻塞端口。如果HTTP事务有大量的数据要发送的时候，需要有这样一个慢启动的过程。</p>
+<h4 id="NagLe算法">NagLe算法</h4>
+<p>TCP有一个数据流接口，应用程序可以将任意大小的数据放入TCP协议栈中，即使1个字节也可以，但是每个TCP段都至少装载40个字节的标记和首部数据，如果发送了许多的包含少量数据的分组，就会大大降低网络性能。<br>Nagle算法试图在发送一个分组之前，将多个TCP数据绑定在一起，以提高网络效率。</p>
+<h4 id="TIME_WAIT累积和端口耗尽">TIME_WAIT累积和端口耗尽</h4>
+<p>这个在系统防御上 经常出现，比如常见的DOSS FLOOD攻击，很快会导致Socket段的端口耗尽，导致客户端无法连接的问题。</p>
+<p>当某个TCP端点关闭TCP连接时，会在内存中维护一个小的控制块，用来记录最近所关闭的连接的ip和端口号，这类信息会维持一段时间，通常是所估计的最大分段使用期的两倍，称为（2MSL）,这段时间内不会创建相同地址和端口号的新链接。</p>
+<p>举个例子，客户端每次连接到服务器上时都会获得一个新的端口，以实现连接的唯一性。但是可以使用的端口是有限的，比如60000个，在2MSL时间内，比如120s，连接是无法重用的，这样连接率就被现在在了60000/120=500次每秒。如果经过优化，服务端的连接率小于500次每秒，就不会遇到端口耗尽的问题。要想避免这个问题可以在客户端和服务端之间采用虚拟ip地址的方法增加连接组合。</p>
+<h3 id="HTTP连接的处理">HTTP连接的处理</h3>
+<p>HTTP首部字段中有个connection字段，该字段用于为连接添加一些不会传播到其他链接中的选项，比如指定：connection：close  来说明发送完下一条报文后关闭连接。<br>Connection首部可以承载3种不同类型的标签：<br>1） HTTP首部字段名，列出与此连接相关的首部<br>2） 任意标签值，用于描述此链接<br>3） close，说明操作完成之后关闭这个连接</p>
+<p>如果是第一种情况，也即是connection值为此链接相关首部字段的名称，那么这个首部字段就包含了连接有关的信息，不能将其转发出去，再将报文发出去之前，必须删除connection中列出的所有首部字段，由于connection首部可以防止无意中转发本地的首部，可以将逐跳首部名放入connection中，这种做法称为“对首部的保护”。如下例：<br><img class="floatnone" alt="皓眸GEEK" src="/images/http5.jpg"></p>
+<p>HTTP串行处理事务的延时<br>如果一个页面包含了许多的图片，浏览器这样一个接着一个的方式建立连接，下载图片无疑是很耗时的。<br>有几种方法可以提高HTTP的连接性能<br>1） 并行连接<br>2） 持久连接<br>3） 管道化连接</p>
+<h4 id="并行连接">并行连接</h4>
+<p> 并行连接就是同时建立多个HTTP连接，这样可以提高页面的加载速度。但是并行连接并不一定会更快，应为如果客户端网络带宽有限，或服务端网络带宽有限，这些连接竞争这样有限的带宽，带来的性能的提升是不足道的。<br> 同时还存在的问题是，客户端打开的连接多，服务端就要处理这些连接，增加了服务器的负担。浏览器通常会限制并行连接的数目，一般在4个。</p>
+<h4 id="持久连接">持久连接</h4>
+<p> 在HTTP/1.1以及HTTP/1.0的增强版中，允许HTTP设备在事务处理完成之后将TCP连接保持在打开状态，以便未来的HTTP请求复用该链接。在事务处理结束后，依然保持打开的连接称为持久连接。非持久连接会在每个事务结束之后关闭。而持久连接会一直保持，直到客户端或者服务器将其关闭为止。</p>
+<p> 并行连接可以提高嵌有iframe的复合页面的加载速度，但是也有许多缺点。<br> 1） 每个事务都会打开或关闭一条新的连接，耗费时间及带宽。<br> 2） 由于TCP的慢启动特性，每条新链接的性能都会有所降低<br> 3） 可以打开的并行连接数是有限制的</p>
+<p> 持久连接有比并行连接更好的地方，持久连接降低了时延和建立连接的开销，将连接保持在“自我调整”的状态，减少了打开链接的数目，但是管理持久连接要特别小心，否则会积累出大量的空闲连接，耗费客户端和服务端的资源。</p>
+<p> 持久连接和并行连接的配合使用是目前比较高效的方法，目前很多的web浏览器也是这么做的。持久连接有两种类型：<br> 1） HTTP/1.1 persistent连接<br> 2） HTTP/1.0 keep alive连接</p>
+<p>keep alive已经不再使用了，HTTP1.1中也没有对其进行说明，不过keep alive的握手使用仍然广泛。<br>1） http客户端如果想实现http/1.0 keep-alive需要在请求首部包含connection：keep-alive<br>2） 如果服务端愿意将连接保持，需要在响应中包含相同的首部，如果没有包含connection：keep-alive，则说明服务器不支持keep-alive，会在发回响应之后关闭连接。</p>
+<p>在使用keep-alive模式中有个问题，既然连接是不关闭的，客户端如何知道服务端已经发送完了数据？</p>
+<p>比如客户端请求一张图片，客户端如何判断这个图片已经接受完了？</p>
+<p>1） 服务器在发送确定性的文件时，会在消息头部通过content-length字段告诉客户端要接受多少数据。如果没有这个content-length，那么只有通过服务端关闭连接来确认结尾。这样是无法保持持久连接的<br>2） 如果是动态页面，服务端无法预知内容大小，可以使用transfer-encoding：chunk的模式来传输数据，这就是一边产生数据，一边发送数据。</p>
+<p>chunk编码将数据分成一块一块的发生。Chunked编码将使用若干个Chunk串连而成，由一个标明长度为0的chunk标示结束。每个Chunk分为头部和正文两部分，头部内容指定正文的字符总数（十六进制的数字）和数量单位（一般不写），正文部分就是指定长度的实际内容，两部分之间用回车换行(CRLF)隔开。在最后一个长度为0的Chunk中的内容是称为footer的内容，是一些附加的Header信息（通常可以直接忽略）。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">Chunk编码的格式如下：</div><div class="line"></div><div class="line">Chunked-Body = *chunk </div><div class="line">                                    <span class="string">"0"</span> <span class="constant">CRLF</span> </div><div class="line">                                    footer </div><div class="line">                                    <span class="constant">CRLF</span>  </div><div class="line">chunk = chunk-size [ chunk-ext ] <span class="constant">CRLF</span> </div><div class="line">                  chunk-data <span class="constant">CRLF</span></div><div class="line"></div><div class="line">hex-no-<span class="constant">zero</span> = &lt;HEX excluding <span class="string">"0"</span>&gt;</div><div class="line"></div><div class="line">chunk-size = hex-no-<span class="constant">zero</span> *HEX </div><div class="line">chunk-ext = *( <span class="string">";"</span> chunk-ext-name [ <span class="string">"="</span> chunk-ext-<span class="built_in">value</span> ] ) </div><div class="line">chunk-ext-name = <span class="keyword">token</span> </div><div class="line">chunk-ext-val = <span class="keyword">token</span> | quoted-<span class="keyword">string</span> </div><div class="line">chunk-data = chunk-size(OCTET)</div><div class="line"></div><div class="line">footer = *entity-header</div><div class="line"></div><div class="line">即Chunk编码由四部分组成：<span class="number">1</span>、<span class="number">0</span>至多个chunk块，<span class="number">2</span>、<span class="string">"0"</span> <span class="constant">CRLF</span>，<span class="number">3</span>、footer，<span class="number">4</span>、<span class="constant">CRLF</span>.而每个chunk块由：chunk-size、chunk-ext（可选）、<span class="constant">CRLF</span>、chunk-data、<span class="constant">CRLF</span>组成。</div></pre></td></tr></table></figure>
+
+<h4 id="keep-alive消息长度总结">keep-alive消息长度总结</h4>
+<p>，上面2中方法都可以归纳为是如何判断http消息的大小、消息的数量。RFC 2616对消息的长度总结如下：一个消息的transfer-length（传输长度）是指消息中的message-body（消息体）的长度。当应用了transfer-coding（传输编码），每个消息中的message-body（消息体）的长度（transfer-length）由以下几种情况决定（优先级由高到低）：</p>
+<p>任何不含有消息体的消息（如1XXX、204、304等响应消息和任何头(HEAD，首部)请求的响应消息），总是由一个空行（CLRF）结束。<br>如果出现了Transfer-Encoding头字段 并且值为非“identity”，那么transfer-length由“chunked” 传输编码定义，除非消息由于关闭连接而终止。<br>如果出现了Content-Length头字段，它的值表示entity-length（实体长度）和transfer-length（传输长度）。如果这两个长度的大小不一样（i.e.设置了Transfer-Encoding头字段），那么将不能发送Content-Length头字段。并且如果同时收到了Transfer-Encoding字段和Content-Length头字段，那么必须忽略Content-Length字段。<br>如果消息使用媒体类型“multipart/byteranges”，并且transfer-length 没有另外指定，那么这种自定界（self-delimiting）媒体类型定义transfer-length 。除非发送者知道接收者能够解析该类型，否则不能使用该类型。<br>由服务器关闭连接确定消息长度。（注意：关闭连接不能用于确定请求消息的结束，因为服务器不能再发响应消息给客户端了。）<br>为了兼容HTTP/1.0应用程序，HTTP/1.1的请求消息体中必须包含一个合法的Content-Length头字段，除非知道服务器兼容HTTP/1.1。一个请求包含消息体，并且Content-Length字段没有给定，如果不能判断消息的长度，服务器应该用用400 (bad request) 来响应；或者服务器坚持希望收到一个合法的Content-Length字段，用 411 (length required)来响应。</p>
+<p>所有HTTP/1.1的接收者应用程序必须接受“chunked” transfer-coding (传输编码)，因此当不能事先知道消息的长度，允许使用这种机制来传输消息。消息不应该够同时包含 Content-Length头字段和non-identity transfer-coding。如果一个消息同时包含non-identity transfer-coding和Content-Length ，必须忽略Content-Length 。</p>
+<h3 id="谢谢！">谢谢！</h3>
+<p>有问题请留言。T_T  I am teacher Chale.  T_T</p>
+
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://haomou.net">皓眸IT</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/09/28/2014_http1/">HTTP的keep-alive</a></div>
+</div></div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/HTTP协议/" itemprop="url"><span itemprop="title" >HTTP协议</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/HTTP/" class="label label-primary" itemprop="url"><span itemprop="title">HTTP</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-10-12 16:52:30"datetime="2014-10-12 16:52:30"> Oct 12 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://haomou.net/2014/09/28/2014_http1/#comments" class="ds-thread-count comment-link" data-thread-key="2014_http1" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  
+  <li class="next"><a href="/2014/09/25/2014_nodejs_3/" title="NodeJS+mongoDB部署到Linux">NodeJS+mongoDB部署到Linux &rarr;</a></li>
+  
+</ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="2014_http1"  data-url="http://haomou.net/2014/09/28/2014_http1/" data-title="HTTP的keep-alive"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_search" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">搜索</div>  <form action="//google.com/search" method="get" accept-charset="utf-8">
+  <div class="input-group">
+    <input class="form-control" id="searchbox" type="search" name="q" results="0" placeholder="搜索">
+    <span class="input-group-btn">
+      <button class="btn btn-default" type="submit">Go!</button>
+    </span>
+    <input type="hidden" name="q" value="site:haomou.net">
+  </div>
+</form>
+</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_recent_comments" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近评论</div>  
+
+<div class="list-group-item ds-recent-comments" data-num-items="6" data-show-avatars="1" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="50"></div>
+
+
+
+</div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2014 Chale Cao
+  
+    &nbsp;&nbsp;</span>
+  <a href='http://www.miibeian.gov.cn/'>苏ICP备13018740号-6</a></span>
+  <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'></span>  </div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-10-12 16:52:30</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haomou"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://haomou.net/2014/09/28/2014_http1/";
+    var wumiiTitle = "HTTP的keep-alive";
+    var wumiiTags = "HTTP";
+    var wumiiCategories = ["HTTP协议"];
+    var wumiiSitePrefix = "http://haomou.net";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />').wrap('<div class="img_block"></div>');
+     
+      if(alt){$(this).after('<span class="caption">' + alt + '</span>')};
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script src="/js/chenall.js" type="text/javascript"></script>
+
+
+  </body>
+</html>
