@@ -499,6 +499,9 @@ dd {
 .tagcloud {
   word-break: break-all;
 }
+#widget_search {
+  color: #f00;
+}
 .navbar-right {
   border-top: 1px solid;
 }

@@ -173,6 +173,7 @@ Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域�
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Human</span><span class="params">(name)</span></span>{</div><div class="line">    <span class="keyword">this</span>.name = name;</div><div class="line">}</div><div class="line">Human.prototype.talk = <span class="function"><span class="keyword">function</span><span class="params">()</span></span>{</div><div class="line">    <span class="keyword">return</span> <span class="string">'My name is '</span> + <span class="keyword">this</span>.name; </div><div class="line">}   </div><div class="line">Human.$inject = [<span class="string">'name'</span>];   </div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Superhero</span> = <span class="title">function</span><span class="params">(name abilities)</span></span>{</div><div class="line">    Human.call(<span class="keyword">this</span>,name);</div><div class="line">    <span class="keyword">this</span>.abilities = abilities;</div><div class="line">}</div><div class="line"></div><div class="line">Superhero.prototype = <span class="built_in">Object</span>.create(Human.prototype);</div><div class="line">Superhero.prototype.saveTheWorld = <span class="function"><span class="keyword">function</span><span class="params">()</span></span>{</div><div class="line">    <span class="keyword">return</span> <span class="string">'Saving the world with '</span> + <span class="keyword">this</span>.abilities.join(<span class="string">', '</span>);</div><div class="line">};</div><div class="line">Super.$inject = [<span class="string">'name'</span>,<span class="string">'AbilitiesCollection'</span>];  </div><div class="line"></div><div class="line">angular.module(<span class="string">'demo'</span>).service(<span class="string">'Human'</span>,Human);</div><div class="line">angular.module(<span class="string">'demo'</span>).service(<span class="string">'Superhero'</span>,Superhero);</div><div class="line">angular.module(<span class="string">'demo'</span>).value(<span class="string">'name'</span>,<span class="string">'Super Dev'</span>);</div><div class="line">angular.module(<span class="string">'demo'</span>).value(<span class="string">'AbilitiesCollection'</span>,[<span class="string">'C++'</span>,<span class="string">'JavaScript'</span>]);</div></pre></td></tr></table></figure>
 
 <h3 id="谢谢！">谢谢！</h3>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/09/12/2014_angularjs_2/" target="_blank" rel="external">http://www.haomou.net/2014/09/12/2014_angularjs_2/</a></p>
 <p>有问题请留言。T_T  I am teacher Chale.  T_T</p>
 
       
@@ -188,7 +189,7 @@ Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域�
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/AngularJS/" itemprop="url"><span itemprop="title" >AngularJS</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/AngularJS/" class="label label-primary" itemprop="url"><span itemprop="title">AngularJS</span></a><a href="/tags/笔记/" class="label label-success" itemprop="url"><span itemprop="title">笔记</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-10-06 21:48:16"datetime="2014-10-06 21:48:16"> Oct 6 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/AngularJS/" itemprop="url"><span itemprop="title" >AngularJS</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/AngularJS/" class="label label-primary" itemprop="url"><span itemprop="title">AngularJS</span></a><a href="/tags/笔记/" class="label label-success" itemprop="url"><span itemprop="title">笔记</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-05 09:24:25"datetime="2014-12-05 09:24:25"> Dec 5 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/09/17/2014_angularjs_3/#comments" class="ds-thread-count comment-link" data-thread-key="2014_angularjs_3" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -216,16 +217,10 @@ Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域�
        </div><!-- ID main-col END -->
        <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
 <div id="widget_search" class="widget hm-left-widget" style="clear:both">
-  <div class="panel-heading">搜索</div>  <form action="//google.com/search" method="get" accept-charset="utf-8">
-  <div class="input-group">
-    <input class="form-control" id="searchbox" type="search" name="q" results="0" placeholder="搜索">
-    <span class="input-group-btn">
-      <button class="btn btn-default" type="submit">Go!</button>
-    </span>
-    <input type="hidden" name="q" value="site:haomou.net">
-  </div>
-</form>
-</div>
+  <div class="panel-heading">一般人我不告诉他？</div>  <div style="text-align: center;">
+    <a target="_blank" href="/images/taobao.xls"><img width="310" src="/images/taobao.gif"></a>
+    <a target="_blank" href="/images/taobao.xls">双12天猫内部精选爆款清单</a>
+</div></div>
 
 <div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
   <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
@@ -256,7 +251,7 @@ Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域�
   <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
 <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 </span><span id='analytics-baidu'></span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-10-06 21:48:16</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-12-05 09:24:25</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
