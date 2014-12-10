@@ -189,6 +189,19 @@
 <p>快速向上滑动时触发<br>用法：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;button <span class="function_start"><span class="keyword">on</span></span>-swipe-down=<span class="string">"onSwipeDown()"</span> <span class="type">class</span>=<span class="string">"button"</span>&gt;Test&lt;/button&gt;</div></pre></td></tr></table></figure>
 
+<h3 id="FormInputs">FormInputs</h3>
+<h4 id="ion-checkbox">ion-checkbox</h4>
+<p>这个checkbox指令和网页版的没什么区别，只是显示的样式不一样。其行为和AngularJs checkbox是一样的。<br><img alt="皓眸GEEK" src="/images/ionic31.png" class="floatnone"><br>用法：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="title">ion-checkbox</span> <span class="attribute">ng-model</span>=<span class="value">"isChecked"</span>&gt;</span>Checkbox Label<span class="tag">&lt;/<span class="title">ion-checkbox</span>&gt;</span></div></pre></td></tr></table></figure>
+
+<h4 id="ion-radio">ion-radio</h4>
+<p>这个radio指令和网页版的没什么区别，只是显示的样式不一样。其行为和AngularJs Radio是一样的。<br>用法：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="title">ion-radio</span> <span class="attribute">ng-model</span>=<span class="value">"choice"</span> <span class="attribute">ng-value</span>=<span class="value">"'A'"</span>&gt;</span>Choose A<span class="tag">&lt;/<span class="title">ion-radio</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="title">ion-radio</span> <span class="attribute">ng-model</span>=<span class="value">"choice"</span> <span class="attribute">ng-value</span>=<span class="value">"'B'"</span>&gt;</span>Choose B<span class="tag">&lt;/<span class="title">ion-radio</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="title">ion-radio</span> <span class="attribute">ng-model</span>=<span class="value">"choice"</span> <span class="attribute">ng-value</span>=<span class="value">"'C'"</span>&gt;</span>Choose C<span class="tag">&lt;/<span class="title">ion-radio</span>&gt;</span></div></pre></td></tr></table></figure>
+
+<h4 id="ion-toggle">ion-toggle</h4>
+<p>ion-toggle是个模拟的开关，绑定一个boolean类型的数据模型。可以通过拖拽切换开关。其行为和AngularJs checkbox是一样的。<br><img alt="皓眸GEEK" src="/images/ionic32.png" class="floatnone"><br>用法：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="title">ion-toggle</span> <span class="attribute">ng-model</span>=<span class="value">"airplaneMode"</span> <span class="attribute">toggle-class</span>=<span class="value">"toggle-calm"</span>&gt;</span>Airplane Mode<span class="tag">&lt;/<span class="title">ion-toggle</span>&gt;</span></div></pre></td></tr></table></figure>
+
 <h3 id="待续">待续</h3>
 <p>近期更新！</p>
 <h3 id="谢谢！">谢谢！</h3>
@@ -208,7 +221,7 @@
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/ionic/" itemprop="url"><span itemprop="title" >ionic</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/ionic/" class="label label-primary" itemprop="url"><span itemprop="title">ionic</span></a><a href="/tags/API/" class="label label-success" itemprop="url"><span itemprop="title">API</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-08 08:20:04"datetime="2014-12-08 08:20:04"> Dec 8 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/ionic/" itemprop="url"><span itemprop="title" >ionic</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/ionic/" class="label label-primary" itemprop="url"><span itemprop="title">ionic</span></a><a href="/tags/API/" class="label label-success" itemprop="url"><span itemprop="title">API</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-10 20:31:51"datetime="2014-12-10 20:31:51"> Dec 10 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/10/13/2014_ionic_api2/#comments" class="ds-thread-count comment-link" data-thread-key="2014_ionic_api2" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -270,7 +283,7 @@
   <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
 <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 </span><span id='analytics-baidu'></span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-12-08 08:20:04</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-12-10 20:31:51</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
