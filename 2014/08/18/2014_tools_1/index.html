@@ -61,7 +61,7 @@
       <h1 style="color:black">皓眸IT</h1>
       <ul class="nav navbar-nav hm-left-nav">
   
-        <li item='2014/08/18/2014_grunt_gulp/' class='active'><a href="/" title="首页">首页</a></li>      
+        <li item='2014/08/18/2014_tools_1/' class='active'><a href="/" title="首页">首页</a></li>      
       <li class='dropdown'>
         <a class='dropdown-toggle' data-toggle='dropdown' href='#'>关于我<b class='caret'></b></a>
         <ul class='dropdown-menu'>
@@ -120,7 +120,7 @@
       <i class="fa icon fa-5x pull-left hm-article-w"></i>
       <h1 class="title">Grunt，Gulp工具</h1>
       
-        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-08-18T02:23:49.000Z"> <a href="/2014/08/18/2014_grunt_gulp/">Aug 18 2014</a></time></span>      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-08-18T02:23:49.000Z"> <a href="/2014/08/18/2014_tools_1/">Aug 18 2014</a></time></span>      
     </header>
     
     <section id='before_content_widget'></section>
@@ -131,7 +131,7 @@
 <p>本节主要介绍两种自动化构建工具，包括Grunt和Gulp，后续篇章中还会介绍bower包管理工具和Yeoman构建工具。这里先详细介绍这两种自动化构建工具，gulp.js 是一种基于流的，代码优于配置的新一代构建工具。Gulp 和 Grunt 类似。但相比于 Grunt 的频繁的 IO 操作，Gulp 的流操作，能更快地完成构建。<br><a id="more"></a></p>
 <h3 id="作者">作者</h3>
 <p><img alt="皓眸GEEK" src="/images/hm.jpg" width="150" height="200"><br>Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域<br>毕业于中国科学技术大学，硕士研究生。喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身，等你来…哈哈…喜欢就写信给我喽。。。<br>擅长：JAVA，PHP，C#，JS，WebGL，WebRTC …<br>Mail To: chh1990@mail.ustc.edu.cn<br>WebSite：<a href="http://www.haomou.net" target="_blank" rel="external">http://www.haomou.net</a></p>
-<p>转载请注明出处：<a href="http://www.haomou.net/2014/08/18/2014_grunt_gulp/" target="_blank" rel="external">http://www.haomou.net/2014/08/18/2014_grunt_gulp/</a></p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/08/18/2014_tools_1/" target="_blank" rel="external">http://www.haomou.net/2014/08/18/2014_tools_1/</a></p>
 <h3 id="Grunt配置及安装">Grunt配置及安装</h3>
 <p>Grunt是一个自动化的项目构建工具. 如果你需要重复的执行像压缩, 编译, 单元测试, 代码检查以及打包发布的任务. 那么你可以使用Grunt来处理这些任务, 你所需要做的只是配置好Grunt, 这样能很大程度的简化你的工作.如果在团队中使用Grunt, 你只需要与其他人员约定好使用Grunt应该规避的问题, 就能够很方便的自动化的处理大部分的常见工作任务, 你所付出的努力几乎为0.</p>
 <h4 id="准备工作">准备工作</h4>
@@ -227,7 +227,7 @@
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>);</div><div class="line"><span class="keyword">var</span> coffee = <span class="built_in">require</span>(<span class="string">'gulp-coffee'</span>);</div><div class="line"><span class="keyword">var</span> concat = <span class="built_in">require</span>(<span class="string">'gulp-concat'</span>);</div><div class="line"><span class="keyword">var</span> uglify = <span class="built_in">require</span>(<span class="string">'gulp-uglify'</span>);</div><div class="line"><span class="keyword">var</span> imagemin = <span class="built_in">require</span>(<span class="string">'gulp-imagemin'</span>);</div><div class="line"><span class="keyword">var</span> sourcemaps = <span class="built_in">require</span>(<span class="string">'gulp-sourcemaps'</span>);</div><div class="line"><span class="keyword">var</span> del = <span class="built_in">require</span>(<span class="string">'del'</span>);</div><div class="line"></div><div class="line"><span class="keyword">var</span> paths = {</div><div class="line">  scripts: [<span class="string">'client/js/**/*.coffee'</span>, <span class="string">'!client/external/**/*.coffee'</span>],</div><div class="line">  images: <span class="string">'client/img/**/*'</span></div><div class="line">};</div><div class="line"></div><div class="line"><span class="comment">// Not all tasks need to use streams</span></div><div class="line"><span class="comment">// A gulpfile is just another node program and you can use all packages available on npm</span></div><div class="line">gulp.task(<span class="string">'clean'</span>, <span class="function"><span class="keyword">function</span><span class="params">(cb)</span> </span>{</div><div class="line">  <span class="comment">// You can use multiple globbing patterns as you would with `gulp.src`</span></div><div class="line">  del([<span class="string">'build'</span>], cb);</div><div class="line">});</div><div class="line"></div><div class="line">gulp.task(<span class="string">'scripts'</span>, [<span class="string">'clean'</span>], <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">  <span class="comment">// Minify and copy all JavaScript (except vendor scripts)</span></div><div class="line">  <span class="comment">// with sourcemaps all the way down</span></div><div class="line">  <span class="keyword">return</span> gulp.src(paths.scripts)</div><div class="line">    .pipe(sourcemaps.init())</div><div class="line">      .pipe(coffee())</div><div class="line">      .pipe(uglify())</div><div class="line">      .pipe(concat(<span class="string">'all.min.js'</span>))</div><div class="line">    .pipe(sourcemaps.write())</div><div class="line">    .pipe(gulp.dest(<span class="string">'build/js'</span>));</div><div class="line">});</div><div class="line"></div><div class="line"><span class="comment">// Copy all static images</span></div><div class="line">gulp.task(<span class="string">'images'</span>, [<span class="string">'clean'</span>], <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">  <span class="keyword">return</span> gulp.src(paths.images)</div><div class="line">    <span class="comment">// Pass in options to the task</span></div><div class="line">    .pipe(imagemin({optimizationLevel: <span class="number">5</span>}))</div><div class="line">    .pipe(gulp.dest(<span class="string">'build/img'</span>));</div><div class="line">});</div><div class="line"></div><div class="line"><span class="comment">// Rerun the task when a file changes</span></div><div class="line">gulp.task(<span class="string">'watch'</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">  gulp.watch(paths.scripts, [<span class="string">'scripts'</span>]);</div><div class="line">  gulp.watch(paths.images, [<span class="string">'images'</span>]);</div><div class="line">});</div><div class="line"></div><div class="line"><span class="comment">// The default task (called when you run `gulp` from cli)</span></div><div class="line">gulp.task(<span class="string">'default'</span>, [<span class="string">'watch'</span>, <span class="string">'scripts'</span>, <span class="string">'images'</span>]);</div></pre></td></tr></table></figure>
 
 <h3 id="谢谢！">谢谢！</h3>
-<p>转载请注明出处：<a href="http://www.haomou.net/2014/08/18/2014_grunt_gulp/" target="_blank" rel="external">http://www.haomou.net/2014/08/18/2014_grunt_gulp/</a></p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/08/18/2014_tools_1/" target="_blank" rel="external">http://www.haomou.net/2014/08/18/2014_tools_1/</a></p>
 <p>有问题请留言。T_T  I am teacher Chale.  T_T</p>
 
       
@@ -238,13 +238,13 @@
 <div class="panel panel-success">
     <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
     <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://haomou.net">皓眸IT</a> ，请勿用于任何商业用途</div>
-    <div class="panel-body">本文链接: <a href="/2014/08/18/2014_grunt_gulp/">Grunt，Gulp工具</a></div>
+    <div class="panel-body">本文链接: <a href="/2014/08/18/2014_tools_1/">Grunt，Gulp工具</a></div>
 </div></div></section>
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/自动化工具/" itemprop="url"><span itemprop="title" >自动化工具</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/Grunt/" class="label label-primary" itemprop="url"><span itemprop="title">Grunt</span></a><a href="/tags/Gulp/" class="label label-success" itemprop="url"><span itemprop="title">Gulp</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-10 20:10:32"datetime="2014-12-10 20:10:32"> Dec 10 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
-<a href="http://haomou.net/2014/08/18/2014_grunt_gulp/#comments" class="ds-thread-count comment-link" data-thread-key="2014_grunt_gulp" data-count-type="comments">暂无评论</a></span>
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/自动化工具/" itemprop="url"><span itemprop="title" >自动化工具</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/Grunt/" class="label label-primary" itemprop="url"><span itemprop="title">Grunt</span></a><a href="/tags/Gulp/" class="label label-success" itemprop="url"><span itemprop="title">Gulp</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-11 12:57:01"datetime="2014-12-11 12:57:01"> Dec 11 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://haomou.net/2014/08/18/2014_tools_1/#comments" class="ds-thread-count comment-link" data-thread-key="2014_tools_1" data-count-type="comments">暂无评论</a></span>
         </footer>
     
     <div class="clearfix"></div>
@@ -256,15 +256,15 @@
     <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
 <ul class="pager">
   
-  <li class="previous"><a href="/2014/08/18/2014_tools_1/" title="Grunt，Gulp工具">&larr; Grunt，Gulp工具</a></li>
+  <li class="previous"><a href="/2014/08/19/2014_js1/" title="JS闭包与原型链">&larr; JS闭包与原型链</a></li>
   
   
-  <li class="next"><a href="/2014/08/13/2014_bare_token/" title="Bearer Token">Bearer Token &rarr;</a></li>
+  <li class="next"><a href="/2014/08/18/2014_grunt_gulp/" title="Grunt，Gulp工具">Grunt，Gulp工具 &rarr;</a></li>
   
 </ul></div></section>    
 	<div id="comments"><!-- Duoshuo Comment BEGIN -->
 
-<div class="ds-thread"  data-thread-key="2014_grunt_gulp"  data-url="http://haomou.net/2014/08/18/2014_grunt_gulp/" data-title="Grunt，Gulp工具"></div>
+<div class="ds-thread"  data-thread-key="2014_tools_1"  data-url="http://haomou.net/2014/08/18/2014_tools_1/" data-title="Grunt，Gulp工具"></div>
 <!-- Duoshuo Comment END -->
 
 </div></div><!--wapper-->
@@ -305,7 +305,7 @@
   <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
 <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 </span><span id='analytics-baidu'></span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-12-10 20:10:32</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-12-11 12:57:01</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
@@ -356,7 +356,7 @@ _js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
             <!--wumii_relatedItems-->
 
 <script type="text/javascript">
-    var wumiiPermaLink = "http://haomou.net/2014/08/18/2014_grunt_gulp/";
+    var wumiiPermaLink = "http://haomou.net/2014/08/18/2014_tools_1/";
     var wumiiTitle = "Grunt，Gulp工具";
     var wumiiTags = "Grunt,Gulp";
     var wumiiCategories = ["自动化工具"];
