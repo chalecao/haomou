@@ -108,3 +108,17 @@ $(document).ready(function(){
 $(window).load(function(){
     NProgress.done();
 })
+$(function(){
+    $("#taobao_group1").hide();
+    $("#taobao_group2").fadeIn(500);
+    setInterval(function(){
+        if($("#taobao_group1").is(":visible")){
+            $("#taobao_group1").hide();
+            $("#taobao_group2").fadeIn(500);
+        }else{
+            $("#taobao_group2").hide();
+            $("#taobao_group1").fadeIn(500);
+        }
+
+    },5000)
+})
