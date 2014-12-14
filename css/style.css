@@ -101,7 +101,7 @@ article .entry hr {
 }
 article .entry h3 {
   color: #080;
-  margin: 40px 0px 10px 0px;
+  margin: 20px 0px 10px 0px;
   border-left: #008000 solid thick;
   padding: 10px 0px 10px 10px;
   background-color: #e2e2e2;
@@ -359,7 +359,8 @@ article a.more-link {
     text-align: right;
   }
   .container {
-    padding-left: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
     top: 0px;
   }
   .hm-left-nav {
