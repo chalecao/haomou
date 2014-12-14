@@ -49,6 +49,7 @@ jQuery(document).ready(function($){
     $(".hm-menu").click(function(){
         if($(".hm-menu-left-container").hasClass('zhankai')){
             $('.hm-menu-left-container').removeClass('zhankai').addClass("shouqi");
+            $(".collapse").hide();
             $('#content').removeClass('zhankai_hou').removeClass('zhankai').addClass("shouqi");
             $('#headflash').removeClass('zhankai').addClass("shouqi");
             $('#footer').removeClass('zhankai').addClass("shouqi");
@@ -59,6 +60,7 @@ jQuery(document).ready(function($){
             },600);
         }else{
             $('.hm-menu-left-container').removeClass('shouqi').addClass('zhankai');
+            $(".collapse").show();
             $('#content').removeClass('shouqi').addClass('zhankai');
             $('#headflash').removeClass('shouqi').addClass('zhankai');
             $('#footer').removeClass('shouqi').addClass('zhankai');

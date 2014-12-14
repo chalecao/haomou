@@ -352,6 +352,34 @@ article a.more-link {
   .hm-article {
     margin-left: auto;
   }
+  #headflash_f {
+    display: none;
+  }
+  .page-header {
+    text-align: right;
+  }
+  .container {
+    padding-left: 0px;
+    top: 0px;
+  }
+  .hm-left-nav {
+    display: none;
+  }
+  #widget_tagcloud {
+    display: none;
+  }
+  .hm-menu {
+    position: absolute;
+    right: 36px;
+    top: 45px;
+  }
+  .hm-navbar-header span,
+  .hm-navbar-header a {
+    display: none;
+  }
+  .hm-line {
+    display: none;
+  }
 }
 @-webkit-keyframes shineRed {
   from {
