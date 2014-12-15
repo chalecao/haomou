@@ -128,8 +128,6 @@
       
         <h3 id="简介">简介</h3>
 <p>本篇主要介绍图像处理中一些常用的数学理论，比如卷积，拉普拉斯变换，傅里叶变换等等。通过列举很多有趣的生活实例，增加对理论的理解。想起当时大学学的课程，突然感觉一位好老师是那么的重要，当然也不是随随便便就可以成为好老师的。这里大部分例子也是从网上搜集的，主要是分享知识。<br><a id="more"></a></p>
-<h3 id="作者">作者</h3>
-<p><img alt="皓眸GEEK" src="/images/hm.jpg" width="150" height="200"><br>Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域<br>毕业于中国科学技术大学，硕士研究生。喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身，等你来…哈哈…喜欢就写信给我喽。。。<br>擅长：JAVA，PHP，C#，JS，WebGL，WebRTC …<br>Mail To: chh1990@mail.ustc.edu.cn<br>WebSite：<a href="http://www.haomou.net" target="_blank" rel="external">http://www.haomou.net</a></p>
 <p>转载请注明出处：<a href="http://www.haomou.net/2014/08/05/2014_theory/" target="_blank" rel="external">http://www.haomou.net/2014/08/05/2014_theory/</a></p>
 <h3 id="卷积概念引入之滤波">卷积概念引入之滤波</h3>
 <p>这里讨论利用输入图像中像素的小邻域来产生输出图像的方法，在信号处理中这种方法称为滤波（filtering）。其中，最常用的是线性滤波：输出像素是输入邻域像素的加权和。<br>1.相关算子（Correlation Operator)<br>定义：<img class="floatnone" src="/images/theory1.png">,<br>即 <img class="floatnone" src="/images/theory2.png">，<br>其中ｈ称为相关核(Kernel).<br>步骤：<br>        1）滑动核，使其中心位于输入图像g的（i，j）像素上<br>        2）利用上式求和，得到输出图像的（i，j）像素值<br>        3）充分上面操纵，直到求出输出图像的所有像素值</p>
@@ -186,7 +184,7 @@
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/数学理论/" itemprop="url"><span itemprop="title" >数学理论</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/图像处理/" class="label label-primary" itemprop="url"><span itemprop="title">图像处理</span></a><a href="/tags/数学理论/" class="label label-success" itemprop="url"><span itemprop="title">数学理论</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-08 08:21:43"datetime="2014-12-08 08:21:43"> Dec 8 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/数学理论/" itemprop="url"><span itemprop="title" >数学理论</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/图像处理/" class="label label-primary" itemprop="url"><span itemprop="title">图像处理</span></a><a href="/tags/数学理论/" class="label label-success" itemprop="url"><span itemprop="title">数学理论</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-15 13:09:24"datetime="2014-12-15 13:09:24"> Dec 15 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/08/05/2014_theory/#comments" class="ds-thread-count comment-link" data-thread-key="2014_theory" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -213,6 +211,17 @@
 </div></div><!--wapper-->
        </div><!-- ID main-col END -->
        <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_myself" class="widget hm-left-widget" style="clear:both">
+    <img alt="皓眸GEEK" src="/images/hm.jpg" width="100" height="100"  style="border-radius: 5px;padding-right: 5px;float:left;"/>
+<div style="color: #428bca;text-align: center;font-size: 18px;">曹欢欢(chale)</div>自由工程师，热爱研究学习感兴趣领域
+毕业于中国科学技术大学，硕士研究生。<br/>喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身，等你来...哈哈...喜欢就写信给我喽。。。
+<br/>擅长：JAVA，PHP，C#，JS，WebGL，WebRTC ...
+<br/><span style="color: #fb6580;">Mail To: </span>chh1990@mail.ustc.edu.cn
+<br/><span style="color: #fb6580;">QQ：</span>807991555（chale）</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
 <div id="widget_search" class="widget hm-left-widget" style="clear:both">
   <div class="panel-heading">一般人我不告诉他？</div>  <div style="text-align: center;">
     <div id="taobao_group1">
@@ -235,18 +244,6 @@
 </div>
 </div>
 
-<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
-  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
-
-<div id="widget_recent_comments" class="widget hm-left-widget" style="clear:both">
-  <div class="panel-heading">最近评论</div>  
-
-<div class="list-group-item ds-recent-comments" data-num-items="6" data-show-avatars="1" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="50"></div>
-
-
-
-</div>
-
 </aside>
        <div class="clearfix"></div>
      </div><!-- row END -->
@@ -264,7 +261,7 @@
   <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
 <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 </span><span id='analytics-baidu'></span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-12-08 08:21:43</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-12-15 13:09:24</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>

@@ -128,8 +128,6 @@
       
         <h3 id="前言">前言</h3>
 <p>这里主要介绍一些常用的javascript函数，这里并不会介绍jQuery，因为在手机WEB项目中可能不会使用jQuery，主要尽量使用javascript控制，减少开销，提供响应速度。渐渐的发现，写博客真的是需要耐心的，我会坚持的。此帖会一直更新所用到的js函数。<br><a id="more"></a></p>
-<h3 id="作者">作者</h3>
-<p><img alt="皓眸GEEK" src="/images/hm.jpg" width="150" height="200"><br>Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域<br>毕业于中国科学技术大学，硕士研究生。喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身，等你来…哈哈…喜欢就写信给我喽。。。<br>擅长：JAVA，PHP，C#，JS，WebGL，WebRTC …<br>Mail To: chh1990@mail.ustc.edu.cn<br>WebSite：<a href="http://www.haomou.net" target="_blank" rel="external">http://www.haomou.net</a></p>
 <p>转载请注明出处：<a href="http://www.haomou.net/2014/08/05/2014_js/" target="_blank" rel="external">http://www.haomou.net/2014/08/05/2014_js/</a></p>
 <h3 id="querySelector">querySelector</h3>
 <p>querySelector和querySelectorAll是W3C提供的新的查询接口（<a href="http://www.w3.org/TR/selectors-api/#nodeselector" target="_blank" rel="external">http://www.w3.org/TR/selectors-api/#nodeselector</a> ），接口定义：</p>
@@ -172,7 +170,7 @@
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/JavaScript/" itemprop="url"><span itemprop="title" >JavaScript</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/JavaScript/" class="label label-primary" itemprop="url"><span itemprop="title">JavaScript</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-08 08:20:31"datetime="2014-12-08 08:20:31"> Dec 8 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/JavaScript/" itemprop="url"><span itemprop="title" >JavaScript</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/JavaScript/" class="label label-primary" itemprop="url"><span itemprop="title">JavaScript</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-15 13:08:21"datetime="2014-12-15 13:08:21"> Dec 15 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/08/05/2014_js/#comments" class="ds-thread-count comment-link" data-thread-key="2014_js" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -199,6 +197,17 @@
 </div></div><!--wapper-->
        </div><!-- ID main-col END -->
        <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_myself" class="widget hm-left-widget" style="clear:both">
+    <img alt="皓眸GEEK" src="/images/hm.jpg" width="100" height="100"  style="border-radius: 5px;padding-right: 5px;float:left;"/>
+<div style="color: #428bca;text-align: center;font-size: 18px;">曹欢欢(chale)</div>自由工程师，热爱研究学习感兴趣领域
+毕业于中国科学技术大学，硕士研究生。<br/>喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身，等你来...哈哈...喜欢就写信给我喽。。。
+<br/>擅长：JAVA，PHP，C#，JS，WebGL，WebRTC ...
+<br/><span style="color: #fb6580;">Mail To: </span>chh1990@mail.ustc.edu.cn
+<br/><span style="color: #fb6580;">QQ：</span>807991555（chale）</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
 <div id="widget_search" class="widget hm-left-widget" style="clear:both">
   <div class="panel-heading">一般人我不告诉他？</div>  <div style="text-align: center;">
     <div id="taobao_group1">
@@ -221,18 +230,6 @@
 </div>
 </div>
 
-<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
-  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
-
-<div id="widget_recent_comments" class="widget hm-left-widget" style="clear:both">
-  <div class="panel-heading">最近评论</div>  
-
-<div class="list-group-item ds-recent-comments" data-num-items="6" data-show-avatars="1" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="50"></div>
-
-
-
-</div>
-
 </aside>
        <div class="clearfix"></div>
      </div><!-- row END -->
@@ -250,7 +247,7 @@
   <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
 <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 </span><span id='analytics-baidu'></span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-12-08 08:20:31</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-12-15 13:08:21</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>

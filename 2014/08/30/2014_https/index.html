@@ -128,8 +128,7 @@
       
         <h3 id="研究HTTPS">研究HTTPS</h3>
 <p>曾几何时，只记得HTTPS的端口和HTTP的不同，一个是443，一个是80。以前做项目也是只晓得用第三方的jar包，只晓得怎么生成证书和使用方法与流程，对原理并不是很清楚。这里接着上一篇<a href="http://www.haomou.net/2014/08/27/2014_rsa/" target="_blank" rel="external">RSA算法</a>，本篇就详细介绍HTTPS协议和相关的SSL/TLS加密协议。<br><a id="more"></a><br><img class="floatnone" src="/images/https.jpg"></p>
-<h3 id="作者">作者</h3>
-<p><img alt="皓眸GEEK" src="/images/hm.jpg" width="150" height="200"><br>Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域<br>毕业于中国科学技术大学，硕士研究生。喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身，等你来…哈哈…喜欢就写信给我喽。。。<br>擅长：JAVA，PHP，C#，JS，WebGL，WebRTC …<br>Mail To: chh1990@mail.ustc.edu.cn<br>WebSite：<a href="http://www.haomou.net" target="_blank" rel="external">http://www.haomou.net</a><br><br><br>转载请注明出处：<a href="http://www.haomou.net/2014/08/30/2014_https/" target="_blank" rel="external">http://www.haomou.net/2014/08/30/2014_https/</a></p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/08/30/2014_https/" target="_blank" rel="external">http://www.haomou.net/2014/08/30/2014_https/</a></p>
 <h3 id="什么是HTTPS">什么是HTTPS</h3>
 <p><a href="http://baike.baidu.com/view/14121.htm?fr=aladdin" target="_blank" rel="external">百科定义</a>：<br>HTTPS（全称：Hyper Text Transfer Protocol over Secure Socket Layer），是以安全为目标的HTTP通道，简单讲是HTTP的安全版。即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。 它是一个URI scheme（抽象标识符体系），句法类同http\:体系。用于安全的HTTP数据传输。https\:URL表明它使用了HTTP，但HTTPS存在不同于HTTP的默认端口及一个加密/身份验证层（在HTTP与TCP之间）。这个系统的最初研发由网景公司(Netscape)进行，并内置于其浏览器Netscape Navigator中，提供了身份验证与加密通讯方法。现在它被广泛用于万维网上安全敏感的通讯，例如交易支付方面。<br><strong>HTTPS和HTTP的区别</strong><br>一、https协议需要到ca申请证书，一般免费证书很少，需要交费。<br>二、http是超文本传输协议，信息是明文传输，https 则是具有安全性的ssl加密传输协议。<br>三、http和https使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443。<br>四、http的连接很简单，是无状态的；HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，比http协议安全。<br>采用https的服务器必须从CA （Certificate Authority）申请一个用于证明服务器用途类型的证书。该证书只有用于对应的服务器的时候，客户端才信任此主机。所以所有的银行系统网站，关键部分应用都是https 的。客户通过信任该证书，从而信任了该主机。其实这样做效率很低，但是银行更侧重安全。这一点对局域网对内提供服务处的服务器没有任何意义。局域网中的服务器，采用的证书不管是自己发布的还是从公众的地方发布的，其客户端都是自己人，所以该局域网中的客户端也就肯定信任该服务器。<br><strong>数据的泄密和被篡改</strong><br>1． 一般意义上的https，就是服务器有一个证书。<br>a) 主要目的是保证服务器就是他声称的服务器，这个跟第一点一样。<br>b)服务端和客户端之间的所有通讯，都是加密的。<br>i. 具体讲，是客户端产生一个对称的密钥，通过服务器的证书来交换密钥，即一般意义上的握手过程。<br>ii. 接下来所有的信息往来就都是加密的。第三方即使截获，也没有任何意义，因为他没有密钥，当然篡改也就没有什么意义了。<br>2． 少许对客户端有要求的情况下，会要求客户端也必须有一个证书。<br>a) 这里客户端证书，其实就类似表示个人信息的时候，除了用户名/密码，还有一个CA 认证过的身份。因为个人证书一般来说是别人无法模拟的，所有这样能够更深的确认自己的身份。<br>b) 目前大多数个人银行的专业版是这种做法，具体证书可能是拿U盘（即U盾）作为一个备份的载体。</p>
 <h3 id="SSL/TLS由来">SSL/TLS由来</h3>
@@ -234,7 +233,7 @@ B 拥有 KEY_B1、KEY_B2, 其中KEY_B1是B的私有密钥，KEY_B2是B的公共�
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/HTTP协议/" itemprop="url"><span itemprop="title" >HTTP协议</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/HTTPS/" class="label label-primary" itemprop="url"><span itemprop="title">HTTPS</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-08 08:19:23"datetime="2014-12-08 08:19:23"> Dec 8 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/HTTP协议/" itemprop="url"><span itemprop="title" >HTTP协议</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/HTTPS/" class="label label-primary" itemprop="url"><span itemprop="title">HTTPS</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-15 13:07:02"datetime="2014-12-15 13:07:02"> Dec 15 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/08/30/2014_https/#comments" class="ds-thread-count comment-link" data-thread-key="2014_https" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -261,6 +260,17 @@ B 拥有 KEY_B1、KEY_B2, 其中KEY_B1是B的私有密钥，KEY_B2是B的公共�
 </div></div><!--wapper-->
        </div><!-- ID main-col END -->
        <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_myself" class="widget hm-left-widget" style="clear:both">
+    <img alt="皓眸GEEK" src="/images/hm.jpg" width="100" height="100"  style="border-radius: 5px;padding-right: 5px;float:left;"/>
+<div style="color: #428bca;text-align: center;font-size: 18px;">曹欢欢(chale)</div>自由工程师，热爱研究学习感兴趣领域
+毕业于中国科学技术大学，硕士研究生。<br/>喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身，等你来...哈哈...喜欢就写信给我喽。。。
+<br/>擅长：JAVA，PHP，C#，JS，WebGL，WebRTC ...
+<br/><span style="color: #fb6580;">Mail To: </span>chh1990@mail.ustc.edu.cn
+<br/><span style="color: #fb6580;">QQ：</span>807991555（chale）</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
 <div id="widget_search" class="widget hm-left-widget" style="clear:both">
   <div class="panel-heading">一般人我不告诉他？</div>  <div style="text-align: center;">
     <div id="taobao_group1">
@@ -283,18 +293,6 @@ B 拥有 KEY_B1、KEY_B2, 其中KEY_B1是B的私有密钥，KEY_B2是B的公共�
 </div>
 </div>
 
-<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
-  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
-
-<div id="widget_recent_comments" class="widget hm-left-widget" style="clear:both">
-  <div class="panel-heading">最近评论</div>  
-
-<div class="list-group-item ds-recent-comments" data-num-items="6" data-show-avatars="1" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="50"></div>
-
-
-
-</div>
-
 </aside>
        <div class="clearfix"></div>
      </div><!-- row END -->
@@ -312,7 +310,7 @@ B 拥有 KEY_B1、KEY_B2, 其中KEY_B1是B的私有密钥，KEY_B2是B的公共�
   <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
 <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 </span><span id='analytics-baidu'></span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-12-08 08:19:23</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-12-15 13:07:02</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>

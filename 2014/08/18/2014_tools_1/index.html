@@ -129,8 +129,6 @@
         <h3 id="工具介绍">工具介绍</h3>
 <p>一个应用开发到一定阶段，普遍会遇到一个问题。当功能越来越多，代码量越来越大，bug修复越来越频繁，开发人员一波一波的交替，…..应该用会向着越来越不可控发展。我们不能再准确估计新功能的开发时间，也不知道一个bug修复后是否会引发另一个bug出现。所有的程序开发，都会面临着这样的问题。C/C++程序通过makefile管理编译测试打包的过程，Java程序通过Maven,Ant实现项目构建管理功能，Python有pip，Ruby有gem。在Nodejs的领域，我们同样需要一个项目构建工具。</p>
 <p>本节主要介绍两种自动化构建工具，包括Grunt和Gulp，后续篇章中还会介绍bower包管理工具和Yeoman构建工具。这里先详细介绍这两种自动化构建工具，gulp.js 是一种基于流的，代码优于配置的新一代构建工具。Gulp 和 Grunt 类似。但相比于 Grunt 的频繁的 IO 操作，Gulp 的流操作，能更快地完成构建。<br><a id="more"></a></p>
-<h3 id="作者">作者</h3>
-<p><img alt="皓眸GEEK" src="/images/hm.jpg" width="150" height="200"><br>Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域<br>毕业于中国科学技术大学，硕士研究生。喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身，等你来…哈哈…喜欢就写信给我喽。。。<br>擅长：JAVA，PHP，C#，JS，WebGL，WebRTC …<br>Mail To: chh1990@mail.ustc.edu.cn<br>WebSite：<a href="http://www.haomou.net" target="_blank" rel="external">http://www.haomou.net</a></p>
 <p>转载请注明出处：<a href="http://www.haomou.net/2014/08/18/2014_tools_1/" target="_blank" rel="external">http://www.haomou.net/2014/08/18/2014_tools_1/</a></p>
 <h3 id="Grunt配置及安装">Grunt配置及安装</h3>
 <p>Grunt是一个自动化的项目构建工具. 如果你需要重复的执行像压缩, 编译, 单元测试, 代码检查以及打包发布的任务. 那么你可以使用Grunt来处理这些任务, 你所需要做的只是配置好Grunt, 这样能很大程度的简化你的工作.如果在团队中使用Grunt, 你只需要与其他人员约定好使用Grunt应该规避的问题, 就能够很方便的自动化的处理大部分的常见工作任务, 你所付出的努力几乎为0.</p>
@@ -243,7 +241,7 @@
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/自动化工具/" itemprop="url"><span itemprop="title" >自动化工具</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/Grunt/" class="label label-primary" itemprop="url"><span itemprop="title">Grunt</span></a><a href="/tags/Gulp/" class="label label-success" itemprop="url"><span itemprop="title">Gulp</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-11 12:57:01"datetime="2014-12-11 12:57:01"> Dec 11 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/自动化工具/" itemprop="url"><span itemprop="title" >自动化工具</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/Grunt/" class="label label-primary" itemprop="url"><span itemprop="title">Grunt</span></a><a href="/tags/Gulp/" class="label label-success" itemprop="url"><span itemprop="title">Gulp</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-15 13:09:28"datetime="2014-12-15 13:09:28"> Dec 15 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/08/18/2014_tools_1/#comments" class="ds-thread-count comment-link" data-thread-key="2014_tools_1" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -270,6 +268,17 @@
 </div></div><!--wapper-->
        </div><!-- ID main-col END -->
        <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_myself" class="widget hm-left-widget" style="clear:both">
+    <img alt="皓眸GEEK" src="/images/hm.jpg" width="100" height="100"  style="border-radius: 5px;padding-right: 5px;float:left;"/>
+<div style="color: #428bca;text-align: center;font-size: 18px;">曹欢欢(chale)</div>自由工程师，热爱研究学习感兴趣领域
+毕业于中国科学技术大学，硕士研究生。<br/>喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身，等你来...哈哈...喜欢就写信给我喽。。。
+<br/>擅长：JAVA，PHP，C#，JS，WebGL，WebRTC ...
+<br/><span style="color: #fb6580;">Mail To: </span>chh1990@mail.ustc.edu.cn
+<br/><span style="color: #fb6580;">QQ：</span>807991555（chale）</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
 <div id="widget_search" class="widget hm-left-widget" style="clear:both">
   <div class="panel-heading">一般人我不告诉他？</div>  <div style="text-align: center;">
     <div id="taobao_group1">
@@ -292,18 +301,6 @@
 </div>
 </div>
 
-<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
-  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
-
-<div id="widget_recent_comments" class="widget hm-left-widget" style="clear:both">
-  <div class="panel-heading">最近评论</div>  
-
-<div class="list-group-item ds-recent-comments" data-num-items="6" data-show-avatars="1" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="50"></div>
-
-
-
-</div>
-
 </aside>
        <div class="clearfix"></div>
      </div><!-- row END -->
@@ -321,7 +318,7 @@
   <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
 <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 </span><span id='analytics-baidu'></span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-12-11 12:57:01</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-12-15 13:09:28</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>

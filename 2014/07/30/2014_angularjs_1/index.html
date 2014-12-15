@@ -128,8 +128,6 @@
       
         <h3 id="前言">前言</h3>
 <p>最近在寻找一些前端开发框架，特别是需要开发webApp的框架。之前找到了一个开源框架the m project，估计您不一定听过，这是一个集成好的mobile app开发框架，这个项目已经接近半年没有维护了，当时看到了这个项目集成了如backboneJS，jquery，Font Awesome等项目，感觉很酷，研究了一下，做了个demo。运行起来浏览器还可以接受。手机端太慢了。所以决定放弃，而且这个框架太过厚重，很复杂，本来作者的出发点是想做简化，可是我个人觉得，越做越复杂，不灵活。所以开始研究其他的框架。其实一早就看过AngularJS，只是没有细致的学过。正好，这次就定下用Angular+Ratchet+FastClick来做开发框架，自己构建项目了。首先这里我记录一下学习Angular的整个笔记。分享给喜欢学习的同学，其他两个框架，稍后系列教程中给出。<br><a id="more"></a></p>
-<h3 id="作者">作者</h3>
-<p><img alt="皓眸GEEK" src="/images/hm.jpg" width="150" height="200"><br>Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域<br>毕业于中国科学技术大学，硕士研究生。喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身，等你来…哈哈…喜欢就写信给我喽。。。<br>擅长：JAVA，PHP，C#，JS，WebGL，WebRTC …<br>Mail To: chh1990@mail.ustc.edu.cn<br>WebSite：<a href="http://www.haomou.net" target="_blank" rel="external">http://www.haomou.net</a></p>
 <p>转载请注明出处：<a href="http://www.haomou.net/2014/07/29/2014_angularjs_1/" target="_blank" rel="external">http://www.haomou.net/2014/07/29/2014_angularjs_1/</a></p>
 <h3 id="AngularJS简介">AngularJS简介</h3>
 <p><strong>step1:</strong> 进入官网(<a href="http://www.nodejs.org/" target="_blank" rel="external">http://www.nodejs.org/</a> )，下载安装包安装，本文作者用的是win8.1系统。windows系统会自动将nodeJS安装后的路径加到系统环境变量path中，如果你在cmd控制台输入：node，没有反应，则说明你的这个nodeJS目录没有添加到系统环境变量中，请手动添加。<br>我的nodeJS版本如下：</p>
@@ -207,7 +205,7 @@
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/AngularJS/" itemprop="url"><span itemprop="title" >AngularJS</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/AngularJS/" class="label label-primary" itemprop="url"><span itemprop="title">AngularJS</span></a><a href="/tags/笔记/" class="label label-success" itemprop="url"><span itemprop="title">笔记</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-08 08:22:10"datetime="2014-12-08 08:22:10"> Dec 8 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/AngularJS/" itemprop="url"><span itemprop="title" >AngularJS</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/AngularJS/" class="label label-primary" itemprop="url"><span itemprop="title">AngularJS</span></a><a href="/tags/笔记/" class="label label-success" itemprop="url"><span itemprop="title">笔记</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-15 13:05:41"datetime="2014-12-15 13:05:41"> Dec 15 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/07/30/2014_angularjs_1/#comments" class="ds-thread-count comment-link" data-thread-key="2014_angularjs_1" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -234,6 +232,17 @@
 </div></div><!--wapper-->
        </div><!-- ID main-col END -->
        <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_myself" class="widget hm-left-widget" style="clear:both">
+    <img alt="皓眸GEEK" src="/images/hm.jpg" width="100" height="100"  style="border-radius: 5px;padding-right: 5px;float:left;"/>
+<div style="color: #428bca;text-align: center;font-size: 18px;">曹欢欢(chale)</div>自由工程师，热爱研究学习感兴趣领域
+毕业于中国科学技术大学，硕士研究生。<br/>喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身，等你来...哈哈...喜欢就写信给我喽。。。
+<br/>擅长：JAVA，PHP，C#，JS，WebGL，WebRTC ...
+<br/><span style="color: #fb6580;">Mail To: </span>chh1990@mail.ustc.edu.cn
+<br/><span style="color: #fb6580;">QQ：</span>807991555（chale）</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
 <div id="widget_search" class="widget hm-left-widget" style="clear:both">
   <div class="panel-heading">一般人我不告诉他？</div>  <div style="text-align: center;">
     <div id="taobao_group1">
@@ -256,18 +265,6 @@
 </div>
 </div>
 
-<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
-  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
-
-<div id="widget_recent_comments" class="widget hm-left-widget" style="clear:both">
-  <div class="panel-heading">最近评论</div>  
-
-<div class="list-group-item ds-recent-comments" data-num-items="6" data-show-avatars="1" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="50"></div>
-
-
-
-</div>
-
 </aside>
        <div class="clearfix"></div>
      </div><!-- row END -->
@@ -285,7 +282,7 @@
   <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
 <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 </span><span id='analytics-baidu'></span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-12-08 08:22:10</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-12-15 13:05:41</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>

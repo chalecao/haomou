@@ -128,8 +128,7 @@
       
         <h3 id="研究RSA">研究RSA</h3>
 <p>不知为何，这几天突然有些心烦。望苍茫大地，凭添几分忧伤，可能是下雨的缘故。本篇主要想详细介绍RSA加密算法的原理，经常听别人说，这里是自己想搞清楚，弄明白。首先介绍了基本的数学原理，然后给出一个具体的计算例子和相关的理论充分性证明。<br><a id="more"></a><br><img class="floatnone" src="/images/rsa.png"></p>
-<h3 id="作者">作者</h3>
-<p><img alt="皓眸GEEK" src="/images/hm.jpg" width="150" height="200"><br>Chale Cao（曹欢欢），自由工程师，热爱研究学习感兴趣领域<br>毕业于中国科学技术大学，硕士研究生。喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身，等你来…哈哈…喜欢就写信给我喽。。。<br>擅长：JAVA，PHP，C#，JS，WebGL，WebRTC …<br>Mail To: chh1990@mail.ustc.edu.cn<br>WebSite：<a href="http://www.haomou.net" target="_blank" rel="external">http://www.haomou.net</a><br><br><br>转载请注明出处：<a href="http://www.haomou.net/2014/08/27/2014_rsa/" target="_blank" rel="external">http://www.haomou.net/2014/08/27/2014_rsa/</a></p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/08/27/2014_rsa/" target="_blank" rel="external">http://www.haomou.net/2014/08/27/2014_rsa/</a></p>
 <h3 id="RSA由来">RSA由来</h3>
 <p>1976年以前，所有的加密方法都是同一种模式：<br>　　（1）甲方选择某一种加密规则，对信息进行加密；<br>　　（2）乙方使用同一种规则，对信息进行解密。<br>由于加密和解密使用同样规则（简称”密钥”），这被称为”对称加密算法”（Symmetric-key algorithm）。这种加密模式有一个最大弱点：甲方必须把加密规则告诉乙方，否则无法解密。保存和传递密钥，就成了最头疼的问题。<br><img class="floatnone" src="/images/rsa1.jpg"><br>1976年，两位美国计算机学家Whitfield Diffie 和 Martin、Hellman，提出了一种崭新构思，可以在不直接传递密钥的情况下，完成解密。这被称为”Diffie-Hellman密钥交换算法”。这个算法启发了其他科学家。人们认识到，加密和解密可以使用不同的规则，只要这两种规则之间存在某种对应关系即可，这样就避免了直接传递密钥。这种新的加密模式被称为”非对称加密算法”。<br>　　（1）乙方生成两把密钥（公钥和私钥）。公钥是公开的，任何人都可以获得，私钥则是保密的。<br>　　（2）甲方获取乙方的公钥，然后用它对信息加密。<br>　　（3）乙方得到加密后的信息，用私钥解密。<br>如果公钥加密的信息只有私钥解得开，那么只要私钥不泄漏，通信就是安全的。<br><img class="floatnone" src="/images/rsa2.jpg"><br>1977年，三位数学家Rivest、Shamir 和 Adleman 设计了一种算法，可以实现非对称加密。这种算法用他们三个人的名字命名，叫做RSA算法。从那时直到现在，RSA算法一直是最广为使用的”非对称加密算法”。毫不夸张地说，只要有计算机网络的地方，就有RSA算法。<br>这种算法非常可靠，密钥越长，它就越难破解。根据已经披露的文献，目前被破解的最长RSA密钥是768个二进制位。也就是说，长度超过768位的密钥，还无法破解（至少没人公开宣布）。因此可以认为，1024位的RSA密钥基本安全，2048位的密钥极其安全。<br>下面，我就进入正题，解释RSA算法的原理。文章共分成两部分，今天是第一部分，介绍要用到的四个数学概念。你可以看到，RSA算法并不难，只需要一点数论知识就可以理解。</p>
 <h3 id="理论基础">理论基础</h3>
@@ -264,7 +263,7 @@
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/加密算法/" itemprop="url"><span itemprop="title" >加密算法</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/RSA/" class="label label-primary" itemprop="url"><span itemprop="title">RSA</span></a><a href="/tags/加密/" class="label label-success" itemprop="url"><span itemprop="title">加密</span></a><a href="/tags/算法/" class="label label-info" itemprop="url"><span itemprop="title">算法</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-08 08:21:34"datetime="2014-12-08 08:21:34"> Dec 8 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/加密算法/" itemprop="url"><span itemprop="title" >加密算法</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/RSA/" class="label label-primary" itemprop="url"><span itemprop="title">RSA</span></a><a href="/tags/加密/" class="label label-success" itemprop="url"><span itemprop="title">加密</span></a><a href="/tags/算法/" class="label label-info" itemprop="url"><span itemprop="title">算法</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-15 13:09:16"datetime="2014-12-15 13:09:16"> Dec 15 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/08/27/2014_rsa/#comments" class="ds-thread-count comment-link" data-thread-key="2014_rsa" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -291,6 +290,17 @@
 </div></div><!--wapper-->
        </div><!-- ID main-col END -->
        <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_myself" class="widget hm-left-widget" style="clear:both">
+    <img alt="皓眸GEEK" src="/images/hm.jpg" width="100" height="100"  style="border-radius: 5px;padding-right: 5px;float:left;"/>
+<div style="color: #428bca;text-align: center;font-size: 18px;">曹欢欢(chale)</div>自由工程师，热爱研究学习感兴趣领域
+毕业于中国科学技术大学，硕士研究生。<br/>喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身，等你来...哈哈...喜欢就写信给我喽。。。
+<br/>擅长：JAVA，PHP，C#，JS，WebGL，WebRTC ...
+<br/><span style="color: #fb6580;">Mail To: </span>chh1990@mail.ustc.edu.cn
+<br/><span style="color: #fb6580;">QQ：</span>807991555（chale）</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
 <div id="widget_search" class="widget hm-left-widget" style="clear:both">
   <div class="panel-heading">一般人我不告诉他？</div>  <div style="text-align: center;">
     <div id="taobao_group1">
@@ -313,18 +323,6 @@
 </div>
 </div>
 
-<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
-  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
-
-<div id="widget_recent_comments" class="widget hm-left-widget" style="clear:both">
-  <div class="panel-heading">最近评论</div>  
-
-<div class="list-group-item ds-recent-comments" data-num-items="6" data-show-avatars="1" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="50"></div>
-
-
-
-</div>
-
 </aside>
        <div class="clearfix"></div>
      </div><!-- row END -->
@@ -342,7 +340,7 @@
   <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
 <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 </span><span id='analytics-baidu'></span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-12-08 08:21:34</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-12-15 13:09:16</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
