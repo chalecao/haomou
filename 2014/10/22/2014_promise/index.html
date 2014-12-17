@@ -1,0 +1,440 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="wumiiVerification" content="1747c9bc-e905-45aa-88ac-f13f2b210015" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>异步回调之Promise对象 | 皓眸IT</title>
+<meta name="author" content="Chale Cao">
+
+<meta name="description" content="异步思想你可能知道，Javascript语言的执行环境是”单线程”（single thread）。所谓”单线程”，就是指一次只能完成一件任务。如果有多个任务，就必须排队，前面一个任务完成，再执行后面一个任务，以此类推。">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="异步回调之Promise对象"/>
+<meta property="og:site_name" content="皓眸IT"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css">
+<![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="皓眸IT Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+
+<link rel="stylesheet" href="/css/nprogress.css" type="text/css">
+
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.bootcss.com/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+  
+  <header id="header" class="hm-menu-left-container"><nav id="main-nav" class="navbar navbar-default hm-navbar-menu-left  " role="navigation">
+    <div class="hm-navbar-header">
+    <a href="http://haomou.net" ><img class="hm-logo" src="/images/haomou.png" title="皓眸IT" width="64" height="64" /></a>
+    <br/>|<br/><span class="fa fa-tint hm-black shine_blue" ></span><br/>|<br/><span class="fa fa-heart hm-black shine_red" ></span><br/>|<br/>
+        <i class="fa fa-bars fa-2x hm-black hm-menu shine_blue" ></i><br/><div class="hm-line"></div>
+    </div>
+    <div class="collapse navbar-collapse">
+      <h1 style="color:black">皓眸IT</h1>
+      <ul class="nav navbar-nav hm-left-nav">
+  
+        <li item='2014/10/22/2014_promise/' class='active'><a href="/" title="首页">首页</a></li>      
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>关于我<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://home.ustc.edu.cn/~chh1990/chero/chero.html" title="个人主页">个人主页</a></li>    
+        </ul>
+      </li>
+    
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>创业项目<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://pictcake.cn" title="照片蛋糕">照片蛋糕</a></li>    
+        </ul>
+      </li>
+    
+      </ul>
+
+        
+        <div id="widget_category" class="widget hm-left-widget">
+            <div class="panel-heading">分类：</div>            <div data-src='category' class='ajax_widgets'>正在加载...</div>
+        </div>
+        
+        <div id="widget_tagcloud" class="widget hm-left-widget">
+            <div class="panel-heading">标签云：</div>            <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div>        </div>
+        
+
+
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/chalecao">github</a></li>
+      
+      </ul>
+    </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div style="" id="headflash" class="headflash hm_container"><embed pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="/images/bck.swf" width="100%" height="313" style="undefined" id="headflash_f" name="headflash_f" bgcolor="#000" quality="high" allowscriptaccess="false" wmode="transparent" allowfullscreen="false"></div>
+  <div id='content' class=" container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>皓眸IT <small>写清楚，说明白</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article class="hm-article">
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left hm-article-w"></i>
+      <h1 class="title">异步回调之Promise对象</h1>
+      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-10-22T10:38:21.000Z"> <a href="/2014/10/22/2014_promise/">Oct 22 2014</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry"  data-spy="scroll" data-target="#toc" >
+      
+        <h3 id="异步思想">异步思想</h3>
+<p>你可能知道，Javascript语言的执行环境是”单线程”（single thread）。<br>所谓”单线程”，就是指一次只能完成一件任务。如果有多个任务，就必须排队，前面一个任务完成，再执行后面一个任务，以此类推。</p>
+<p>这种模式的好处是实现起来比较简单，执行环境相对单纯；坏处是只要有一个任务耗时很长，后面的任务都必须排队等着，会拖延整个程序的执行。常见的浏览器无响应（假死），往往就是因为某一段Javascript代码长时间运行（比如死循环），导致整个页面卡在这个地方，其他任务无法执行。</p>
+<p><a id="more"></a><br><img class="floatnone" src="/images/promise1.jpg"></p>
+<p>为了解决这个问题，Javascript语言将任务的执行模式分成两种：同步（Synchronous）和异步（Asynchronous）。<br>“同步模式”就是上一段的模式，后一个任务等待前一个任务结束，然后再执行，程序的执行顺序与任务的排列顺序是一致的、同步的；”异步模式”则完全不同，每一个任务有一个或多个回调函数（callback），前一个任务结束后，不是执行后一个任务，而是执行回调函数，后一个任务则是不等前一个任务结束就执行，所以程序的执行顺序与任务的排列顺序是不一致的、异步的。</p>
+<p>“异步模式”非常重要。在浏览器端，耗时很长的操作都应该异步执行，避免浏览器失去响应，最好的例子就是Ajax操作。在服务器端，”异步模式”甚至是唯一的模式，因为执行环境是单线程的，如果允许同步执行所有http请求，服务器性能会急剧下降，很快就会失去响应。<br>本文总结了”异步模式”编程的4种方法，理解它们可以让你写出结构更合理、性能更出色、维护更方便的Javascript程序。</p>
+<h3 id="回调函数">回调函数</h3>
+<p>这是异步编程最基本的方法。<br>假定有两个函数f1和f2，后者等待前者的执行结果。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function">f1</span>();</div><div class="line"><span class="function">f2</span>();</div></pre></td></tr></table></figure>
+
+<p>如果f1是一个很耗时的任务，可以考虑改写f1，把f2写成f1的回调函数。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span><span class="params">(callback)</span></span>{</div><div class="line">　　　　setTimeout(<span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">　　　　　　<span class="comment">// f1的任务代码</span></div><div class="line">　　　　　　<span class="keyword">callback</span>();</div><div class="line">　　　　}, <span class="number">1000</span>);</div><div class="line">　　}</div></pre></td></tr></table></figure>
+
+<p>执行代码就变成下面这样：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function">f1</span>(f2);</div></pre></td></tr></table></figure>
+
+<p>采用这种方式，我们把同步操作变成了异步操作，f1不会堵塞程序运行，相当于先执行程序的主要逻辑，将耗时的操作推迟执行。<br>回调函数的优点是简单、容易理解和部署，缺点是不利于代码的阅读和维护，各个部分之间高度耦合（Coupling），流程会很混乱，而且每个任务只能指定一个回调函数。</p>
+<h3 id="事件监听">事件监听</h3>
+<p>另一种思路是采用事件驱动模式。任务的执行不取决于代码的顺序，而取决于某个事件是否发生。<br>还是以f1和f2为例。首先，为f1绑定一个事件（这里采用的jQuery的写法）。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">f1.<span class="keyword">on</span>(<span class="string">'done'</span>, f2);</div></pre></td></tr></table></figure>
+
+<p>上面这行代码的意思是，当f1发生done事件，就执行f2。然后，对f1进行改写：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span><span class="params">()</span></span>{</div><div class="line">　　　　setTimeout(<span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">　　　　　　<span class="comment">// f1的任务代码</span></div><div class="line">　　　　　　f1.trigger(<span class="string">'done'</span>);</div><div class="line">　　　　}, <span class="number">1000</span>);</div><div class="line">　　}</div></pre></td></tr></table></figure>
+
+<p>f1.trigger(‘done’)表示，执行完成后，立即触发done事件，从而开始执行f2。<br>这种方法的优点是比较容易理解，可以绑定多个事件，每个事件可以指定多个回调函数，而且可以”去耦合”（Decoupling），有利于实现模块化。缺点是整个程序都要变成事件驱动型，运行流程会变得很不清晰。</p>
+<h3 id="发布/订阅">发布/订阅</h3>
+<p>上一节的”事件”，完全可以理解成”信号”。<br>我们假定，存在一个”信号中心”，某个任务执行完成，就向信号中心”发布”（publish）一个信号，其他任务可以向信号中心”订阅”（subscribe）这个信号，从而知道什么时候自己可以开始执行。这就叫做”发布/订阅模式”（publish-subscribe pattern），又称”观察者模式”（observer pattern）。<br>这个模式有多种实现，下面采用的是Ben Alman的Tiny Pub/Sub，这是jQuery的一个插件。<br>首先，f2向”信号中心”jQuery订阅”done”信号。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">jQuery.subscribe(<span class="string">"done"</span>, f2);</div></pre></td></tr></table></figure>
+
+<p>然后，f1进行如下改写：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">　<span class="function"><span class="keyword">function</span> <span class="title">f1</span><span class="params">()</span></span>{</div><div class="line">　　　　setTimeout(<span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">　　　　　　<span class="comment">// f1的任务代码</span></div><div class="line">　　　　　　jQuery.publish(<span class="string">"done"</span>);</div><div class="line">　　　　}, <span class="number">1000</span>);</div><div class="line">　　}</div></pre></td></tr></table></figure>
+
+<p>jQuery.publish(“done”)的意思是，f1执行完成后，向”信号中心”jQuery发布”done”信号，从而引发f2的执行。<br>此外，f2完成执行后，也可以取消订阅（unsubscribe）。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">　jQuery.unsubscribe(<span class="string">"done"</span>, f2);</div></pre></td></tr></table></figure>
+
+<p>这种方法的性质与”事件监听”类似，但是明显优于后者。因为我们可以通过查看”消息中心”，了解存在多少信号、每个信号有多少订阅者，从而监控程序的运行。</p>
+<h3 id="Promises对象">Promises对象</h3>
+<p>Promises对象是CommonJS工作组提出的一种规范，目的是为异步编程提供统一接口。<br>简单说，它的思想是，每一个异步任务返回一个Promise对象，该对象有一个then方法，允许指定回调函数。比如，f1的回调函数f2,可以写成：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">f1().<span class="keyword">then</span>(f2);</div></pre></td></tr></table></figure>
+
+<p>f1要进行如下改写（这里使用的是jQuery的实现）：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span><span class="params">()</span></span>{</div><div class="line">　　　　<span class="keyword">var</span> dfd = $.Deferred();</div><div class="line">　　　　setTimeout(<span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">　　　　　　<span class="comment">// f1的任务代码</span></div><div class="line">　　　　　　dfd.resolve();</div><div class="line">　　　　}, <span class="number">500</span>);</div><div class="line">　　　　<span class="keyword">return</span> dfd.promise;</div><div class="line">　　}</div></pre></td></tr></table></figure>
+
+<p>这样写的优点在于，回调函数变成了链式写法，程序的流程可以看得很清楚，而且有一整套的配套方法，可以实现许多强大的功能。<br>比如，指定多个回调函数：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">f1().<span class="keyword">then</span>(f2).<span class="keyword">then</span>(f3);</div></pre></td></tr></table></figure>
+
+<p>再比如，指定发生错误时的回调函数：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">f1().<span class="keyword">then</span>(f2).fail(f3);</div></pre></td></tr></table></figure>
+
+<p>而且，它还有一个前面三种方法都没有的好处：如果一个任务已经完成，再添加回调函数，该回调函数会立即执行。所以，你不用担心是否错过了某个事件或信号。这种方法的缺点就是编写和理解，都相对比较难。下面我们详细介绍promise对象。</p>
+<h3 id="promise详解">promise详解</h3>
+<p>其实 Promise 这个东西提出来也挺久时间了，它是一种解决复杂异步回调逻辑的方法。大部分人类的正常思维方式都是线性连贯的，但是在 JavaScript 中，异步却是主流。所以，在遇到复杂逻辑时，我们往往会写成这样：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Code uses jQuery to illustrate the Pyramid of Doom</span></div><div class="line">(<span class="function"><span class="keyword">function</span><span class="params">($)</span> </span>{</div><div class="line">  $(<span class="function"><span class="keyword">function</span><span class="params">()</span></span>{</div><div class="line">    $(<span class="string">"button"</span>).click(<span class="function"><span class="keyword">function</span><span class="params">(e)</span> </span>{</div><div class="line">      $.get(<span class="string">"/test.json"</span>, <span class="function"><span class="keyword">function</span><span class="params">(data, textStatus, jqXHR)</span> </span>{</div><div class="line">        $(<span class="string">".list"</span>).each(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">          $(<span class="keyword">this</span>).click(<span class="function"><span class="keyword">function</span><span class="params">(e)</span> </span>{</div><div class="line">            setTimeout(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">              alert(<span class="string">"Hello World!"</span>);</div><div class="line">            }, <span class="number">1000</span>);</div><div class="line">          });</div><div class="line">        });</div><div class="line">      });</div><div class="line">    });</div><div class="line">  });</div><div class="line">})(jQuery);</div></pre></td></tr></table></figure>
+
+<p>这就是所谓的「回调金字塔」,解决这个方法最简单的方法，就是把匿名函数取个名字，单独提取出来定义。但是当遇到多变的业务场景时，具名函数的方法也不太管用，于是便有了各种高级的碾平异步回调的解决方案，Promise 就是其中一种。</p>
+<p>在 ECMAScript 6 中，Promise 模式得到了原生的支持。我们就从原生模型说起。</p>
+<h4 id="ECMAScript_6_Promise">ECMAScript 6 Promise</h4>
+<p>为了简化各种各样的异步逻辑，我们先假设有一个会花一些时间来完成的 JS 函数。它的功能很简单，就是过一段时间以后调用传入的回调函数。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> wait = <span class="function"><span class="keyword">function</span><span class="params">(callback, param)</span> </span>{</div><div class="line">  setTimeout(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    callback(param)</div><div class="line">  }, <span class="number">2000</span> + (<span class="built_in">Math</span>.random() - <span class="number">0.5</span>) * <span class="number">1000</span>);</div><div class="line">}</div><div class="line">wait(<span class="built_in">console</span>.log.bind(<span class="built_in">console</span>), <span class="string">'test'</span>);</div></pre></td></tr></table></figure>
+
+<p>你可以想象多层嵌套的时候大概是什么样子：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">wait(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'如果你愿意'</span>);</div><div class="line">  wait(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'一层'</span>);</div><div class="line">    wait(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">      <span class="built_in">console</span>.log(<span class="string">'一层'</span>);</div><div class="line">      wait(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'一层地'</span>);</div><div class="line">        wait(<span class="built_in">console</span>.log.bind(<span class="built_in">console</span>), <span class="string">'剥开我的心'</span>);</div><div class="line">      });</div><div class="line">    });</div><div class="line">  });</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<p>那么，在 Promise 的世界里是什么样的呢？这就不得不先枯燥地解释一些东西了。首先，什么叫做一个「promise」？一个 promise 可以是一个对象或者函数，它包含一个 then 接口并且符合相应的规范。使用一个 promise 的方法就是这样：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="transposed_variable">promise.</span><span class="keyword">then</span>(<span class="function"><span class="keyword">function</span><span class="params">(response)</span> {</span></div><div class="line">    <span class="comment">// onFulfilled 时执行</span></div><div class="line">}, <span class="function"><span class="keyword">function</span><span class="params">(error)</span> {</span></div><div class="line">    <span class="comment">// onRejected 时执行</span></div><div class="line">});</div></pre></td></tr></table></figure>
+
+<p>于是问题又来了，什么叫做 fulfilled 和 rejected 呢？一个 promise 会有三种状态，大致可以理解为执行成功（fulfilled）、执行失败（rejected）和正在执行中（pending）。Promise 包含一个状态机，它内部的状态转换，只允许从 pending 到 fulfilled 或者 rejected 一次，不允许更多了。如果用大家喜闻乐见的薛定谔的猫来解释，就是打开盒子的时候，我们的猫要么死了，要么没死，要么不确定死没死，死的的猫无法复活，活猫也一定不会死:D</p>
+<p>新建一个 promise 的时候，我们需要在代码中定义什么时候算成功了，什么时候算失败了。于是上面 wait 的例子便可以改写这样了：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">waitPromise</span><span class="params">(param)</span> </span>{</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> Promise(<span class="function"><span class="keyword">function</span><span class="params">(resolve, reject)</span> </span>{</div><div class="line">    setTimeout(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">      resolve(param);</div><div class="line">    }, <span class="number">2000</span> + (<span class="built_in">Math</span>.random() - <span class="number">0.5</span>) * <span class="number">1000</span>);</div><div class="line">  });</div><div class="line">}</div><div class="line"></div><div class="line">waitPromise(<span class="string">'如果你愿意'</span>).then(<span class="function"><span class="keyword">function</span><span class="params">(response)</span> </span>{</div><div class="line">  <span class="built_in">console</span>.log(response);</div><div class="line">  <span class="keyword">return</span> waitPromise(<span class="string">'一层'</span>);</div><div class="line">}).then(<span class="function"><span class="keyword">function</span><span class="params">(response)</span> </span>{</div><div class="line">  <span class="built_in">console</span>.log(response);</div><div class="line">  <span class="keyword">return</span> waitPromise(<span class="string">'一层'</span>);</div><div class="line">}).then(<span class="function"><span class="keyword">function</span><span class="params">(response)</span> </span>{</div><div class="line">  <span class="built_in">console</span>.log(response);</div><div class="line">  <span class="keyword">return</span> waitPromise(<span class="string">'一层地'</span>);</div><div class="line">}).then(<span class="function"><span class="keyword">function</span><span class="params">(response)</span> </span>{</div><div class="line">  <span class="built_in">console</span>.log(response);</div><div class="line">  <span class="keyword">return</span> waitPromise(<span class="string">'剥开我的心'</span>);</div><div class="line">}).then(<span class="built_in">console</span>.log.bind(<span class="built_in">console</span>));</div></pre></td></tr></table></figure>
+
+<p>从上面的例子中，我们可以看出几点：</p>
+<ol>
+<li>一个 promise 它 resolve（或者 reject）的东西就是 then 的两个回调接受的参数。</li>
+<li>then 可以链式调用，调用的顺序就是你定义的顺序。</li>
+<li>在 onFulfilled（或者 onRejected）中，你可以返回一个 promise，此时 then 会返回这个 promise 的一个代理，并响应它的状态变化（即给下一个 then 使用）。</li>
+</ol>
+<p>onFulfilled 和 onRejected 中，除了可以返回一个 promise 以外，还可以返回一个对象，其中包含一个 then 方法——这样的对象称作 thenable。当 thenable 被返回时，代理的 promise 就会去调用该方法，并传入 resolvePromise 和 rejectPromise 两个参数，于是这个 promise 也就链式地传递下去了。除此之外，返回一个不是 thenable 的值也是可以的，这相当于一个简化，该返回值会被链式的 promise 立即 fulfill。</p>
+<p>上面的例子比较一根筋，所有的 then 只定义了第一个参数（即成功的回调），其实我们还可以通过调用 onRejected 或者抛出一个异常来表示 Promise 执行失败，从而进入 then 的第二个函数中（then(func1, func2) 必定会调用且仅调用其中一个）。听上去是不是有点 try/catch 的味道，事实上，Promise 还真提供了一个语法糖，就是 catch(func)，它其实相当于 then(undefined, func)。链条中加入的 catch 可以管上它之前所有的 promise 中的失败情况。</p>
+<p>听上去好像很绕口的样子，而且这个 Promise 也不过是把回调拉平了而已嘛，至于这么复杂么？其实，依赖这些，我们可以方便地实现更多异步逻辑。在 ECMAScript 6中，Promise 还定义了两个接口：</p>
+<ol>
+<li>Promise.all：接受一堆 promise 的数组（任何可迭代的对象都可以），只有当他们都解决了以后，才会解决</li>
+<li>Promise.race：也是接受一堆 promise，但是只要有一个成功或者失败了，就会立即解决或驳回它本身<br>怎么样，是不是突显出 JavaScript 的函数式风格了。就目前的形势而言，Chrome 33 和 Firefox 30 以上的浏览器都已经实现了原生 Promise。<h4 id="Promises/A+">Promises/A+</h4>
+之前说了那么多关于 Promise 的这个规定，那个规定，其实它是有一个统一的名称的，就叫做 Promises/A+。在它的网站上，你可以阅读到完整的规范文档。</li>
+</ol>
+<p>基于这个标准，除了 ECMAScript 6 中比较简易的 Promise 以外，还有很多实现各不相同，功能各有千秋的实现，比较有名的有（按现有 Github Star 数排列）：<br>Q<br>Bluebird<br>when<br>rsvp.js<br>例如，Q 支持进度查询功能，执行时间较长的异步操作（例如文件上传）可以即时获取进度信息：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> uploadFile()</div><div class="line">.then(<span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    <span class="comment">// Success uploading the file</span></div><div class="line">}, <span class="function"><span class="keyword">function</span> <span class="params">(err)</span> </span>{</div><div class="line">    <span class="comment">// There was an error, and we get the reason for error</span></div><div class="line">}, <span class="function"><span class="keyword">function</span> <span class="params">(progress)</span> </span>{</div><div class="line">    <span class="comment">// We get notified of the upload's progress as it is executed</span></div><div class="line">});</div></pre></td></tr></table></figure>
+
+<h4 id="重新发明轮子">重新发明轮子</h4>
+<p>尽管 Promise 的实现有很多，但是它们的核心都是一样的，就是围绕着 then 方法展开。既然有了标准规范，其实我们可以自己实现一个简单的 Promise。</p>
+<p>首先当然要创建一个 Promise 对象的构造函数，它接受一个函数作为参数，调用这个函数的时候，会传入 resolve 和 reject 方法。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyPromise</span><span class="params">(resolver)</span> </span>{</div><div class="line">    <span class="comment">// 简单起见就不做类型检查了，假定 resolver 一定为函数</span></div><div class="line"></div><div class="line">    <span class="keyword">this</span>.status = <span class="number">0</span>;  <span class="comment">// 0: pending, 1: fulfilled, 2: rejected</span></div><div class="line">    <span class="keyword">this</span>.value = <span class="literal">null</span>;</div><div class="line">    <span class="keyword">this</span>.handlers = [];</div><div class="line"></div><div class="line">    doResolve.call(<span class="keyword">this</span>, resolver);</div><div class="line">}</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">doResolve</span><span class="params">(resolver)</span> </span>{</div><div class="line">    <span class="keyword">var</span> called = <span class="literal">false</span>;</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">resolvePromise</span><span class="params">(value)</span> </span>{</div><div class="line">        <span class="keyword">if</span> (called) {</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        } <span class="keyword">else</span> {</div><div class="line">            called = <span class="literal">true</span>;</div><div class="line">            resolve.call(<span class="keyword">this</span>, value);</div><div class="line">        }</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">rejectPromise</span><span class="params">(reason)</span> </span>{</div><div class="line">        <span class="keyword">if</span> (called) {</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        } <span class="keyword">else</span> {</div><div class="line">            called = <span class="literal">true</span>;</div><div class="line">            reject.call(<span class="keyword">this</span>, reason);</div><div class="line">        }</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="keyword">try</span> {</div><div class="line">        resolver(resolvePromise.bind(<span class="keyword">this</span>), rejectPromise.bind(<span class="keyword">this</span>));</div><div class="line">    } <span class="keyword">catch</span>(e) {</div><div class="line">        rejectPromise(e);</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>这样，当使用 new Promise(function(resolve, reject) {…}); 构造时，就会进入 doResolve，这时会执行传入给 new Promise 的参数，并给出 resolve 和 reject 的实现。可以看到为了保证 resolve 或 reject 总共只能被调用一次，这里用到了一个闭包。接下来来看具体的 resolve 和 reject 是怎么实现的。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">function resolve(<span class="keyword">value</span>) {</div><div class="line">    <span class="keyword">try</span> {</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">this</span> === <span class="keyword">value</span>) {</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> TypeError(<span class="string">'A promise cannot be resolved with itself.'</span>);</div><div class="line">        }</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">value</span> && (<span class="keyword">typeof</span> <span class="keyword">value</span> === <span class="string">'object'</span> || <span class="keyword">typeof</span> <span class="keyword">value</span> === <span class="string">'function'</span>)) {</div><div class="line">            <span class="keyword">var</span> then = <span class="keyword">value</span>.then;</div><div class="line">            <span class="keyword">if</span> (<span class="keyword">typeof</span> then === <span class="string">'function'</span>) {</div><div class="line">                doResolve.call(<span class="keyword">this</span>, then.bind(<span class="keyword">value</span>));</div><div class="line">                <span class="keyword">return</span>;</div><div class="line">            }</div><div class="line">        }</div><div class="line">        <span class="keyword">this</span>.status = <span class="number">1</span>;</div><div class="line">        <span class="keyword">this</span>.<span class="keyword">value</span> = <span class="keyword">value</span>;</div><div class="line">        dequeue.call(<span class="keyword">this</span>);</div><div class="line">    } <span class="keyword">catch</span>(e) {</div><div class="line">        reject(e);</div><div class="line">    }</div><div class="line">}</div><div class="line"></div><div class="line">function reject(reason) {</div><div class="line">    <span class="keyword">this</span>.status = <span class="number">2</span>;</div><div class="line">    <span class="keyword">this</span>.<span class="keyword">value</span> = reason;</div><div class="line">    dequeue.call(<span class="keyword">this</span>);</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>具体的 resolve 实现中，我们会判断解决的值是否是一个 thenable，如果是的话，就会去执行这个 then 函数，并且接受它的状态和返回值。如果不是，就直接使用该值解决这个 promise。</p>
+<p>可以想象，当我们执行 promise 的 then 方法时，其实是完成了一个类似观察者模式的注册过程。当 promise 还处于 pending 状态时，回调函数会被暂时存储起来，待到解决或失败时再执行，但是当 then 发现这个 promise 已经完成了状态转换，便可以根据状态立即执行回调了。</p>
+<p>在这里，我们使用了 this.handlers 数组来暂存 then 的回调函数，当状态改变时，会调用 dequeue 方法来处理队列。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">dequeue</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">var</span> handler;</div><div class="line">    <span class="keyword">while</span> (<span class="keyword">this</span>.handlers.length) {</div><div class="line">        handler = <span class="keyword">this</span>.handlers.shift();</div><div class="line">        handle.call(<span class="keyword">this</span>, handler.thenPromise, handler.onFulfilled, handler.onRejected);</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>最后便是核心方法 then 的实现了。根据规范，它必须返回一个 promise，并根据 onFulfilled 或 onRejected 回调的返回值来决定是将它标记为完成还是失败。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">MyPromise.prototype.then = <span class="function"><span class="keyword">function</span><span class="params">(onFulfilled, onRejected)</span> </span>{</div><div class="line">    <span class="keyword">var</span> <span class="keyword">self</span> = this;</div><div class="line">    <span class="keyword">var</span> thenPromise = <span class="keyword">new</span> MyPromise(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{});</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (!<span class="keyword">self</span>.status) {</div><div class="line">        <span class="keyword">self</span>.handlers.push({</div><div class="line">            thenPromise: thenPromise,</div><div class="line">            onFulfilled: onFulfilled,</div><div class="line">            onRejected: onRejected</div><div class="line">        });</div><div class="line">    } <span class="keyword">else</span> {</div><div class="line">        handle.call(<span class="keyword">self</span>, thenPromise, onFulfilled, onRejected);</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="keyword">return</span> thenPromise;</div><div class="line">};</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">handle</span><span class="params">(thenPromise, onFulfilled, onRejected)</span> </span>{</div><div class="line">    <span class="keyword">var</span> <span class="keyword">self</span> = this;</div><div class="line"></div><div class="line">    setTimeout(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">        <span class="keyword">var</span> callback, ret;</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">self</span>.status == <span class="number">1</span>) {</div><div class="line">            callback = onFulfilled;</div><div class="line">        } <span class="keyword">else</span> {</div><div class="line">            callback = onRejected;</div><div class="line">        }</div><div class="line">        <span class="keyword">if</span> (typeof callback === <span class="string">'function'</span>) {</div><div class="line">            <span class="keyword">try</span> {</div><div class="line">                ret = callback(<span class="keyword">self</span>.value);</div><div class="line">                resolve.call(thenPromise, ret);</div><div class="line">            } <span class="keyword">catch</span>(e) {</div><div class="line">                reject.call(thenPromise, e);</div><div class="line">            }</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        }</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">self</span>.status == <span class="number">1</span>) {</div><div class="line">            resolve.call(thenPromise, <span class="keyword">self</span>.value);</div><div class="line">        } <span class="keyword">else</span> {</div><div class="line">            reject.call(thenPromise, <span class="keyword">self</span>.value);</div><div class="line">        }</div><div class="line">    }, <span class="number">1</span>);</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>在上面的 handle 函数中，我们立即调用回调函数，并且根据回调函数的类型来改变 then 方法返回的 promise 的状态，这样就形成了一个 promise 链条。</p>
+<p>大约 100 多行代码，我们就实现了一个粗糙的 Promise 库。当然，上面的代码可能还有很多 Bug，并且也不是严格符合 Promises/A+ 的。如果读者发现问题，请不吝指出。</p>
+<p>有了这个核心的基础，实现外围的 API 例如 Promise.all、Promise.race 就比较简单了，这里就不给出了。其实，Promise 看似用起来很简单，想要自己严格实现一个，还是有不少难点的，其中最容易被绕晕的就是对 then<br>的实现，以及如何处理 then 的回调中又返回新的 promise 的逻辑。</p>
+<p>我们回到文章开头的例子，使用我们自己的 MyPromise 试验一下。简单起见，就不写那么多层了。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">waitPromise</span><span class="params">(param)</span> </span>{</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> Promise(<span class="function"><span class="keyword">function</span><span class="params">(resolve, reject)</span> </span>{</div><div class="line">    setTimeout(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">      resolve(param);</div><div class="line">    }, <span class="number">2000</span> + (<span class="built_in">Math</span>.random() - <span class="number">0.5</span>) * <span class="number">1000</span>);</div><div class="line">  });</div><div class="line">}</div><div class="line"></div><div class="line">waitPromise(<span class="string">'如果你愿意'</span>).then(<span class="function"><span class="keyword">function</span><span class="params">(response)</span> </span>{</div><div class="line">  <span class="built_in">console</span>.log(response);</div><div class="line">  <span class="keyword">return</span> waitPromise(<span class="string">'一层'</span>);</div><div class="line">}).then(<span class="built_in">console</span>.log.bind(<span class="built_in">console</span>));</div></pre></td></tr></table></figure>
+
+<p>可以看到我们可以成功输出两行文字。你能根据上面的实现，看出这次调用事实上一共产生了多少个 promise 对象吗？</p>
+<p>答案是五个：</p>
+<p>P0：第一次 waitPromise(‘如果你愿意’) 返回的<br>P1：第一个 then 返回的<br>P2：第二个 then 返回的<br>P3：第一个 then 里，通过 return waitPromise(‘一层’) 返回的<br>P4：在处理 P1 时，会调用 P3 的 then 方法，这时候又会返回一个 promise</p>
+<h3 id="参考资料">参考资料</h3>
+<ol>
+<li><a href="http://www.html5rocks.com/zh/tutorials/es6/promises/" target="_blank" rel="external">JavaScript Promises – There and back again</a></li>
+<li><a href="http://promisesaplus.com/" target="_blank" rel="external">Promises/A+</a></li>
+<li><a href="https://www.promisejs.org/implementing/" target="_blank" rel="external">Promises Implementing</a></li>
+</ol>
+<h3 id="谢谢！">谢谢！</h3>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/10/22/2014_chrome_plugin/" target="_blank" rel="external">http://www.haomou.net/2014/10/22/2014_chrome_plugin/</a></p>
+<p>有问题请留言。T_T  I am teacher Chale.  T_T</p>
+
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://haomou.net">皓眸IT</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/10/22/2014_promise/">异步回调之Promise对象</a></div>
+</div></div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/JavaScript/" itemprop="url"><span itemprop="title" >JavaScript</span></a></li></span><span class="breadcrumb"><li><a href="/categories/jQuery/" itemprop="url"><span itemprop="title" >jQuery</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/JavaScript/" class="label label-primary" itemprop="url"><span itemprop="title">JavaScript</span></a><a href="/tags/jQuery/" class="label label-success" itemprop="url"><span itemprop="title">jQuery</span></a><a href="/tags/promise/" class="label label-info" itemprop="url"><span itemprop="title">promise</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-17 18:54:21"datetime="2014-12-17 18:54:21"> Dec 17 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://haomou.net/2014/10/22/2014_promise/#comments" class="ds-thread-count comment-link" data-thread-key="2014_promise" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  <li class="previous"><a href="/2014/10/23/2014_chrome_plugin1/" title="chrome插件开发消息传递机制">&larr; chrome插件开发消息传递机制</a></li>
+  
+  
+  <li class="next"><a href="/2014/10/22/2014_chrome_plugin/" title="Native messaging起动本地应用(chrome插件开发)">Native messaging起动本地应用(chrome插件开发) &rarr;</a></li>
+  
+</ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="2014_promise"  data-url="http://haomou.net/2014/10/22/2014_promise/" data-title="异步回调之Promise对象"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_myself" class="widget hm-left-widget" style="clear:both">
+    <img alt="皓眸GEEK" src="/images/hm.jpg" width="100" height="120"  style="border-radius: 5px;margin-right: 5px;float:left;"/>
+<div style="color: #428bca;text-align: center;font-size: 18px;">曹欢欢(chale)</div>2014年毕业于中国科学技术大学，硕士研究生。<br/>喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身哈，等你来...吼吼...喜欢就写信给我喽。。。
+<br/>擅长：NodeJS，JAVA，PHP，WebGL，WebRTC，PS ...
+<br/><span style="color: #fb6580;">Mail To: </span>chh1990@mail.ustc.edu.cn
+<br/><span style="color: #fb6580;">QQ：</span>807991555（chale）</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_search" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">一般人我不告诉他？</div>  <div style="text-align: center;">
+    <div id="taobao_group1">
+    <a target="_blank" href="http://redirect.simba.taobao.com/rd?w=unionnojs&f=http%3A%2F%2Fai.taobao.com%2Fauction%2Fedetail.htm%3Fe%3D2jRFOR5JyFS6k0Or%252B%252BH4tEK92zydxvmfG5%252BIHpEBkUmLltG5xFicOdXrTUTgh9sMDPIwxrc30rjgynbn065gnKBQB2cG6ozS7V3%252Fywjzcr5X5d6bLKL71m3abJM7sDg2ShgP9FoNvo1XOYAPskEykQ%253D%253D%26ptype%3D100010%26from%3Dbasic&k=5ccfdb950740ca16&c=un&b=alimm_0&p=mm_20953349_4288305_28316556"><img width="80" src="/images/taobao1.jpg"></a>
+    <a target="_blank" href="http://redirect.simba.taobao.com/rd?w=unionnojs&f=http%3A%2F%2Fai.taobao.com%2Fauction%2Fedetail.htm%3Fe%3DFULpLq%252BHFq7ghojqVNxKsf7kgMlbAo4JLkbXnAd2OqmLltG5xFicOdXrTUTgh9sMDPIwxrc30rjgynbn065gnKBQB2cG6ozS7V3%252Fywjzcr5X5d6bLKL71m3abJM7sDg2UiPowagyTQlGQ2XNPH3wCQ%253D%253D%26ptype%3D100010%26from%3Dbasic&k=5ccfdb950740ca16&c=un&b=alimm_0&p=mm_20953349_4288305_28316556"><img width="80" src="/images/taobao2.jpg"></a>
+    <a target="_blank" href="http://redirect.simba.taobao.com/rd?w=unionnojs&f=http%3A%2F%2Fai.taobao.com%2Fauction%2Fedetail.htm%3Fe%3DuEitB6jUVwjghojqVNxKsWlW0OFtktT6pvhC2iAi0c2LltG5xFicOdXrTUTgh9sMDPIwxrc30rjgynbn065gnKBQB2cG6ozS7V3%252Fywjzcr5X5d6bLKL71m3abJM7sDg2UiPowagyTQnO80jPCs%252BwMg%253D%253D%26ptype%3D100010%26from%3Dbasic&k=5ccfdb950740ca16&c=un&b=alimm_0&p=mm_20953349_4288305_28316556"><img width="80" src="/images/taobao3.jpg"></a>
+        <a target="_blank" href="http://redirect.simba.taobao.com/rd?w=unionnojs&f=http%3A%2F%2Fai.taobao.com%2Fauction%2Fedetail.htm%3Fe%3DdrDnACpd36S6k0Or%252B%252BH4tO7z01MGARcg4mujNrE3oq%252BLltG5xFicOdXrTUTgh9sMDPIwxrc30rjgynbn065gnKBQB2cG6ozS7V3%252Fywjzcr5X5d6bLKL71m3abJM7sDg2UiPowagyTQlcpAOKn1WcoQ%253D%253D%26ptype%3D100010%26from%3Dbasic&k=5ccfdb950740ca16&c=un&b=alimm_0&p=mm_20953349_4288305_28316556"><img width="80" src="/images/taobao8.jpg"></a>
+        <a target="_blank" href="http://redirect.simba.taobao.com/rd?w=unionnojs&f=http%3A%2F%2Fai.taobao.com%2Fauction%2Fedetail.htm%3Fe%3DnR9cMR59%252FC8jmraEDZVrLnYUB9jsPIVkTYkIL%252FZMlriLltG5xFicOdXrTUTgh9sMDPIwxrc30rjgynbn065gnKBQB2cG6ozS7V3%252Fywjzcr5X5d6bLKL71m3abJM7sDg2%252B8aLpyjq7beeDNMFId0AEQ%253D%253D%26ptype%3D100010%26from%3Dbasic&k=5ccfdb950740ca16&c=un&b=alimm_0&p=mm_20953349_4288305_28316556"><img width="80" src="/images/taobao9.jpg"></a>
+        <a target="_blank" href="http://redirect.simba.taobao.com/rd?w=unionnojs&f=http%3A%2F%2Fai.taobao.com%2Fauction%2Fedetail.htm%3Fe%3DZZM40eM7rWi6k0Or%252B%252BH4tNUf179ZC4y2sMiqaJ97LhaLltG5xFicOdXrTUTgh9sMDPIwxrc30rjgynbn065gnKBQB2cG6ozS7V3%252Fywjzcr5X5d6bLKL71m3abJM7sDg2sJJ178XDIFhYMZ9Kyc9GVw%253D%253D%26ptype%3D100010%26from%3Dbasic&k=5ccfdb950740ca16&c=un&b=alimm_0&p=mm_20953349_4288305_28316556"><img width="80" src="/images/taobao7.jpg"></a>
+    </div>
+    <div id="taobao_group2">
+    <a target="_blank" href="http://redirect.simba.taobao.com/rd?w=unionnojs&f=http%3A%2F%2Fai.taobao.com%2Fauction%2Fedetail.htm%3Fe%3DlwRDfvfcFz4jmraEDZVrLiN6U5lg8ZPmMJ%252BJnhxioUmLltG5xFicOdXrTUTgh9sMDPIwxrc30rjgynbn065gnKBQB2cG6ozS7V3%252Fywjzcr5X5d6bLKL71m3abJM7sDg2VoOsVrnZ4hNf5pwvgy2BJg%253D%253D%26ptype%3D100010%26from%3Dbasic&k=5ccfdb950740ca16&c=un&b=alimm_0&p=mm_20953349_4288305_28316556"><img width="80" src="/images/taobao4.jpg"></a>
+    <a target="_blank" href="http://redirect.simba.taobao.com/rd?w=unionnojs&f=http%3A%2F%2Fai.taobao.com%2Fauction%2Fedetail.htm%3Fe%3DvGK74ehmjEq6k0Or%252B%252BH4tFtnjiFo%252FqMbmt5OpJnZB76LltG5xFicOdXrTUTgh9sMDPIwxrc30rjgynbn065gnKBQB2cG6ozS7V3%252Fywjzcr5X5d6bLKL71m3abJM7sDg2WX10oRHcMGE2tIxFHhgF2g%253D%253D%26ptype%3D100010%26from%3Dbasic&k=5ccfdb950740ca16&c=un&b=alimm_0&p=mm_20953349_4288305_28316556"><img width="80" src="/images/taobao5.jpg"></a>
+    <a target="_blank" href="http://redirect.simba.taobao.com/rd?w=unionnojs&f=http%3A%2F%2Fai.taobao.com%2Fauction%2Fedetail.htm%3Fe%3DaPhW8OitV4zebLdhAWchHEt5Y2XjY9unWPt1fh5JBxyLltG5xFicOdXrTUTgh9sMDPIwxrc30rjgynbn065gnKBQB2cG6ozS7V3%252Fywjzcr5X5d6bLKL71m3abJM7sDg2VoOsVrnZ4hNYMZ9Kyc9GVw%253D%253D%26ptype%3D100010%26from%3Dbasic&k=5ccfdb950740ca16&c=un&b=alimm_0&p=mm_20953349_4288305_28316556"><img width="80" src="/images/taobao6.jpg"></a>
+        <a target="_blank" href="http://redirect.simba.taobao.com/rd?w=unionnojs&f=http%3A%2F%2Fai.taobao.com%2Fauction%2Fedetail.htm%3Fe%3DE%252BrTwkn1rM26k0Or%252B%252BH4tObIOBOOreOR%252BNsML%252BECUcKLltG5xFicOdXrTUTgh9sMDPIwxrc30rjgynbn065gnKBQB2cG6ozS7V3%252Fywjzcr5X5d6bLKL71m3abJM7sDg2VoOsVrnZ4hPcDCUJyXw5Pg%253D%253D%26ptype%3D100010%26from%3Dbasic&k=5ccfdb950740ca16&c=un&b=alimm_0&p=mm_20953349_4288305_28316556"><img width="80" src="/images/taobao10.jpg"></a>
+        <a target="_blank" href="http://redirect.simba.taobao.com/rd?w=unionnojs&f=http%3A%2F%2Fai.taobao.com%2Fauction%2Fedetail.htm%3Fe%3DRG%252FZOhcxPafghojqVNxKsV3OVeIogPAFzqBA8MB81Q%252BLltG5xFicOdXrTUTgh9sMDPIwxrc30rjgynbn065gnKBQB2cG6ozS7V3%252Fywjzcr5X5d6bLKL71m3abJM7sDg2i%252FAvjbZq25jQD4qY%252F%252BuGhQ%253D%253D%26ptype%3D100010%26from%3Dbasic&k=5ccfdb950740ca16&c=un&b=alimm_0&p=mm_20953349_4288305_28316556"><img width="80" src="/images/taobao11.jpg"></a>
+        <a target="_blank" href="http://redirect.simba.taobao.com/rd?w=unionnojs&f=http%3A%2F%2Fai.taobao.com%2Fauction%2Fedetail.htm%3Fe%3DhNKkSZ9lYSXebLdhAWchHPUxuGPIaNxjbaoUsqSSy3iLltG5xFicOdXrTUTgh9sMDPIwxrc30rjgynbn065gnKBQB2cG6ozS7V3%252Fywjzcr5X5d6bLKL71m3abJM7sDg2CNzwnV%252F6jp9f5pwvgy2BJg%253D%253D%26ptype%3D100010%26from%3Dbasic&k=5ccfdb950740ca16&c=un&b=alimm_0&p=mm_20953349_4288305_28316556"><img width="80" src="/images/taobao12.jpg"></a>
+    </div>
+    <a target="_blank" href="http://temai.taobao.com/event2041.htm?q=VHxYXEuv2wdt3vqbdXnGloQfWIvNe2%2Frg2Z8w0VutarDUV6KD3TIsVnFGWZjX0lLbUz8Qe%2FGEwQ%3D">攻城师？该换装备了！</a>
+</div>
+</div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2014 Chale Cao
+  
+    &nbsp;&nbsp;</span>
+  <a href='http://www.miibeian.gov.cn/'>苏ICP备13018740号-6</a></span>
+  <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'></span>  </div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-12-17 18:54:21</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haomou"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://haomou.net/2014/10/22/2014_promise/";
+    var wumiiTitle = "异步回调之Promise对象";
+    var wumiiTags = "JavaScript,jQuery,promise";
+    var wumiiCategories = ["JavaScript","jQuery"];
+    var wumiiSitePrefix = "http://haomou.net";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />').wrap('<div class="img_block"></div>');
+     
+      if(alt){$(this).after('<span class="caption">' + alt + '</span>')};
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script src="/js/chenall.js" type="text/javascript"></script>
+
+
+  </body>
+</html>

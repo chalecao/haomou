@@ -44,6 +44,7 @@ h6 {
 }
 body {
   background-color: #f7faf2;
+  overflow-x: hidden;
 }
 .widget .list-group {
   margin-bottom: 0px;
