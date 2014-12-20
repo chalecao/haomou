@@ -82,12 +82,14 @@ jQuery(document).ready(function($){
 
     window.top_outline = $("#outline").offset().top;
     $(window).scroll(function () {
-        if((window.top_outline +318 - $(window).scrollTop()) <=  ($(window).height()/2 - $("#outline").height()/2)){
+        if((window.top_outline  - $(window).scrollTop()) <=  ($(window).height()/2 - $("#outline").height()/2)){
             $("#outline").css({'position':'fixed'});
             $("#outline").css({'margin-top':'0px'});
+            $("#outline").css({'top':($(window).height()/2 - $("#outline").height()/2)});
         }else{
             $("#outline").css({'position':'relative'});
             $("#outline").css({'margin-top':'80px'});
+            $("#outline").css({'top':''});
         }
         $("#outline a").each(function(a,b){
             if($(window).scrollTop() > $($(b).attr("href")).offset().top){
@@ -102,7 +104,7 @@ jQuery(document).ready(function($){
         $body = (window.opera) ? (document.compatMode == "CSS1Compat" ? $('html') : $('body')) : $('html,body');
         $body.animate({scrollTop: $($(this).attr("href")).offset().top}, 1000);
     });
-    $('.floatnone').each(function(){$(this).parent().css({"float":'none'})})
+    $('.floatnone').each(function(){$(this).parent().css({"float":'none'})});
 })
 $(document).ready(function(){
     NProgress.start();
