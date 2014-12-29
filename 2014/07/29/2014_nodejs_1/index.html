@@ -204,7 +204,7 @@
 <p>上面这4条揭示了这两个对象的本质。也就是说exports指向module.exports. 如果写exports.a =1, 意味着module.exports.a也等于1。</p>
 <p>但如果写成exports=function A(){}, 这个时候, module.exports与exports指的是不同的对象了。这个时候用require引入包括前面这个语句的js文件时，就不能访问exports所指向的function A. 因为require返回的是module.exports所指向的对象。如果想能被引用到也可以写成:module.exports=exports=function A(){};知道这一点的话，如果你想返回function A()就要写成module.exports=function A(){}; 要不然就老老实实地写成exports.A=function A(){}. 只是这两种写法在require之后调用写法不一样而已。<br>对于：exports=function A(){}，<br>调用方法：<br>    var A = require(‘./A.js’);<br>    A()<br>对于：module.exports=exports=function A(){};或<br>module.exports=function A(){};或<br>exports.A=function A(){}，<br>调用方法：<br>    var A = require(‘./A.js’);<br>    A.A()<br>参考<br><a href="http://www.cnblogs.com/vincedotnet/p/3439975.html" target="_blank" rel="external">http://www.cnblogs.com/vincedotnet/p/3439975.html</a><br><a href="http://stackoverflow.com/questions/7137397/module-exports-vs-exports-in-nodejs/7142924#7142924" target="_blank" rel="external">http://stackoverflow.com/questions/7137397/module-exports-vs-exports-in-nodejs/7142924#7142924</a></p>
 <h3 id="谢谢！">谢谢！</h3>
-<p>有问题请留言。T_T  I am teacher Chale.  T_T</p>
+<p>有问题请留言。T<em>T  请叫我皓眸哥(^</em>^)  T_T</p>
 
       
     </div>
@@ -219,7 +219,7 @@
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/NodeJS/" itemprop="url"><span itemprop="title" >NodeJS</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/NodeJS/" class="label label-primary" itemprop="url"><span itemprop="title">NodeJS</span></a><a href="/tags/mongoDB/" class="label label-success" itemprop="url"><span itemprop="title">mongoDB</span></a><a href="/tags/笔记/" class="label label-info" itemprop="url"><span itemprop="title">笔记</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-15 13:08:43"datetime="2014-12-15 13:08:43"> Dec 15 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/NodeJS/" itemprop="url"><span itemprop="title" >NodeJS</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/NodeJS/" class="label label-primary" itemprop="url"><span itemprop="title">NodeJS</span></a><a href="/tags/mongoDB/" class="label label-success" itemprop="url"><span itemprop="title">mongoDB</span></a><a href="/tags/笔记/" class="label label-info" itemprop="url"><span itemprop="title">笔记</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-29 11:25:29"datetime="2014-12-29 11:25:29"> Dec 29 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/07/29/2014_nodejs_1/#comments" class="ds-thread-count comment-link" data-thread-key="2014_nodejs_1" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -246,7 +246,7 @@
        <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
 <div id="widget_myself" class="widget hm-left-widget" style="clear:both">
     <img alt="皓眸GEEK" src="/images/hm.jpg" width="100" height="120"  style="border-radius: 5px;margin-right: 5px;float:left;"/>
-<div style="color: #428bca;text-align: center;font-size: 18px;">曹欢欢(chale)</div>2014年毕业于中国科学技术大学，硕士研究生。<br/>喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身哈，等你来...吼吼...喜欢就写信给我喽。。。
+<div style="color: #428bca;text-align: center;font-size: 18px;">曹欢欢(chale)</div>2014年毕业于中国科学技术大学，硕士研究生。<br/>喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身哈，等你来...吼吼...喜欢就写信给我喽，请叫我皓眸哥(^_^)
 <br/>擅长：NodeJS，JAVA，PHP，WebGL，WebRTC，PS ...
 <br/><span style="color: #fb6580;">Mail To: </span>chh1990@mail.ustc.edu.cn
 <br/><span style="color: #fb6580;">QQ：</span>807991555（chale）</div>
@@ -293,7 +293,7 @@
   <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
 <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 </span><span id='analytics-baidu'></span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-12-15 13:08:43</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-12-29 11:25:29</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
