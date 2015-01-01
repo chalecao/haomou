@@ -7,13 +7,15 @@
 <meta name="wumiiVerification" content="1747c9bc-e905-45aa-88ac-f13f2b210015" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>第 2 页 | 归档：2014/9 | 皓眸IT</title>
+<title>安装黑苹果mac10.9.2教程 | 皓眸IT</title>
 <meta name="author" content="Chale Cao">
+
+<meta name="description" content="安装黑苹果Google每出一个Android版本，就对应一个API Level，不同的Level之间有些接口定义的不一样，按理说应该是向下兼容的。可是如果你在开发时用的API Level是17，然后从新开发，用API Level20,那么你就要注意了，这些接口还是有差别的。如果导入包的语句import报错，那么就是你导包的路径不对，这时候就要查查API了。官方各个Level API,本篇就搜集了作者开发过程中遇到的一些问题。">
 
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-
+<meta property="og:title" content="安装黑苹果mac10.9.2教程"/>
 <meta property="og:site_name" content="皓眸IT"/>
 
 <!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
@@ -59,7 +61,7 @@
       <h1 style="color:black">皓眸IT</h1>
       <ul class="nav navbar-nav hm-left-nav">
   
-        <li item='archives/2014/09/page/2/' class='active'><a href="/" title="首页">首页</a></li>      
+        <li item='2014/12/31/2014_mac_install/' class='active'><a href="/" title="首页">首页</a></li>      
       <li class='dropdown'>
         <a class='dropdown-toggle' data-toggle='dropdown' href='#'>关于我<b class='caret'></b></a>
         <ul class='dropdown-menu'>
@@ -111,41 +113,49 @@
      <div class="row">
        <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
       <section id='header_widget'></section>
-          <div id="wrapper"><h2 class="archive-title">2014/9</h2>
-
-
-  
-    <article class="hm-article">
+          <div id="wrapper"><article class="hm-article">
 <div id="post" class="post well">
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left hm-article-w"></i>
-      <h1 class="title"><a href="/2014/09/02/2014_android1/">Android不同API Level差异</a></h1>
+      <h1 class="title">安装黑苹果mac10.9.2教程</h1>
       
-        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-09-02T04:40:49.000Z"> <a href="/2014/09/02/2014_android1/">Sep 2 2014</a></time></span>      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-12-31T08:06:49.000Z"> <a href="/2014/12/31/2014_mac_install/">Dec 31 2014</a></time></span>      
     </header>
     
-    
-    <div class="entry" >
+    <section id='before_content_widget'></section>
+    <div class="entry"  data-spy="scroll" data-target="#toc" >
       
-        <h3 id="API的Level">API的Level</h3>
-<p>Google每出一个Android版本，就对应一个API Level，不同的Level之间有些接口定义的不一样，按理说应该是向下兼容的。可是如果你在开发时用的API Level是17，然后从新开发，用API Level20,那么你就要注意了，这些接口还是有差别的。如果导入包的语句import报错，那么就是你导包的路径不对，这时候就要查查API了。官方各个<a href="http://developer.android.com/reference" target="_blank" rel="external">Level API</a>,本篇就搜集了作者开发过程中遇到的一些问题。<br>
+        <h3 id="安装黑苹果">安装黑苹果</h3>
+<p>Google每出一个Android版本，就对应一个API Level，不同的Level之间有些接口定义的不一样，按理说应该是向下兼容的。可是如果你在开发时用的API Level是17，然后从新开发，用API Level20,那么你就要注意了，这些接口还是有差别的。如果导入包的语句import报错，那么就是你导包的路径不对，这时候就要查查API了。官方各个<a href="http://developer.android.com/reference" target="_blank" rel="external">Level API</a>,本篇就搜集了作者开发过程中遇到的一些问题。<br><a id="more"></a><br><img class="floatnone" alt="皓眸GEEK" src="/images/android1.jpg"></p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/09/02/2014_android1/" target="_blank" rel="external">http://www.haomou.net/2014/09/02/2014_android1/</a></p>
+<h3 id="GestureDetector">GestureDetector</h3>
+<p>在Android API Level17中包路径为：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="preprocessor"><span class="keyword">import</span> android.support.v4.view.GestureDetectorCompat;</span></div></pre></td></tr></table></figure>
+
+<p>而在API Level 19中，路径为</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="preprocessor"><span class="keyword">import</span> android.view.GestureDetector;</span></div></pre></td></tr></table></figure>
+
+<p>而且这个类由GestureDetectorCompat变成了GestureDetector。</p>
+<h3 id="谢谢！">谢谢！</h3>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/09/02/2014_android1/" target="_blank" rel="external">http://www.haomou.net/2014/09/02/2014_android1/</a></p>
+<p>有问题请留言。T_T  请叫我皓眸哥  T_T</p>
+
       
     </div>
-    
-    
-      
-      <div id='more-link'>
-        <div align="left">
-          <a href="/2014/09/02/2014_android1/#more" class="more-link fa fa-play">阅读全文</a>
-        </div>
-      </div>
-      
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://haomou.net">皓眸IT</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/12/31/2014_mac_install/">安装黑苹果mac10.9.2教程</a></div>
+</div></div></section>
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h"style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/android/" itemprop="url"><span itemprop="title" >android</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/android/" class="label label-primary" itemprop="url"><span itemprop="title">android</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-29 11:20:36"datetime="2014-12-29 11:20:36"> Dec 29 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
-<a href="http://haomou.net/2014/09/02/2014_android1/#comments" class="ds-thread-count comment-link" data-thread-key="2014_android1" data-count-type="comments">暂无评论</a></span>
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/问题集锦/" itemprop="url"><span itemprop="title" >问题集锦</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/黑苹果/" class="label label-primary" itemprop="url"><span itemprop="title">黑苹果</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-01 11:04:55"datetime="2015-01-01 11:04:55"> Jan 1 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://haomou.net/2014/12/31/2014_mac_install/#comments" class="ds-thread-count comment-link" data-thread-key="2014_mac_install" data-count-type="comments">暂无评论</a></span>
         </footer>
     
     <div class="clearfix"></div>
@@ -154,12 +164,19 @@
 </article>
 
 
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
   
   
-<ul id="pagination" class="pagination pagination-lg">
-  <li><a class="extend prev" rel="prev" href="/archives/2014/09/">&laquo;</a></li><li><a class="page-number" href="/archives/2014/09/">1</a></li><li class="active"><li><span class="page-number current">2</span></li></li>
-  <div class="clearfix"></div>
-</ul></div><!--wapper-->
+  <li class="next"><a href="/2014/12/24/2014_java_byte/" title="用JAVA处理unsigned类型移位操作">用JAVA处理unsigned类型移位操作 &rarr;</a></li>
+  
+</ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="2014_mac_install"  data-url="http://haomou.net/2014/12/31/2014_mac_install/" data-title="安装黑苹果mac10.9.2教程"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
        </div><!-- ID main-col END -->
        <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
 <div id="widget_myself" class="widget hm-left-widget" style="clear:both">
@@ -211,7 +228,7 @@
   <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
 <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 </span><span id='analytics-baidu'></span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-01 11:06:59</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-01 11:04:55</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
@@ -258,6 +275,21 @@
 var duoshuoQuery = {short_name:"haomou"};
 _js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
 </script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://haomou.net/2014/12/31/2014_mac_install/";
+    var wumiiTitle = "安装黑苹果mac10.9.2教程";
+    var wumiiTags = "黑苹果";
+    var wumiiCategories = ["问题集锦"];
+    var wumiiSitePrefix = "http://haomou.net";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
     
         <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
 (function($){
