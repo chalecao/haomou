@@ -169,7 +169,7 @@
 <p>为了更有效的在尺度空间检测到稳定的关键点，提出了高斯差分尺度空间，利用不同尺度的高斯差分核与原始图像i(x,y)卷积生成<br>D(x,y,e)=(G(x,y,ke)-G(x,y,e))*i(x,y)<br>=L(x,y,ke)-L(x,y,e)<br>(为避免遍历每个像素点)</p>
 <p>高斯卷积：<br>在组建一组尺度空间后，再组建下一组尺度空间，对上一组尺度空间的最后一幅图像进行二分之一采样，得到下一组尺度空间的第一幅图像，然后进行像建立第一组尺度空间那样的操作，得到第二组尺度空间，公式定义为<br>         L(x,y,e) = G(x,y,e)<em>I(x,y)<br>    图像金字塔的构建：图像金字塔共O组，每组有S层，下一组的图像由上一组图像降采样得到、<br>高斯差分<br>    在尺度空间建立完毕后，为了能够找到稳定的关键点，采用高斯差分的方法来检测那些在局部位置的极值点，即采用俩个相邻的尺度中的图像相减，即公式定义为：<br>        D(x,y,e) = ((G(x,y,ke) - G(x,y,e)) </em> I(x,y)<br>                 = L(x,y,ke) - L(x,y,e)<br> 咱们再来具体阐述下构造D(x,y,e)的详细步骤：<br>    1、首先采用不同尺度因子的高斯核对图像进行卷积以得到图像的不同尺度空间，将这一组图像作为金子塔图像的第一层。<br>    2、接着对第一层图像中的2倍尺度图像（相对于该层第一幅图像的2倍尺度）以2倍像素距离进行下采样来得到金子塔图像的第二层中的第一幅图像，对该图像采用不同尺度因子的高斯核进行卷积，以获得金字塔图像中第二层的一组图像。<br>    3、再以金字塔图像中第二层中的2倍尺度图像（相对于该层第一幅图像的2倍尺度）以2倍像素距离进行下采样来得到金字塔图像的第三层中的第一幅图像，对该图像采用不同尺度因子的高斯核进行卷积，以获得金字塔图像中第三层的一组图像。这样依次类推，从而获得了金字塔图像的每一层中的一组图像，<br> 4、对上图得到的每一层相邻的高斯图像相减，就得到了高斯差分图像，如下述第一幅图所示。下述第二幅图中的右列显示了将每组中相邻图像相减所生成的高斯差分图像的结果，限于篇幅，图中只给出了第一层和第二层高斯差分图像的计算<br><img class="floatnone" src="/images/theory9.jpg"></p>
 <h3 id="谢谢！">谢谢！</h3>
-<p>有问题请留言。T<em>T  请叫我皓眸哥(^</em>^)  T_T</p>
+<p>有问题请留言。  请叫我皓眸哥(^_^)  </p>
 
       
     </div>
@@ -184,7 +184,7 @@
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/数学理论/" itemprop="url"><span itemprop="title" >数学理论</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/图像处理/" class="label label-primary" itemprop="url"><span itemprop="title">图像处理</span></a><a href="/tags/数学理论/" class="label label-success" itemprop="url"><span itemprop="title">数学理论</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-29 11:25:34"datetime="2014-12-29 11:25:34"> Dec 29 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/数学理论/" itemprop="url"><span itemprop="title" >数学理论</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/图像处理/" class="label label-primary" itemprop="url"><span itemprop="title">图像处理</span></a><a href="/tags/数学理论/" class="label label-success" itemprop="url"><span itemprop="title">数学理论</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-04 17:35:14"datetime="2015-01-04 17:35:14"> Jan 4 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/08/05/2014_theory/#comments" class="ds-thread-count comment-link" data-thread-key="2014_theory" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -197,10 +197,10 @@
     <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
 <ul class="pager">
   
-  <li class="previous"><a href="/2014/08/06/2014_phonegap_android/" title="phoneGap之Android环境搭建">&larr; phoneGap之Android环境搭建</a></li>
+  <li class="previous"><a href="/2014/08/05/2014_canvas/" title="Canvas图像处理和滤镜特效">&larr; Canvas图像处理和滤镜特效</a></li>
   
   
-  <li class="next"><a href="/2014/08/05/2014_canvas/" title="Canvas图像处理和滤镜特效">Canvas图像处理和滤镜特效 &rarr;</a></li>
+  <li class="next"><a href="/2014/08/05/2014_js/" title="JS常用函数">JS常用函数 &rarr;</a></li>
   
 </ul></div></section>    
 	<div id="comments"><!-- Duoshuo Comment BEGIN -->
@@ -260,7 +260,7 @@
   <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
 <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 </span><span id='analytics-baidu'></span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-12-29 11:25:34</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-04 17:35:14</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>

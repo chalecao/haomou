@@ -235,7 +235,7 @@ Cookie: name=<span class="string">"zj"</span>; <span class="keyword">Path</span>
 </code></pre><p><img class="floatnone" src="/images/session3.png"><br>     然后点击index链接来刷新计数器，注意不要刷新当前页，因为我们没用采用cookie的方式，只能在url后面带上jsessionid，而此时地址栏里的url是无法带上jsessionid的。如图四，我把计数器刷新到了20。<br><img class="floatnone" src="/images/session4.png"><br>下面是最关键的，复制firefox地址栏里的地址（笔者看到的是<a href="http://localhost:8080/sessio" target="_blank" rel="external">http://localhost:8080/sessio</a></p>
 <p>n/index.jsp;jsessionid=1380D9F60BCE9C30C3A7CBF59454D0A5），然后打开另一个浏览器，此处不必将其cookie禁用。这里我打开了苹果的safari3浏览器，然后将地址粘贴到其地址栏里，回车后如下图：<br><img class="floatnone" src="/images/session5.png"><br>很奇怪吧，计数器直接到了21。这个例子笔者是在同一台计算机上做的，不过即使换用两台来做，其结果也是一样的。此时如果交替点击两个浏览器里的index链接你会发现他们其实操纵的是同一个计数器。其实不必惊讶，此处safari盗用了firefox和tomcat之间的维持会话的钥匙，即jsessionid，这属于session hijack的一种。在tomcat看来，safari交给了它一个jsessionid，由于HTTP协议的无状态性，它无法得知这个jsessionid是从firefox那里“劫持”来的，它依然会去查找对应的session，并执行相关计算。而此时firefox也无法得知自己的保持会话已经被“劫持”。</p>
 <h3 id="谢谢！">谢谢！</h3>
-<p>有问题请留言。T<em>T  请叫我皓眸哥(^</em>^)  T_T</p>
+<p>有问题请留言。  请叫我皓眸哥(^_^)  </p>
 
       
     </div>
@@ -250,7 +250,7 @@ Cookie: name=<span class="string">"zj"</span>; <span class="keyword">Path</span>
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/WEB相关/" itemprop="url"><span itemprop="title" >WEB相关</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/session/" class="label label-primary" itemprop="url"><span itemprop="title">session</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-29 11:25:32"datetime="2014-12-29 11:25:32"> Dec 29 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/WEB相关/" itemprop="url"><span itemprop="title" >WEB相关</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/session/" class="label label-primary" itemprop="url"><span itemprop="title">session</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-04 17:35:15"datetime="2015-01-04 17:35:15"> Jan 4 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/08/07/2014_session/#comments" class="ds-thread-count comment-link" data-thread-key="2014_session" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -326,7 +326,7 @@ Cookie: name=<span class="string">"zj"</span>; <span class="keyword">Path</span>
   <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
 <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 </span><span id='analytics-baidu'></span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2014-12-29 11:25:32</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-04 17:35:15</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
