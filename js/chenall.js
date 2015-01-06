@@ -12,6 +12,8 @@ function load_random_posts(obj){
   $(obj).html(html + '</ul>');
 }
 
+
+
 jQuery(document).ready(function($){
 //  $('body').on(
 //    {mouseover:function(e){
@@ -80,15 +82,16 @@ jQuery(document).ready(function($){
 
     var str = "<dl id='outline'></dl>";var ss = $(str);$('h3').each(function(a,b){ss.append('<dd class="sideCatalog-item2" id="sideToolbar-item--1_3"><span class="sideCatalog-index2">'+ a +'</span><a href="#'+ $(b).attr("id") +'" class="nslog:1026" title="'+ $(b).attr("id") +'" onclick="return false;">'+$(b).attr("id")+'</a><span class="sideCatalog-dot"></span></dd>');});$("#sidebar").append(ss);
 
-    window.top_outline = $("#outline").offset().top;
+    window.top_outline = $("#haomou_ad").offset().top + 250;
     $(window).scroll(function () {
-        if((window.top_outline  - $(window).scrollTop()) <=  ($(window).height()/2 - $("#outline").height()/2)){
+
+        if(window.top_outline  < $(window).scrollTop()){
             $("#outline").css({'position':'fixed'});
             $("#outline").css({'margin-top':'0px'});
             $("#outline").css({'top':($(window).height()/2 - $("#outline").height()/2)});
         }else{
             $("#outline").css({'position':'relative'});
-            $("#outline").css({'margin-top':'80px'});
+            $("#outline").css({'margin-top':'70px'});
             $("#outline").css({'top':''});
         }
         $("#outline a").each(function(a,b){
