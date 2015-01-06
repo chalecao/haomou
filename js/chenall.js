@@ -82,9 +82,10 @@ jQuery(document).ready(function($){
 
     var str = "<dl id='outline'></dl>";var ss = $(str);$('h3').each(function(a,b){ss.append('<dd class="sideCatalog-item2" id="sideToolbar-item--1_3"><span class="sideCatalog-index2">'+ a +'</span><a href="#'+ $(b).attr("id") +'" class="nslog:1026" title="'+ $(b).attr("id") +'" onclick="return false;">'+$(b).attr("id")+'</a><span class="sideCatalog-dot"></span></dd>');});$("#sidebar").append(ss);
 
-    window.top_outline = $("#haomou_ad").offset().top + 250;
+    
     $(window).scroll(function () {
-
+        window.top_outline = $("#haomou_ad").offset().top + 250;
+        console.log(window.top_outline);
         if(window.top_outline  < $(window).scrollTop()){
             $("#outline").css({'position':'fixed'});
             $("#outline").css({'margin-top':'0px'});
