@@ -153,7 +153,8 @@
 <p>重启系统，如果拔出u盘，你就无法启动了，因为安装系统之后，更改了分区表，原来的活动分区变成了非活动分区，但是还是可以通过u盘引导进去的。<br>插上u盘，同样进入到winPE，然后建议将第一步在硬盘最开始，hd(0,0)也就是第一个主分区的第一个盘设置成引导盘，这个引导盘1G空间就够了。其实做成写dmg之后自动生成的usbboot那个盘就可以了，当然这里我们就不能再使用transmac了，因为我们要把引导做在硬盘上不是移动设备。这个可以通过diskgenius中的clone 分区的功能，注意要先将usbboot盘和本地硬盘的需要做引导的第一个盘设置成非活动盘才可以用。</p>
 <p>将usbboot盘克隆到hd（0，0）那个盘就可以了。然后将克隆后的hd(0,0)设置成活动盘即可正常引导。<br>注意：这里面为什么非要用hd（0，0）呢，因为我们用的那个dmg是别人大师制作好的，大师在引导中clover的引导写死了是hd(0,0)，更改不了，所以必须用第一个主分区的第一块盘做引导盘。不信你可以试试哈。</p>
 <h3 id="安装驱动">安装驱动</h3>
-<p>恭喜你，你已经离成功不远了，不出意外，可以正常引导并进入到mac系统了。然后就是安装驱动了，打开Kext Utility，然后稍等片刻，等软件初始化后，你可以将驱动文件，也就是后缀名为kext的文件拖动到软件上即可，然后再等等 出现complete！  就是安装成功了。<br>1、   dsdt.zip </p>
+<p>恭喜你，你已经离成功不远了，不出意外，可以正常引导并进入到mac系统了。此时你可以升级系统，进入app store 可以免费升级系统到MAC 10.9.5，经测试没有什么问题。</p>
+<p>然后就是安装驱动了，打开Kext Utility，然后稍等片刻，等软件初始化后，你可以将驱动文件，也就是后缀名为kext的文件拖动到软件上即可，然后再等等 出现complete！  就是安装成功了。<br>1、   dsdt.zip </p>
 <p>这个dsdt只修正了睡眠问题，就是删除了EHC1和EHC2相关代码其它什么也没改（唤醒需要按电源键）<br>dsdt放进\Extra\目录，没有请自己创建</p>
 <p>2、   VoodooHDA-v2.8.4.zip<br>声卡，直接安装就可以了，遇到破音时，到其MIDI设置中，把编码改为16位就好，mic如没有请到偏好设置中最下面的Voodoohda设置，右边切换到 录音设置页面，调一下上面两个滑块HDMI声音无解</p>
 <p>3、   ATI6370M.kext.zip<br>显卡是改了Ati5000Controller的Eulemur参数，状态栏透明，用aty_init驱动有水波纹，但没有那种一圈一圈的东西，用dsdt和变色龙驱动有，但睡眠唤醒后花屏，所以我选择了aty_init来驱动</p>
@@ -177,7 +178,7 @@
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/问题集锦/" itemprop="url"><span itemprop="title" >问题集锦</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/黑苹果/" class="label label-primary" itemprop="url"><span itemprop="title">黑苹果</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-04 18:08:26"datetime="2015-01-04 18:08:26"> Jan 4 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/问题集锦/" itemprop="url"><span itemprop="title" >问题集锦</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/黑苹果/" class="label label-primary" itemprop="url"><span itemprop="title">黑苹果</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-06 10:03:20"datetime="2015-01-06 10:03:20"> Jan 6 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/12/31/2014_mac_install/#comments" class="ds-thread-count comment-link" data-thread-key="2014_mac_install" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -253,7 +254,7 @@
   <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
 <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 </span><span id='analytics-baidu'></span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-04 18:08:26</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-06 10:03:20</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>

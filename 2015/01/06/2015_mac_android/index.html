@@ -7,18 +7,19 @@
 <meta name="wumiiVerification" content="1747c9bc-e905-45aa-88ac-f13f2b210015" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>chrome插件开发消息传递机制 | 皓眸IT</title>
+<title>皓眸IT</title>
 <meta name="author" content="Chale Cao">
 
-<meta name="description" content="chrome消息传递这几天研究开发chrome插件，关于消息传递机制有很多，我们知道，chrome插件是区分前台和后台的，前台与后台通信需要用到消息。这里总结一下。
+<meta name="description" content="title: 苹果MAC之Android环境搭建与phonegap集成date: 2015-01-06 08:44:tags:
 
-发送消息
-Chrome的消息传递，可以在Web（通过content script）和扩展之间进行，任意一方都可发送或接收消息。Web（通过content script）发送消息如下：">
+phonegap
+androidcategories:
+android">
 
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-<meta property="og:title" content="chrome插件开发消息传递机制"/>
+
 <meta property="og:site_name" content="皓眸IT"/>
 
 <!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
@@ -64,7 +65,7 @@ Chrome的消息传递，可以在Web（通过content script）和扩展之间进
       <h1 style="color:black">皓眸IT</h1>
       <ul class="nav navbar-nav hm-left-nav">
   
-        <li item='2014/10/23/2014_chrome_plugin1/' class='active'><a href="/" title="首页">首页</a></li>      
+        <li item='2015/01/06/2015_mac_android/' class='active'><a href="/" title="首页">首页</a></li>      
       <li class='dropdown'>
         <a class='dropdown-toggle' data-toggle='dropdown' href='#'>关于我<b class='caret'></b></a>
         <ul class='dropdown-menu'>
@@ -121,38 +122,100 @@ Chrome的消息传递，可以在Web（通过content script）和扩展之间进
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left hm-article-w"></i>
-      <h1 class="title">chrome插件开发消息传递机制</h1>
+      <h1 class="title"></h1>
       
-        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-10-23T11:00:59.000Z"> <a href="/2014/10/23/2014_chrome_plugin1/">Oct 23 2014</a></time></span>      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2015-01-06T02:49:13.000Z"> <a href="/2015/01/06/2015_mac_android/">Jan 6 2015</a></time></span>      
     </header>
     
     <section id='before_content_widget'></section>
     <div class="entry"  data-spy="scroll" data-target="#toc" >
       
-        <h3 id="chrome消息传递">chrome消息传递</h3>
-<p>这几天研究开发chrome插件，关于消息传递机制有很多，我们知道，chrome插件是区分前台和后台的，前台与后台通信需要用到消息。这里总结一下。<br><a id="more"></a><br><img class="floatnone" src="/images/chrome1.jpg"></p>
-<h3 id="发送消息">发送消息</h3>
-<p>Chrome的消息传递，可以在Web（通过content script）和扩展之间进行，任意一方都可发送或接收消息。Web（通过content script）发送消息如下：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">chrome.runtime.sendMessage({greeting: <span class="string">"hello"</span>}, <span class="function"><span class="keyword">function</span><span class="params">(response)</span> </span>{  </div><div class="line">  <span class="built_in">console</span>.log(response.farewell);  </div><div class="line">});</div></pre></td></tr></table></figure>
+        <p>title: 苹果MAC之Android环境搭建与phonegap集成<br>date: 2015-01-06 08:44:<br>tags:</p>
+<ul>
+<li>phonegap</li>
+<li>android<br>categories:</li>
+<li>android</li>
+</ul>
+<hr>
+<h3 id="MAC下玩Android">MAC下玩Android</h3>
+<p>为什么需要在mac下用Android，这个主要是因为前几天手痒，哈哈，把系统装成了黑苹果。不过用起来还是蛮流畅的，所以就用这个，懒得换了。熟悉熟悉mac也挺好的，在一个就是现在在学习ionic和cordova，做完项目后可以同时编译生成Android和ios手机app，这样挺方便的。你是不是也心动了，快点动手吧。<a href="http://www.haomou.net/2014/12/31/2014_mac_install/" target="_blank" rel="external">装黑苹果教程</a><br><a id="more"></a><br><img class="floatnone" alt="皓眸哥" src="/images/mac_android1.jpeg"></p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2015/01/06/2015_mac_android/" target="_blank" rel="external">http://www.haomou.net/2015/01/06/2015_mac_android/</a></p>
+<h3 id="安装工具">安装工具</h3>
+<p>1、最好选择ADT Bundle，这里面已经集成好了Eclipse、ADT、Android SDK Tools，不用自己去设置了。<br>我使用的版本是adt-bundle-mac-x86_64-20131030.zip，22.3.0<br>百度盘下载地址：<a href="http://pan.baidu.com/s/1qWNRJ8g" target="_blank" rel="external">http://pan.baidu.com/s/1qWNRJ8g</a>  共有470MB<br>网上有今年的新版：adt-bundle-mac-x86_64-20140624，这个版本除了集成是API 20外，没有别的，而且用起来错误一大堆，我也不打算去排错了，用这V22.3.0的非常的好。</p>
+<p>当然，如果你不拍麻烦，选择Eclipse+ADT的方式，会消耗很多时间，各种的版本问题，各种的下载，总之不推荐。因为我是做安卓开发，不是做JAVA开发，用Google给我们做好的ADT Bundle应该说是最好的选择。</p>
+<p>2、这个版本仅仅集成了API 19，即Android 4.4。你可以打开SDK Manager安装你需要的版本即可。</p>
+<p><img class="floatnone" alt="皓眸哥" src="/images/mac_android2.jpeg"></p>
+<h3 id="mac安装ant">mac安装ant</h3>
+<p>下载安装ant，这个是在用phonegap的cordova工具生成android项目时，需要的编辑工具。<a href="http://ant.apache.org/bindownload.cgi" target="_blank" rel="external">下载地址</a>（<a href="http://ant.apache.org/bindownload.cgi" target="_blank" rel="external">http://ant.apache.org/bindownload.cgi</a> ）,当前最新版是Apache Ant 1.9.3，可以下载那个zip包，如下图：<br><img class="floatnone" alt="皓眸哥" src="/images/mac_android3.jpg"></p>
+<p>2.将下载的zip包解压到一个目录下，如/usr/local。这时候需要你提供修改权限，输入密码。</p>
+<p>Tip:什么？不会进入usr目录？打开Finder，选择菜单中的“前往”&gt;“前往文件夹”，或者在打开Finder后用快捷键“shift+command+G”，就进入到了/usr/local目录下。</p>
+<p>3.配置环境变量：</p>
+<p>1)获取root权限</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$sudo</span> <span class="operator">-s</span>根据提示输入管理员密码，提示符会改成bash-<span class="number">3.2</span><span class="comment">#</span></div></pre></td></tr></table></figure>
 
-<p>通过chrome.runtime.sendMessage函数发送消息，其中{greeting: “hello”}是消息对象（大括号的用法见参考资料[2]）；function(response) {…}是回调函数，处理接收方发回的消息。</p>
-<p>插件发送消息需要确定接收的Tab，如下：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">chrome.tabs.query({active: <span class="literal">true</span>, currentWindow: <span class="literal">true</span>}, <span class="function"><span class="keyword">function</span><span class="params">(tabs)</span> </span>{  </div><div class="line">  chrome.tabs.sendMessage(tabs[<span class="number">0</span>].id, {greeting: <span class="string">"hello"</span>}, <span class="function"><span class="keyword">function</span><span class="params">(response)</span> </span>{  </div><div class="line">    <span class="built_in">console</span>.log(response.farewell);  </div><div class="line">  });  </div><div class="line">});</div></pre></td></tr></table></figure>
+<p>2）修改bashrc文件读写权限</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bash-<span class="number">3.2</span><span class="comment">#chmod +w /etc/bashrc</span></div></pre></td></tr></table></figure>
 
-<p>以上代码指定当前tab为消息的接收者。</p>
-<h3 id="接受消息">接受消息</h3>
-<p>接受端需要通过runtime.onMessage事件处理消息：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">chrome.runtime.onMessage.addListener(  </div><div class="line">  <span class="function"><span class="keyword">function</span><span class="params">(request, sender, sendResponse)</span> </span>{  </div><div class="line">    <span class="built_in">console</span>.log(sender.tab ?  </div><div class="line">                <span class="string">"from a content script:"</span> + sender.tab.url :  </div><div class="line">                <span class="string">"from the extension"</span>);  </div><div class="line">    <span class="keyword">if</span> (request.greeting == <span class="string">"hello"</span>)  </div><div class="line">      sendResponse({farewell: <span class="string">"goodbye"</span>});  </div><div class="line">  });</div></pre></td></tr></table></figure>
+<p>3）查看修改权限后的结果，如显示类似下面，说明修改权限成功。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="deletion">-rw-rw-rw-1 rootwheel8161 13 13:55 /etc/bashrc</span></div></pre></td></tr></table></figure>
 
-<p>事件处理通过function(request, sender, sendResponse){…}完成，以上代码处理消息时在控制台记录发送者的消息，回复“goodbye”消息。</p>
-<h3 id="其他资源">其他资源</h3>
+<p>4）修改bashrc文件 或者 .bash_profile</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">bash-<span class="number">3.2</span><span class="comment">#vi /etc/bashrc</span></div></pre></td></tr></table></figure>
+
+<p>按i键进入编辑状态，在文件末尾加入下面两行</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">export</span> ANT_HOME=/usr/local/apache-ant-<span class="number">1.9</span>.<span class="number">3</span></div><div class="line"></div><div class="line"><span class="keyword">export</span> PATH=<span class="variable">${PATH}</span>:<span class="variable">${ANT_HOME}</span>/bin</div></pre></td></tr></table></figure>
+
+<p>Tip:其中“apache-ant-1.9.3”是你解压缩的文件夹名称</p>
+<p>按ESC键退出编辑状态。输入:wq!保存并退出。</p>
+<p>5）测试</p>
+<p>重新打开终端并输入</p>
+<p>$ant -version</p>
+<p>配置成功则显示如下：</p>
+<p>Apache Ant(TM) version 1.9.3 compiled on December 23 2013</p>
+<h3 id="安装完成之后，我们就可以使用phonegap生成一个android项目文件。执行如下命令：cordova平台">安装完成之后，我们就可以使用phonegap生成一个android项目文件。执行如下命令：cordova平台</h3>
+<p>安装NodeJS插件<br>这个之前介绍过如何安装，这里就不说明了，参考：（<a href="http://www.haomou.net/2014/07/29/2014_nodejs_1/" target="_blank" rel="external">http://www.haomou.net/2014/07/29/2014_nodejs_1/</a> ）</p>
+<p>接着安装pnonegap和cordova，如下：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">npm install -g phonegap</div><div class="line"><span class="keyword">...</span></div><div class="line">npm install -g cordova</div></pre></td></tr></table></figure>
+
+<p>安装完成之后，我们就可以使用phonegap生成一个android项目文件。执行如下命令：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">cordova <span class="built_in">create</span> myapp com.org.myapp <span class="string">"HelloWorld"</span>  </div><div class="line">cd myapp  </div><div class="line">cordova <span class="built_in">platform</span> <span class="built_in">add</span> android <span class="comment"> //添加android运行平台</span></div><div class="line">cordova build android  <span class="comment"> //编译apk</span></div><div class="line">cordova emulate android <span class="comment"> //调用adb调试应用</span></div></pre></td></tr></table></figure>
+
+<p>上面的倒数第二步，cordova platform add android这个可能会报错。</p>
+<h4 id="错误1-ANDROID_HOME_is_not_set">错误1-ANDROID_HOME is not set</h4>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">/Users/chale/.cordova/lib/npm_cache/cordova-android/3.6.4/package/bin/node_modules/q/q.js:126</div><div class="line">                    throw e;</div><div class="line">                          ^</div><div class="line">Error: ANDROID_HOME is not <span class="operator"><span class="keyword">set</span> <span class="keyword">and</span> <span class="string">"android"</span> command <span class="keyword">not</span> <span class="keyword">in</span> your PATH. You must fulfill <span class="keyword">at</span> <span class="keyword">least</span> one <span class="keyword">of</span> these conditions.</span></div><div class="line">    <span class="keyword">at</span> /Users/chale/.cordova/lib/npm_cache/cordova-android/<span class="number">3.6</span><span class="number">.4</span>/package/<span class="keyword">bin</span>/lib/check_reqs.js:<span class="number">159</span>:<span class="number">19</span></div><div class="line">    <span class="keyword">at</span> _fulfilled (/Users/chale/.cordova/lib/npm_cache/cordova-android/<span class="number">3.6</span><span class="number">.4</span>/package/<span class="keyword">bin</span>/node_modules/q/q.js:<span class="number">798</span>:<span class="number">54</span>)</div><div class="line">    <span class="keyword">at</span> self.promiseDispatch.done (/Users/chale/.cordova/lib/npm_cache/cordova-android/<span class="number">3.6</span><span class="number">.4</span>/package/<span class="keyword">bin</span>/node_modules/q/q.js:<span class="number">827</span>:<span class="number">30</span>)</div><div class="line">    <span class="keyword">at</span> Promise.promise.promiseDispatch (/Users/chale/.cordova/lib/npm_cache/cordova-android/<span class="number">3.6</span><span class="number">.4</span>/package/<span class="keyword">bin</span>/node_modules/q/q.js:<span class="number">760</span>:<span class="number">13</span>)</div><div class="line">    <span class="keyword">at</span> /Users/chale/.cordova/lib/npm_cache/cordova-android/<span class="number">3.6</span><span class="number">.4</span>/package/<span class="keyword">bin</span>/node_modules/q/q.js:<span class="number">821</span>:<span class="number">14</span></div><div class="line">    <span class="keyword">at</span> <span class="keyword">flush</span> (/Users/chale/.cordova/lib/npm_cache/cordova-android/<span class="number">3.6</span><span class="number">.4</span>/package/<span class="keyword">bin</span>/node_modules/q/q.js:<span class="number">108</span>:<span class="number">17</span>)</div><div class="line">    <span class="keyword">at</span> process._tickCallback (node.js:<span class="number">442</span>:<span class="number">13</span>)</div><div class="line">    <span class="keyword">at</span> <span class="keyword">Function</span>.<span class="keyword">Module</span>.runMain (<span class="keyword">module</span>.js:<span class="number">499</span>:<span class="number">11</span>)</div><div class="line">    <span class="keyword">at</span> startup (node.js:<span class="number">119</span>:<span class="number">16</span>)</div></pre></td></tr></table></figure>
+
+<p>错误提示是没有添加ANDROID_HOME到环境变量中，我们添加即可，方法：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">sudo</span> vi ~/.bash_profile</div><div class="line"></div><div class="line">追加 下载的adt bundle目录下的sdk目录为ANDROID_HOME，例如：</div><div class="line"><span class="keyword">export</span> ANDROID_HOME=/Applications/adt-bundle-mac-x86_64-<span class="number">20131030</span>/sdk</div><div class="line"></div><div class="line">然后是配置生效</div><div class="line"><span class="built_in">source</span> ~/.bash_profile</div></pre></td></tr></table></figure>
+
+<p>然后重试一下，我的是成功了！</p>
+<h4 id="错误2-Please_install_Android_target_17">错误2-Please install Android target 17</h4>
+<p>这个是windows安装时容易出现的错误。</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[error] Please <span class="operator"><span class="keyword">install</span> Android target <span class="number">17</span> (the Android <span class="number">4.2</span> SDK). Make sure you have the latest Android tools installed <span class="keyword">as</span> well.</span></div></pre></td></tr></table></figure>
+
+<p>这个主要是没有安装和当前cordova对应要求的android平台sdk，这个可以通过2种方法解决，</p>
 <ol>
-<li><a href="http://lmk123.duapp.com/extensions/index" target="_blank" rel="external">chrome 开发者文档</a><br><a href="http://lmk123.duapp.com/extensions/index" target="_blank" rel="external">http://lmk123.duapp.com/extensions/index</a></li>
-<li><a href="http://chrome.liuyixi.com/docs.html" target="_blank" rel="external">chrome 插件文档</a><br><a href="http://chrome.liuyixi.com/docs.html" target="_blank" rel="external">http://chrome.liuyixi.com/docs.html</a></li>
+<li>打开ADT，打开Android SDK manager，安装对应平台的SDK。（参考下一小节）</li>
+<li>打开如下目录，可能其中的版本号不一，</li>
 </ol>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">C:<span class="command">\Users</span><span class="command">\USER</span>_NAME<span class="command">\.</span>cordova<span class="command">\lib</span><span class="command">\android</span><span class="command">\cordova</span>\3.1.0<span class="command">\framework</span><span class="command">\project</span>.properties</div></pre></td></tr></table></figure>
+
+<p>修改</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">target</span>=<span class="string">android-17</span></div></pre></td></tr></table></figure>
+
+<p>可以把这个修改成你现在已安装的平Andriod台，或者想要指定的Android平台。<br>这个问题解决后，上面的示例项目即可生成，然后使用ADT Eclipse导入该项目即可，同意通过运行，查看在AVD中的运行效果。</p>
+<h3 id="Android开发平台搭建技巧">Android开发平台搭建技巧</h3>
+<p>技巧一：Android SDK Manager打开非常慢，总是失败。解决方法：</p>
+<blockquote>
+<p>访问站长工具网站（<a href="http://tool.chinaz.com/" target="_blank" rel="external">http://tool.chinaz.com/</a>  )，选择 其他工具/超级PING ，把域名dl-ssl.google.com粘贴进去，然后勾选海外的，点击查询，会列出一些可以ping通的IP地址。<br>使用cmd命令行ping 对应的ip地址，修改系统的host文件，具体位置在（C:\Windows\System32\drivers\etc），在最后一行增加域名解析记录：</p>
+</blockquote>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="number">74.125</span>.<span class="number">206.93</span> <span class="keyword">dl</span>-ssl.google.<span class="keyword">com</span></div></pre></td></tr></table></figure>
+
+<p>然后重新打开Android SDK Manager，试一下。如果不行，就换一个ip，重新修改host，总有可以的。我用的这个是英国的ip，速度还不错。<br>技巧二：manage AVD里面新建Android虚拟机的时候，报错：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">No system images installed <span class="keyword">for</span> <span class="keyword">this</span> target</div></pre></td></tr></table></figure>
+
+<p>解决方法：在Android SDK Manager中下载对应平台的ARM EABI v7a System image。<br>技巧三：打开eclipse时，卡在Android sdk content loader 0%，解决办法：<br>方法1：遇到Eclipse右下角一直显示“Android sdk content loader 0%”的情况时，直接关掉Eclipse，有ADB进程在运行时通过进程管理器结束进程，然后重启Eclipse。通过这种方法多数情况下问题会得到解决。<br>方法2：关闭Eclipse，删掉C:\Users\用户名.android文件夹下的所有内容，再重启Eclipse。</p>
 <h3 id="谢谢！">谢谢！</h3>
-<p>转载请注明出处：<a href="http://www.haomou.net/2014/10/23/2014_chrome_plugin1/" target="_blank" rel="external">http://www.haomou.net/2014/10/23/2014_chrome_plugin1/</a></p>
-<p>有问题请留言。  请叫我皓眸哥 </p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2015/01/06/2015_mac_android/" target="_blank" rel="external">http://www.haomou.net/2015/01/06/2015_mac_android/</a><br>有问题请留言。  请叫我皓眸哥(^_^)  </p>
 
       
     </div>
@@ -162,13 +225,13 @@ Chrome的消息传递，可以在Web（通过content script）和扩展之间进
 <div class="panel panel-success">
     <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
     <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://haomou.net">皓眸IT</a> ，请勿用于任何商业用途</div>
-    <div class="panel-body">本文链接: <a href="/2014/10/23/2014_chrome_plugin1/">chrome插件开发消息传递机制</a></div>
+    <div class="panel-body">本文链接: <a href="/2015/01/06/2015_mac_android/"></a></div>
 </div></div></section>
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/chrome/" itemprop="url"><span itemprop="title" >chrome</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/chrome/" class="label label-primary" itemprop="url"><span itemprop="title">chrome</span></a><a href="/tags/插件/" class="label label-success" itemprop="url"><span itemprop="title">插件</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-06 11:05:21"datetime="2015-01-06 11:05:21"> Jan 6 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
-<a href="http://haomou.net/2014/10/23/2014_chrome_plugin1/#comments" class="ds-thread-count comment-link" data-thread-key="2014_chrome_plugin1" data-count-type="comments">暂无评论</a></span>
+        <span class="time">最近更新:<time title="2015-01-06 10:49:13"datetime="2015-01-06 10:49:13"> Jan 6 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://haomou.net/2015/01/06/2015_mac_android/#comments" class="ds-thread-count comment-link" data-thread-key="2015_mac_android" data-count-type="comments">暂无评论</a></span>
         </footer>
     
     <div class="clearfix"></div>
@@ -180,15 +243,13 @@ Chrome的消息传递，可以在Web（通过content script）和扩展之间进
     <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
 <ul class="pager">
   
-  <li class="previous"><a href="/2014/10/25/2014_html5_postmessage/" title="postMessage之跨文档通信与通道通信">&larr; postMessage之跨文档通信与通道通信</a></li>
   
-  
-  <li class="next"><a href="/2014/10/22/2014_chrome_plugin/" title="Native messaging起动本地应用(chrome插件开发)">Native messaging起动本地应用(chrome插件开发) &rarr;</a></li>
+  <li class="next"><a href="/2015/01/05/2015_ionic_ngCordova/" title="ionic开发插件之ngCordova配置安装">ionic开发插件之ngCordova配置安装 &rarr;</a></li>
   
 </ul></div></section>    
 	<div id="comments"><!-- Duoshuo Comment BEGIN -->
 
-<div class="ds-thread"  data-thread-key="2014_chrome_plugin1"  data-url="http://haomou.net/2014/10/23/2014_chrome_plugin1/" data-title="chrome插件开发消息传递机制"></div>
+<div class="ds-thread"  data-thread-key="2015_mac_android"  data-url="http://haomou.net/2015/01/06/2015_mac_android/" data-title=""></div>
 <!-- Duoshuo Comment END -->
 
 </div></div><!--wapper-->
@@ -243,7 +304,7 @@ Chrome的消息传递，可以在Web（通过content script）和扩展之间进
   <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
 <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 </span><span id='analytics-baidu'></span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-06 11:05:21</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-06 10:49:13</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
@@ -294,10 +355,10 @@ _js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
             <!--wumii_relatedItems-->
 
 <script type="text/javascript">
-    var wumiiPermaLink = "http://haomou.net/2014/10/23/2014_chrome_plugin1/";
-    var wumiiTitle = "chrome插件开发消息传递机制";
-    var wumiiTags = "chrome,插件";
-    var wumiiCategories = ["chrome"];
+    var wumiiPermaLink = "http://haomou.net/2015/01/06/2015_mac_android/";
+    var wumiiTitle = "";
+    var wumiiTags = "";
+    var wumiiCategories = [];
     var wumiiSitePrefix = "http://haomou.net";
     var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
     _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
