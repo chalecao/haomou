@@ -370,6 +370,9 @@ article a.more-link {
   #widget_tagcloud {
     display: none;
   }
+  #outline {
+    display: none;
+  }
   .hm-menu {
     position: absolute;
     right: 45px;
