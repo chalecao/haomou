@@ -1,0 +1,347 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="wumiiVerification" content="1747c9bc-e905-45aa-88ac-f13f2b210015" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ionic文件选择与上传 | 皓眸IT</title>
+<meta name="author" content="Chale Cao">
+
+<meta name="description" content="ionic文件操作采用ionic开发hybrid app混合应用，自然少不了使用文件选择和上传操作，经过皓眸哥左看看，右瞅瞅，有两种可以实现的方法：1.采用cordova插件，需要使用js绑定事件操作，无法使用angular2.使用ngCordova插件，这个是结合cordova与angular封装的，更多介绍参考ionic开发插件之ngCordova配置安装本文给出一个使用ionic和ngCordova插件制作图片文件选择与上传的综合实例工程，并放在github上，你可以down下载作为种子项目开发，本人已经在android 4.4和ios 7.1上测试过，完美运行。">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="ionic文件选择与上传"/>
+<meta property="og:site_name" content="皓眸IT"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css">
+<![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="皓眸IT Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+
+<link rel="stylesheet" href="/css/nprogress.css" type="text/css">
+
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.bootcss.com/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+  
+  <header id="header" class="hm-menu-left-container"><nav id="main-nav" class="navbar navbar-default hm-navbar-menu-left  " role="navigation">
+    <div class="hm-navbar-header">
+    <a href="http://haomou.net" ><img class="hm-logo" src="/images/haomou.png" title="皓眸IT" width="64" height="64" /></a>
+    <br/>|<br/><span class="fa fa-tint hm-black shine_blue" ></span><br/>|<br/><span class="fa fa-heart hm-black shine_red" ></span><br/>|<br/>
+        <i class="fa fa-bars fa-2x hm-black hm-menu shine_blue" ></i><br/><div class="hm-line"></div>
+    </div>
+    <div class="collapse navbar-collapse">
+      <h1 style="color:black">皓眸IT</h1>
+      <ul class="nav navbar-nav hm-left-nav">
+  
+        <li item='2015/01/07/2015_ionic_fileOP/' class='active'><a href="/" title="首页">首页</a></li>      
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>关于我<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://home.ustc.edu.cn/~chh1990/chero/chero.html" title="个人主页">个人主页</a></li>    
+        </ul>
+      </li>
+    
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>创业项目<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://pictcake.cn" title="照片蛋糕">照片蛋糕</a></li>    
+        </ul>
+      </li>
+    
+      </ul>
+
+        
+        <div id="widget_category" class="widget hm-left-widget">
+            <div class="panel-heading">分类：</div>            <div data-src='category' class='ajax_widgets'>正在加载...</div>
+        </div>
+        
+        <div id="widget_tagcloud" class="widget hm-left-widget">
+            <div class="panel-heading">标签云：</div>            <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div>        </div>
+        
+
+
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/chalecao">github</a></li>
+      
+      </ul>
+    </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div style="" id="headflash" class="headflash hm_container"><embed pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="/images/bck.swf" width="100%" height="313" style="undefined" id="headflash_f" name="headflash_f" bgcolor="#000" quality="high" allowscriptaccess="false" wmode="transparent" allowfullscreen="false"></div>
+  <div id='content' class=" container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>皓眸IT <small>写清楚，说明白</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article class="hm-article">
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left hm-article-w"></i>
+      <h1 class="title">ionic文件选择与上传</h1>
+      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2015-01-07T01:10:39.000Z"> <a href="/2015/01/07/2015_ionic_fileOP/">Jan 7 2015</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry"  data-spy="scroll" data-target="#toc" >
+      
+        <h3 id="ionic文件操作">ionic文件操作</h3>
+<p>采用ionic开发hybrid app混合应用，自然少不了使用文件选择和上传操作，经过皓眸哥左看看，右瞅瞅，有两种可以实现的方法：<br>1.采用cordova插件，需要使用js绑定事件操作，无法使用angular<br>2.使用ngCordova插件，这个是结合cordova与angular封装的，更多介绍参考<a href="http://www.haomou.net/2015/01/05/2015_ionic_ngCordova/" target="_blank" rel="external">ionic开发插件之ngCordova配置安装</a><br>本文给出一个使用ionic和ngCordova插件制作图片文件选择与上传的综合实例工程，并放在github上，你可以down下载作为种子项目开发，本人已经在android 4.4和ios 7.1上测试过，完美运行。</p>
+<p><a id="more"></a><br><img class="floatnone" alt="皓眸哥" src="/images/ionic_file.png"></p>
+<p>教程索引：(持续更新)<br><a href="http://www.haomou.net/2014/10/06/2014_ionic_learn/" target="_blank" rel="external">ionic中文教程</a><br>转载请注明出处：<a href="http://www.haomou.net/2015/01/07/2015_ionic_fileOP/" target="_blank" rel="external">http://www.haomou.net/2015/01/07/2015_ionic_fileOP/</a></p>
+<h3 id="创建项目">创建项目</h3>
+<p>请先先参考我的另一篇博客：<a href="http://www.haomou.net/2014/08/07/2014_ionic/" target="_blank" rel="external">ionic框架配置</a>搭建环境,然后继续。<br>执行下面的命令</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ionic <span class="operator"><span class="keyword">start</span> myApp sidemenu</span></div><div class="line">bower <span class="keyword">install</span> ngCordova</div><div class="line">cordova <span class="keyword">plugin</span> <span class="keyword">add</span> https://github.com/wymsee/cordova-imagePicker.git</div></pre></td></tr></table></figure>
+
+<p>上面我们只是添加了选择文件的插件，还没有使用文件上传，如果使用文件上传，添加下面的命令</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cordova plugin <span class="built_in">add</span> org.apache.cordova.<span class="keyword">file</span></div><div class="line">cordova plugin <span class="built_in">add</span> org.apache.cordova.<span class="keyword">file</span>-transfer</div></pre></td></tr></table></figure>
+
+<h3 id="修改程序">修改程序</h3>
+<p>修改程序引入ngCordova插件。</p>
+<h4 id="修改index-html">修改index.html</h4>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"lib/ngCordova/dist/ng-cordova.js"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"cordova.js"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></div></pre></td></tr></table></figure>
+
+<h4 id="修改app-js">修改app.js</h4>
+<p>添加ngCordova模块。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">angular.<span class="keyword">module</span>(<span class="string">'starter'</span>, [<span class="string">'ionic'</span>, <span class="string">'starter.controllers'</span>,<span class="string">'ngCordova'</span>])</div></pre></td></tr></table></figure>
+
+<p>我们打算在browser页面制作演示程序,然后将默认页面指向browser页面：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$urlRouterProvider</span>.otherwise(<span class="string">'/app/browse'</span>);</div></pre></td></tr></table></figure>
+
+<h4 id="修改controller">修改controller</h4>
+<p>我们打算在browser页面制作演示程序，修改appctrl即可：<br>(注意添加$cordovaImagePicker模块)</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">angular.module(<span class="string">'starter.controllers'</span>, [])</div><div class="line">    .controller(<span class="string">'AppCtrl'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(<span class="variable">$scope</span>, <span class="variable">$ionicModal</span>, <span class="variable">$timeout</span>, <span class="variable">$cordovaImagePicker</span>)</span> </span>{</div><div class="line">        <span class="comment">// Form data for the login modal</span></div><div class="line">        <span class="variable">$scope</span>.loginData = {};</div><div class="line">        <span class="variable">$scope</span>.imgSrc = <span class="string">""</span>;</div><div class="line">        <span class="comment">// Create the login modal that we will use later</span></div><div class="line">        <span class="variable">$ionicModal</span>.fromTemplateUrl(<span class="string">'templates/login.html'</span>, {</div><div class="line">            scope: <span class="variable">$scope</span></div><div class="line">        }).then(<span class="function"><span class="keyword">function</span> <span class="params">(modal)</span> </span>{</div><div class="line">            <span class="variable">$scope</span>.modal = modal;</div><div class="line">        });</div><div class="line"></div><div class="line">        <span class="comment">// Triggered in the login modal to close it</span></div><div class="line">        <span class="variable">$scope</span>.closeLogin = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">            <span class="variable">$scope</span>.modal.hide();</div><div class="line">        };</div><div class="line"></div><div class="line">        <span class="comment">// Open the login modal</span></div><div class="line">        <span class="variable">$scope</span>.login = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">            <span class="variable">$scope</span>.modal.show();</div><div class="line">        };</div><div class="line"></div><div class="line">        <span class="comment">//image picker</span></div><div class="line">        <span class="variable">$scope</span>.pickImage = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line"></div><div class="line">            console.log(<span class="string">"haha"</span>);</div><div class="line"></div><div class="line">            <span class="keyword">var</span> options = {</div><div class="line">                maximumImagesCount: <span class="number">1</span>,</div><div class="line">                width: <span class="number">800</span>,</div><div class="line">                height: <span class="number">800</span>,</div><div class="line">                quality: <span class="number">80</span></div><div class="line">            };</div><div class="line"></div><div class="line">            <span class="variable">$cordovaImagePicker</span>.getPictures(options)</div><div class="line">                .then(<span class="function"><span class="keyword">function</span> <span class="params">(results)</span> </span>{</div><div class="line">                    console.log(results);</div><div class="line">                    <span class="variable">$scope</span>.imgSrc = results[<span class="number">0</span>];</div><div class="line">                }, <span class="function"><span class="keyword">function</span> <span class="params">(error)</span> </span>{</div><div class="line">                    <span class="comment">// error getting photos</span></div><div class="line">                });</div><div class="line"></div><div class="line">        }</div><div class="line">.....</div><div class="line">.....</div></pre></td></tr></table></figure>
+
+<h4 id="修改browser页面">修改browser页面</h4>
+<p>修改browser.html</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="title">ion-view</span> <span class="attribute">view-title</span>=<span class="value">"Browse"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="title">ion-content</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"list card"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"item item-avatar"</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="title">img</span> <span class="attribute">src</span>=<span class="value">"img/ionic.png"</span>&gt;</span></div><div class="line"></div><div class="line">                <span class="tag">&lt;<span class="title">h2</span>&gt;</span>皓眸IT<span class="tag">&lt;/<span class="title">h2</span>&gt;</span></div><div class="line"></div><div class="line">                <span class="tag">&lt;<span class="title">p</span>&gt;</span>www.haomou.net<span class="tag">&lt;/<span class="title">p</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="title">div</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"item item-body"</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="title">img</span> <span class="attribute">class</span>=<span class="value">"full-image"</span> <span class="attribute">src</span>=<span class="value">""</span>&gt;</span></div><div class="line"></div><div class="line">                <span class="tag">&lt;<span class="title">p</span>&gt;</span></div><div class="line">                    click select button below（点击下面选择图片的按钮，选择你要展示的图片）</div><div class="line">                <span class="tag">&lt;/<span class="title">p</span>&gt;</span></div><div class="line"></div><div class="line">                <span class="tag">&lt;<span class="title">p</span>&gt;</span></div><div class="line">                    <span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"#"</span> <span class="attribute">class</span>=<span class="value">"subdued"</span>&gt;</span>1 Like<span class="tag">&lt;/<span class="title">a</span>&gt;</span></div><div class="line">                    <span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"#"</span> <span class="attribute">class</span>=<span class="value">"subdued"</span>&gt;</span>5 Comments<span class="tag">&lt;/<span class="title">a</span>&gt;</span></div><div class="line">                <span class="tag">&lt;/<span class="title">p</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="title">div</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"item tabs tabs-secondary tabs-icon-left"</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="title">a</span> <span class="attribute">class</span>=<span class="value">"tab-item"</span> <span class="attribute">href</span>=<span class="value">"#"</span>&gt;</span></div><div class="line">                    <span class="tag">&lt;<span class="title">i</span> <span class="attribute">class</span>=<span class="value">"icon ion-thumbsup"</span>&gt;</span><span class="tag">&lt;/<span class="title">i</span>&gt;</span></div><div class="line">                    Like</div><div class="line">                <span class="tag">&lt;/<span class="title">a</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="title">a</span> <span class="attribute">class</span>=<span class="value">"tab-item"</span> <span class="attribute">href</span>=<span class="value">"#"</span>&gt;</span></div><div class="line">                    <span class="tag">&lt;<span class="title">i</span> <span class="attribute">class</span>=<span class="value">"icon ion-chatbox"</span>&gt;</span><span class="tag">&lt;/<span class="title">i</span>&gt;</span></div><div class="line">                    Comment</div><div class="line">                <span class="tag">&lt;/<span class="title">a</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="title">a</span> <span class="attribute">class</span>=<span class="value">"tab-item"</span> <span class="attribute">href</span>=<span class="value">"#"</span>&gt;</span></div><div class="line">                    <span class="tag">&lt;<span class="title">i</span> <span class="attribute">class</span>=<span class="value">"icon ion-share"</span>&gt;</span><span class="tag">&lt;/<span class="title">i</span>&gt;</span></div><div class="line">                    Share</div><div class="line">                <span class="tag">&lt;/<span class="title">a</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="title">div</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="title">div</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="title">button</span> <span class="attribute">class</span>=<span class="value">"button button-full button-positive"</span> <span class="attribute">ng-click</span>=<span class="value">"pickImage()"</span>&gt;</span></div><div class="line">            select（选择图片）</div><div class="line">        <span class="tag">&lt;/<span class="title">button</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="title">ion-content</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="title">ion-view</span>&gt;</span></div></pre></td></tr></table></figure>
+
+<p>然后就可以了。你可以现在本地测试，然后添加android或者ios平台模拟测试运行。<br><img class="floatnone" alt="皓眸哥" src="/images/ionic_file2.png"></p>
+<h3 id="项目代码">项目代码</h3>
+<p>整个项目代码已经放到github上，如果你觉得不错，给我点个星星哈。<br>项目地址：<a href="https://github.com/chalecao/ionic_fileOP_demo" target="_blank" rel="external">https://github.com/chalecao/ionic_fileOP_demo</a></p>
+<h3 id="谢谢！">谢谢！</h3>
+<p>转载请注明出处：<a href="http://www.haomou.net/2015/01/05/2015_ionic_ngCordova/" target="_blank" rel="external">http://www.haomou.net/2015/01/05/2015_ionic_ngCordova/</a></p>
+<p>有问题请留言。  请叫我皓眸哥(^_^)  </p>
+
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://haomou.net">皓眸IT</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2015/01/07/2015_ionic_fileOP/">ionic文件选择与上传</a></div>
+</div></div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/ngCordova/" itemprop="url"><span itemprop="title" >ngCordova</span></a></li></span><span class="breadcrumb"><li><a href="/categories/ionic/" itemprop="url"><span itemprop="title" >ionic</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/ionic/" class="label label-primary" itemprop="url"><span itemprop="title">ionic</span></a><a href="/tags/ngCordova/" class="label label-success" itemprop="url"><span itemprop="title">ngCordova</span></a><a href="/tags/file/" class="label label-info" itemprop="url"><span itemprop="title">file</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-07 11:19:03"datetime="2015-01-07 11:19:03"> Jan 7 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://haomou.net/2015/01/07/2015_ionic_fileOP/#comments" class="ds-thread-count comment-link" data-thread-key="2015_ionic_fileOP" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  
+  <li class="next"><a href="/2015/01/06/2015_mac_android/" title="MAC下Android环境与cordova搭建">MAC下Android环境与cordova搭建 &rarr;</a></li>
+  
+</ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="2015_ionic_fileOP"  data-url="http://haomou.net/2015/01/07/2015_ionic_fileOP/" data-title="ionic文件选择与上传"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_myself" class="widget hm-left-widget" style="clear:both">
+    <img alt="皓眸GEEK" src="/images/hm.jpg" width="100" height="120"  style="border-radius: 5px;margin-right: 5px;float:left;"/>
+<div style="color: #428bca;text-align: center;font-size: 18px;">曹欢欢(chale)</div>2014年毕业于中国科学技术大学，硕士研究生，目前在大武汉知名外企公司上班。<br/>喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身哈，等你来...吼吼...喜欢就写信给我喽，请叫我皓眸哥(^_^)
+<br/>擅长：NodeJS，JAVA，PHP，WebGL，WebRTC，PS ...
+<br/><span style="color: #fb6580;">Mail To: </span>chh1990@mail.ustc.edu.cn
+<br/><span style="color: #fb6580;">QQ：</span>807991555（chale）</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_search" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">一般人我不告诉他？</div>  <div id="haomou_ad">
+<script type="text/javascript">
+     document.write('<a style="display:none!important" id="tanx-a-mm_20953349_8708182_29186703"></a>');
+     tanx_s = document.createElement("script");
+     tanx_s.type = "text/javascript";
+     tanx_s.charset = "gbk";
+     tanx_s.id = "tanx-s-mm_20953349_8708182_29186703";
+     tanx_s.async = true;
+     tanx_s.src = "http://p.tanx.com/ex?i=mm_20953349_8708182_29186703";
+     tanx_h = document.getElementsByTagName("head")[0];
+     if(tanx_h)tanx_h.insertBefore(tanx_s,tanx_h.firstChild);
+</script>
+</div></div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2014-2015 Chale Cao
+  
+    &nbsp;&nbsp;</span>
+  <a href='http://www.miibeian.gov.cn/'>苏ICP备13018740号-6</a></span>
+  <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'></span>  </div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-07 11:19:03</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haomou"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://haomou.net/2015/01/07/2015_ionic_fileOP/";
+    var wumiiTitle = "ionic文件选择与上传";
+    var wumiiTags = "ionic,ngCordova,file";
+    var wumiiCategories = ["ngCordova","ionic"];
+    var wumiiSitePrefix = "http://haomou.net";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />').wrap('<div class="img_block"></div>');
+     
+      if(alt){$(this).after('<span class="caption">' + alt + '</span>')};
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script src="/js/chenall.js" type="text/javascript"></script>
+
+
+  </body>
+</html>
