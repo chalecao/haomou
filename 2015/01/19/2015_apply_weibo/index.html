@@ -1,0 +1,323 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="wumiiVerification" content="1747c9bc-e905-45aa-88ac-f13f2b210015" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>微博登录帐号申请测试方法 | 皓眸IT</title>
+<meta name="author" content="Chale Cao">
+
+<meta name="description" content="登录需求现在网站这么多，应用这么多。用户面临新的app，或者网站不太愿意重新注册帐号，所以在产品设计的时候都要考虑这些问题，而一般设计的产品登录方式都是用的第三方登录。这里我们介绍一下如何申请微博的登录接口，如何测试我们的登录接口应用。">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="微博登录帐号申请测试方法"/>
+<meta property="og:site_name" content="皓眸IT"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css">
+<![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="皓眸IT Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+
+<link rel="stylesheet" href="/css/nprogress.css" type="text/css">
+
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.bootcss.com/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+  
+  <header id="header" class="hm-menu-left-container"><nav id="main-nav" class="navbar navbar-default hm-navbar-menu-left  " role="navigation">
+    <div class="hm-navbar-header">
+    <a href="http://haomou.net" ><img class="hm-logo" src="/images/haomou.png" title="皓眸IT" width="64" height="64" /></a>
+    <br/>|<br/><span class="fa fa-tint hm-black shine_blue" ></span><br/>|<br/><span class="fa fa-heart hm-black shine_red" ></span><br/>|<br/>
+        <i class="fa fa-bars fa-2x hm-black hm-menu shine_blue" ></i><br/><div class="hm-line"></div>
+    </div>
+    <div class="collapse navbar-collapse">
+      <h1 style="color:black">皓眸IT</h1>
+      <ul class="nav navbar-nav hm-left-nav">
+  
+        <li item='2015/01/19/2015_apply_weibo/' class='active'><a href="/" title="首页">首页</a></li>      
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>关于我<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://home.ustc.edu.cn/~chh1990/chero/chero.html" title="个人主页">个人主页</a></li>    
+        </ul>
+      </li>
+    
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>创业项目<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://pictcake.cn" title="照片蛋糕">照片蛋糕</a></li>    
+        </ul>
+      </li>
+    
+      </ul>
+
+        
+        <div id="widget_category" class="widget hm-left-widget">
+            <div class="panel-heading">分类：</div>            <div data-src='category' class='ajax_widgets'>正在加载...</div>
+        </div>
+        
+        <div id="widget_tagcloud" class="widget hm-left-widget">
+            <div class="panel-heading">标签云：</div>            <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div>        </div>
+        
+
+
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/chalecao">github</a></li>
+      
+      </ul>
+    </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div style="" id="headflash" class="headflash hm_container"><embed pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="/images/bck.swf" width="100%" height="313" style="undefined" id="headflash_f" name="headflash_f" bgcolor="#000" quality="high" allowscriptaccess="false" wmode="transparent" allowfullscreen="false"></div>
+  <div id='content' class=" container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>皓眸IT <small>写清楚，说明白</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article class="hm-article">
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left hm-article-w"></i>
+      <h1 class="title">微博登录帐号申请测试方法</h1>
+      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2015-01-19T08:22:31.000Z"> <a href="/2015/01/19/2015_apply_weibo/">Jan 19 2015</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry"  data-spy="scroll" data-target="#toc" >
+      
+        <h3 id="登录需求">登录需求</h3>
+<p>现在网站这么多，应用这么多。用户面临新的app，或者网站不太愿意重新注册帐号，所以在产品设计的时候都要考虑这些问题，而一般设计的产品登录方式都是用的第三方登录。这里我们介绍一下如何申请微博的登录接口，如何测试我们的登录接口应用。<br><a id="more"></a></p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2015/01/19/2015_apply_weibo/" target="_blank" rel="external">http://www.haomou.net/2015/01/19/2015_apply_weibo/</a></p>
+<p><img class="floatnone" alt="皓眸哥" src="/images/weibo.jpg"></p>
+<h3 id="准备工作">准备工作</h3>
+<p>1、注册新浪微博</p>
+<p>2、访问新浪微博开发平台<a href="http://open.weibo.com，如果是企业，申请企业接入，并提交相关资料进行审核；如果是个人开发者，就请申请个人开发者应用，一下以开发者为例" target="_blank" rel="external">http://open.weibo.com，如果是企业，申请企业接入，并提交相关资料进行审核；如果是个人开发者，就请申请个人开发者应用，一下以开发者为例</a></p>
+<p>3、使用新浪微博的开放API，就需要跟新浪申请一个appkey和App Secret，这个是入口，必须获取到这两个才能进行接下来的接入工作</p>
+<p>4、进入<a href="http://open.weibo.com完善个人信息之后，必须还要做完身份认证审核，审核完成之后，新浪开放平台就会给出appkey和App" target="_blank" rel="external">http://open.weibo.com完善个人信息之后，必须还要做完身份认证审核，审核完成之后，新浪开放平台就会给出appkey和App</a> Secret</p>
+<p>5、接下来就是如何使用appkey和App Secret了，需要去下载开放平台中文档或者是demo代码，其实提供的文档基本都是技术文档，很多东西没有讲清楚，对于初次接触的人，还是会遇到很多麻烦</p>
+<p>6、新浪开放平台提供了很多不同开发语言的sdk，自行选择需要的sdk。</p>
+<h3 id="申请APPkey">申请APPkey</h3>
+<p>在开放平台上创建应用，如下图所示,这里有三类应用，网站接入、站内应用、移动应用，如果是企业行为，有公开的域名可以访问，并且应用程序是通过域名进行访问，这里任何一种方式都可以用，但如果我们只是简单开发者，没有公用域名，比如是内　　部局域网模式，ip为内网地址192.168.1.*开头，本地127.0.0.1之类的，这里就只能选择创建站内应用。<br><img class="floatnone" alt="皓眸哥" src="/images/weibo.jpg"><br><img class="floatnone" alt="皓眸哥" src="/images/weibo1.jpg"><br>这里红色框标记的地方就是回调地址，如果我没有公网ip和域名，局域网玩玩就这么填写就ok了，不过这里不能用localhost代替127.0.0.1，这里按照配置要求完成，这个配置里面的要求是很严谨的，特别是下面的几个应用图标，总之比较麻烦，这里结束了之后，就可以提交审核了。提交审核之后，第一次大约1天时间，新浪开放平台就会发邮件到你的邮箱，告知你审核结果，不过这里审核结果失败与否没有关系，关键就是要提交审核，没有审核成功，这里照常可以用。<br><img class="floatnone" alt="皓眸哥" src="/images/weibo2.jpg"></p>
+<h3 id="应用测试">应用测试</h3>
+<p>完成测试工程中的配置文件redirect_URI，这里必须与创建应用时填写的【应用实际地址】保持一致，这就是回调地址！完成配置之后，再次运行OAuth4Code.java，如图所示<br><img class="floatnone" alt="皓眸哥" src="/images/weibo3.jpg"><br>这里就跳转到新浪微博的登录页面，登录新浪微博的账户之后，就需要点击授权，表示你的微博帐号相关内容可以被接入的平台分享你的信息等等，授权结束之后，会返回一个code，这个code非常重要，就是我们整个接入第三方平台的开门钥匙，有这个code之后，我们就可以获取用户的access_token,UID等内容，就相当于整个接入过程打通了。</p>
+<h3 id="谢谢！">谢谢！</h3>
+<p>转载请注明出处：<a href="http://www.haomou.net/2015/01/19/2015_apply_weibo/" target="_blank" rel="external">http://www.haomou.net/2015/01/19/2015_apply_weibo/</a><br>有问题请留言。 请叫我皓眸哥  T_T</p>
+
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://haomou.net">皓眸IT</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2015/01/19/2015_apply_weibo/">微博登录帐号申请测试方法</a></div>
+</div></div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/问题集锦/" itemprop="url"><span itemprop="title" >问题集锦</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/微博/" class="label label-primary" itemprop="url"><span itemprop="title">微博</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-19 16:59:16"datetime="2015-01-19 16:59:16"> Jan 19 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://haomou.net/2015/01/19/2015_apply_weibo/#comments" class="ds-thread-count comment-link" data-thread-key="2015_apply_weibo" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  <li class="previous"><a href="/2015/01/19/2015_mongodb/" title="设置mongoDB的用户名密码和权限">&larr; 设置mongoDB的用户名密码和权限</a></li>
+  
+  
+  <li class="next"><a href="/2015/01/08/2015_nodejs_hole/" title="NodeJS遇到的那些坑">NodeJS遇到的那些坑 &rarr;</a></li>
+  
+</ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="2015_apply_weibo"  data-url="http://haomou.net/2015/01/19/2015_apply_weibo/" data-title="微博登录帐号申请测试方法"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_myself" class="widget hm-left-widget" style="clear:both">
+    <img alt="皓眸GEEK" src="/images/hm.jpg" width="100" height="120"  style="border-radius: 5px;margin-right: 5px;float:left;"/>
+<div style="color: #428bca;text-align: center;font-size: 18px;">曹欢欢(chale)</div>2014年毕业于中国科学技术大学，硕士研究生，目前在大武汉知名外企公司上班。<br/>喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身哈，等你来...吼吼...喜欢就写信给我喽，请叫我皓眸哥(^_^)
+<br/>擅长：NodeJS，JAVA，PHP，WebGL，WebRTC，PS ...
+<br/><span style="color: #fb6580;">Mail To: </span>chh1990@mail.ustc.edu.cn
+<br/><span style="color: #fb6580;">QQ：</span>807991555（chale）</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_search" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">一般人我不告诉他？</div>  <div id="haomou_ad">
+<a target="_blank" href="http://2.taobao.com/item.htm?id=43526059496&spm=686.1000925.0.0.monRaV">
+<img src="/images/book.png" title="皓眸IT-我的书" alt="APP敏捷开发王道-我的新书" />
+</a>
+<br/>
+<p style="text-align:center;"><a target="_blank" href="http://2.taobao.com/item.htm?id=43526059496&spm=686.1000925.0.0.monRaV">电子版，只要<b style="color:red;">9.9</b>元</a></p>
+</div></div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2014-2015 Chale Cao
+  
+    &nbsp;&nbsp;</span>
+  <a href='http://www.miibeian.gov.cn/'>苏ICP备13018740号-6</a></span>
+  <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'></span>  </div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-19 16:59:16</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haomou"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://haomou.net/2015/01/19/2015_apply_weibo/";
+    var wumiiTitle = "微博登录帐号申请测试方法";
+    var wumiiTags = "微博";
+    var wumiiCategories = ["问题集锦"];
+    var wumiiSitePrefix = "http://haomou.net";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />').wrap('<div class="img_block"></div>');
+     
+      if(alt){$(this).after('<span class="caption">' + alt + '</span>')};
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script src="/js/chenall.js" type="text/javascript"></script>
+
+
+  </body>
+</html>

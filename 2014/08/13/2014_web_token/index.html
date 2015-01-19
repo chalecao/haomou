@@ -227,9 +227,10 @@ app.<span class="keyword">set</span>(<span class="string">'jwtTokenSecret'</span
 <li>AngularJS</li>
 <li>NodeJS （ express.js, express-jwt 和 moongoose）</li>
 <li>MongoDB</li>
-<li>Redis （备用，用于记录用户退出登录时候还没有超时的token）<h4 id="客户端_:_AngularJS_部分">客户端 : AngularJS 部分</h4>
-首先，我们来创建我们的 AdminUserCtrl controller 和处理 login/logout 动作。</li>
+<li>Redis （备用，用于记录用户退出登录时候还没有超时的token）</li>
 </ul>
+<h4 id="客户端_:_AngularJS_部分">客户端 : AngularJS 部分</h4>
+<p>首先，我们来创建我们的 AdminUserCtrl controller 和处理 login/logout 动作。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">appControllers.controller(<span class="string">'AdminUserCtrl'</span>, [<span class="string">'$scope'</span>, <span class="string">'$location'</span>, <span class="string">'$window'</span>, <span class="string">'UserService'</span>, <span class="string">'AuthenticationService'</span>,</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">AdminUserCtrl</span><span class="params">(<span class="variable">$scope</span>, <span class="variable">$location</span>, <span class="variable">$window</span>, UserService, AuthenticationService)</span> </span>{</div><div class="line"> </div><div class="line">        <span class="comment">//Admin User Controller (login, logout)</span></div><div class="line">        <span class="variable">$scope</span>.logIn = <span class="function"><span class="keyword">function</span> <span class="title">logIn</span><span class="params">(username, password)</span> </span>{</div><div class="line">            <span class="keyword">if</span> (username !== undefined && password !== undefined) {</div><div class="line"> </div><div class="line">                UserService.logIn(username, password).success(<span class="function"><span class="keyword">function</span><span class="params">(data)</span> </span>{</div><div class="line">                    AuthenticationService.isLogged = <span class="keyword">true</span>;</div><div class="line">                    <span class="variable">$window</span>.sessionStorage.token = data.token;</div><div class="line">                    <span class="variable">$location</span>.path(<span class="string">"/admin"</span>);</div><div class="line">                }).error(<span class="function"><span class="keyword">function</span><span class="params">(status, data)</span> </span>{</div><div class="line">                    console.log(status);</div><div class="line">                    console.log(data);</div><div class="line">                });</div><div class="line">            }</div><div class="line">        }</div><div class="line"> </div><div class="line">        <span class="variable">$scope</span>.logout = <span class="function"><span class="keyword">function</span> <span class="title">logout</span><span class="params">()</span> </span>{</div><div class="line">            <span class="keyword">if</span> (AuthenticationService.isLogged) {</div><div class="line">                AuthenticationService.isLogged = <span class="keyword">false</span>;</div><div class="line">                delete <span class="variable">$window</span>.sessionStorage.token;</div><div class="line">                <span class="variable">$location</span>.path(<span class="string">"/"</span>);</div><div class="line">            }</div><div class="line">        }</div><div class="line">    }</div><div class="line">]);</div></pre></td></tr></table></figure>
 
 <p>这个 controller 用了两个 service: UserService 和 AuthenticationService。第一个处理调用 REST api 用证书。后面一个处理用户的认证。它只有一个布尔值，用来表示用户是否被授权。</p>
@@ -262,10 +263,11 @@ app.<span class="keyword">set</span>(<span class="string">'jwtTokenSecret'</span
 <p>上面这个实例就采用了token的验证方式构建了api接口，但是有两个问题需要解决：</p>
 <ul>
 <li>用户退出登录，但是token并没有失效，因为服务端没有删除这个token</li>
-<li>token失效了，怎么办，如果还是让用于登录重新获取token，会体验不好。应该有token刷新机制。<h3 id="使用Redis解决问题1">使用Redis解决问题1</h3>
-解决方法是：当用户点了 logout 按钮的时候，Token 只会保存一段时间，就是你用 <a href="https://github.com/auth0/node-jsonwebtoken" target="_blank" rel="external">jsonwebtoken</a> 登陆之后，token 有效的这段时间，我们将这个token存放在Redis中，生存时间也是jwt获取这个token的时间。这个时间到期后，token 会被 redis 自动删掉。最后，我们创建一个 nodejs 的中间件，检查所有受限 endopoint 用的 token 是否存在 Redis 数据库中。<h4 id="NodeJS_配置_Reids">NodeJS 配置 Reids</h4>
-</li>
+<li>token失效了，怎么办，如果还是让用于登录重新获取token，会体验不好。应该有token刷新机制。</li>
 </ul>
+<h3 id="使用Redis解决问题1">使用Redis解决问题1</h3>
+<p>解决方法是：当用户点了 logout 按钮的时候，Token 只会保存一段时间，就是你用 <a href="https://github.com/auth0/node-jsonwebtoken" target="_blank" rel="external">jsonwebtoken</a> 登陆之后，token 有效的这段时间，我们将这个token存放在Redis中，生存时间也是jwt获取这个token的时间。这个时间到期后，token 会被 redis 自动删掉。最后，我们创建一个 nodejs 的中间件，检查所有受限 endopoint 用的 token 是否存在 Redis 数据库中。</p>
+<h4 id="NodeJS_配置_Reids">NodeJS 配置 Reids</h4>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> redis = <span class="built_in">require</span>(<span class="string">'redis'</span>);</div><div class="line"><span class="keyword">var</span> redisClient = redis.createClient(<span class="number">6379</span>);</div><div class="line"> </div><div class="line">redisClient.on(<span class="string">'error'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(err)</span> </span>{</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'Error '</span> + err);</div><div class="line">});</div><div class="line"> </div><div class="line">redisClient.on(<span class="string">'connect'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'Redis is ready'</span>);</div><div class="line">});</div><div class="line"> </div><div class="line">exports.redis = redis;</div><div class="line">exports.redisClient = redisClient;</div></pre></td></tr></table></figure>
 
 <p>然后，我们来创建一个方法，用来检查提供的 token 是不是被</p>
@@ -305,7 +307,7 @@ app.<span class="keyword">set</span>(<span class="string">'jwtTokenSecret'</span
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/token/" itemprop="url"><span itemprop="title" >token</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/token/" class="label label-primary" itemprop="url"><span itemprop="title">token</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-04 17:35:12"datetime="2015-01-04 17:35:12"> Jan 4 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/token/" itemprop="url"><span itemprop="title" >token</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/token/" class="label label-primary" itemprop="url"><span itemprop="title">token</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-16 16:06:54"datetime="2015-01-16 16:06:54"> Jan 16 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/08/13/2014_web_token/#comments" class="ds-thread-count comment-link" data-thread-key="2014_web_token" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -318,10 +320,10 @@ app.<span class="keyword">set</span>(<span class="string">'jwtTokenSecret'</span
     <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
 <ul class="pager">
   
-  <li class="previous"><a href="/2014/08/13/2014_bare_token/" title="Bearer Token">&larr; Bearer Token</a></li>
+  <li class="previous"><a href="/2014/08/18/2014_grunt_gulp/" title="Grunt，Gulp工具">&larr; Grunt，Gulp工具</a></li>
   
   
-  <li class="next"><a href="/2014/08/11/2014_ionic_api/" title="ionic中文javascript API(1)">ionic中文javascript API(1) &rarr;</a></li>
+  <li class="next"><a href="/2014/08/13/2014_bare_token/" title="Bearer Token">Bearer Token &rarr;</a></li>
   
 </ul></div></section>    
 	<div id="comments"><!-- Duoshuo Comment BEGIN -->
@@ -344,17 +346,11 @@ app.<span class="keyword">set</span>(<span class="string">'jwtTokenSecret'</span
 
 <div id="widget_search" class="widget hm-left-widget" style="clear:both">
   <div class="panel-heading">一般人我不告诉他？</div>  <div id="haomou_ad">
-<script type="text/javascript">
-     document.write('<a style="display:none!important" id="tanx-a-mm_20953349_8708182_29186703"></a>');
-     tanx_s = document.createElement("script");
-     tanx_s.type = "text/javascript";
-     tanx_s.charset = "gbk";
-     tanx_s.id = "tanx-s-mm_20953349_8708182_29186703";
-     tanx_s.async = true;
-     tanx_s.src = "http://p.tanx.com/ex?i=mm_20953349_8708182_29186703";
-     tanx_h = document.getElementsByTagName("head")[0];
-     if(tanx_h)tanx_h.insertBefore(tanx_s,tanx_h.firstChild);
-</script>
+<a target="_blank" href="http://2.taobao.com/item.htm?id=43526059496&spm=686.1000925.0.0.monRaV">
+<img src="/images/book.png" title="皓眸IT-我的书" alt="APP敏捷开发王道-我的新书" />
+</a>
+<br/>
+<p style="text-align:center;"><a target="_blank" href="http://2.taobao.com/item.htm?id=43526059496&spm=686.1000925.0.0.monRaV">电子版，只要<b style="color:red;">9.9</b>元</a></p>
 </div></div>
 
 </aside>
@@ -374,7 +370,7 @@ app.<span class="keyword">set</span>(<span class="string">'jwtTokenSecret'</span
   <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
 <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 </span><span id='analytics-baidu'></span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-04 17:35:12</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-16 16:06:54</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
