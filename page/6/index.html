@@ -116,16 +116,16 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left hm-article-w"></i>
-      <h1 class="title"><a href="/2014/08/05/2014_theory/">图像处理的数学理论</a></h1>
+      <h1 class="title"><a href="/2014/08/05/2014_canvas/">Canvas图像处理和滤镜特效</a></h1>
       
-        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-08-05T10:40:49.000Z"> <a href="/2014/08/05/2014_theory/">Aug 5 2014</a></time></span>      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-08-06T01:40:49.000Z"> <a href="/2014/08/05/2014_canvas/">Aug 5 2014</a></time></span>      
     </header>
     
     
     <div class="entry" >
       
         <h3 id="简介">简介</h3>
-<p>本篇主要介绍图像处理中一些常用的数学理论，比如卷积，拉普拉斯变换，傅里叶变换等等。通过列举很多有趣的生活实例，增加对理论的理解。想起当时大学学的课程，突然感觉一位好老师是那么的重要，当然也不是随随便便就可以成为好老师的。这里大部分例子也是从网上搜集的，主要是分享知识。<br>
+<p>这段时间做了一个手机WebRTC拍照加特效的应用，主要用到canvas标签获取图像矩阵（这个在上一篇博客中已经详细介绍过：），然后做图像处理，例如滤镜特效（马赛克，浮雕，衬底，反色等），这里我们详细介绍相关的知识。其实从原理上讲，大部分的图像处理都是对图像像素矩阵和某个特效矩阵做卷积，得到新的像素矩阵，就是处理后的效果。关于这个大学课程《数字信息处理》里面有详细介绍。<br>
       
     </div>
     
@@ -133,15 +133,15 @@
       
       <div id='more-link'>
         <div align="left">
-          <a href="/2014/08/05/2014_theory/#more" class="more-link fa fa-play">阅读全文</a>
+          <a href="/2014/08/05/2014_canvas/#more" class="more-link fa fa-play">阅读全文</a>
         </div>
       </div>
       
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h"style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/数学理论/" itemprop="url"><span itemprop="title" >数学理论</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/图像处理/" class="label label-primary" itemprop="url"><span itemprop="title">图像处理</span></a><a href="/tags/数学理论/" class="label label-success" itemprop="url"><span itemprop="title">数学理论</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-04 17:35:14"datetime="2015-01-04 17:35:14"> Jan 4 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
-<a href="http://haomou.net/2014/08/05/2014_theory/#comments" class="ds-thread-count comment-link" data-thread-key="2014_theory" data-count-type="comments">暂无评论</a></span>
+        <div class="categories hm-article-w hm-article-w-h"style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/HTML5/" itemprop="url"><span itemprop="title" >HTML5</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/图像处理/" class="label label-primary" itemprop="url"><span itemprop="title">图像处理</span></a><a href="/tags/canvas/" class="label label-success" itemprop="url"><span itemprop="title">canvas</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-04 01:35:42"datetime="2015-01-04 01:35:42"> Jan 4 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://haomou.net/2014/08/05/2014_canvas/#comments" class="ds-thread-count comment-link" data-thread-key="2014_canvas" data-count-type="comments">暂无评论</a></span>
         </footer>
     
     <div class="clearfix"></div>
@@ -158,7 +158,7 @@
       <i class="fa icon fa-5x pull-left hm-article-w"></i>
       <h1 class="title"><a href="/2014/08/05/2014_js/">JS常用函数</a></h1>
       
-        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-08-05T02:40:49.000Z"> <a href="/2014/08/05/2014_js/">Aug 5 2014</a></time></span>      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-08-05T17:40:49.000Z"> <a href="/2014/08/05/2014_js/">Aug 5 2014</a></time></span>      
     </header>
     
     
@@ -180,7 +180,7 @@
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h"style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/JavaScript/" itemprop="url"><span itemprop="title" >JavaScript</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/JavaScript/" class="label label-primary" itemprop="url"><span itemprop="title">JavaScript</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-04 17:35:22"datetime="2015-01-04 17:35:22"> Jan 4 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h"style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/JavaScript/" itemprop="url"><span itemprop="title" >JavaScript</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/JavaScript/" class="label label-primary" itemprop="url"><span itemprop="title">JavaScript</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-04 01:35:22"datetime="2015-01-04 01:35:22"> Jan 4 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/08/05/2014_js/#comments" class="ds-thread-count comment-link" data-thread-key="2014_js" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -198,7 +198,7 @@
       <i class="fa icon fa-5x pull-left hm-article-w"></i>
       <h1 class="title"><a href="/2014/08/04/2014_Html5_canvas_video/">WebRTC相关的canvas与video</a></h1>
       
-        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-08-04T00:40:49.000Z"> <a href="/2014/08/04/2014_Html5_canvas_video/">Aug 4 2014</a></time></span>      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-08-04T15:40:49.000Z"> <a href="/2014/08/04/2014_Html5_canvas_video/">Aug 4 2014</a></time></span>      
     </header>
     
     
@@ -220,7 +220,7 @@
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h"style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/HTML5/" itemprop="url"><span itemprop="title" >HTML5</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/HTML5/" class="label label-primary" itemprop="url"><span itemprop="title">HTML5</span></a><a href="/tags/canvas/" class="label label-success" itemprop="url"><span itemprop="title">canvas</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-04 17:35:30"datetime="2015-01-04 17:35:30"> Jan 4 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h"style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/HTML5/" itemprop="url"><span itemprop="title" >HTML5</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/HTML5/" class="label label-primary" itemprop="url"><span itemprop="title">HTML5</span></a><a href="/tags/canvas/" class="label label-success" itemprop="url"><span itemprop="title">canvas</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-04 01:35:30"datetime="2015-01-04 01:35:30"> Jan 4 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/08/04/2014_Html5_canvas_video/#comments" class="ds-thread-count comment-link" data-thread-key="2014_Html5_canvas_video" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -238,7 +238,7 @@
       <i class="fa icon fa-5x pull-left hm-article-w"></i>
       <h1 class="title"><a href="/2014/07/30/2014_angularjs_1/">AngularJS笔记-概述</a></h1>
       
-        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-07-30T08:40:49.000Z"> <a href="/2014/07/30/2014_angularjs_1/">Jul 30 2014</a></time></span>      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-07-30T23:40:49.000Z"> <a href="/2014/07/30/2014_angularjs_1/">Jul 30 2014</a></time></span>      
     </header>
     
     
@@ -260,7 +260,7 @@
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h"style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/AngularJS/" itemprop="url"><span itemprop="title" >AngularJS</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/AngularJS/" class="label label-primary" itemprop="url"><span itemprop="title">AngularJS</span></a><a href="/tags/笔记/" class="label label-success" itemprop="url"><span itemprop="title">笔记</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-29 11:21:30"datetime="2014-12-29 11:21:30"> Dec 29 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h"style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/AngularJS/" itemprop="url"><span itemprop="title" >AngularJS</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/AngularJS/" class="label label-primary" itemprop="url"><span itemprop="title">AngularJS</span></a><a href="/tags/笔记/" class="label label-success" itemprop="url"><span itemprop="title">笔记</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2014-12-28 19:21:30"datetime="2014-12-28 19:21:30"> Dec 28 2014</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/07/30/2014_angularjs_1/#comments" class="ds-thread-count comment-link" data-thread-key="2014_angularjs_1" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -278,7 +278,7 @@
       <i class="fa icon fa-5x pull-left hm-article-w"></i>
       <h1 class="title"><a href="/2014/07/29/2014_nodejs_1/">NodeJS Express运行实例</a></h1>
       
-        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-07-29T08:40:49.000Z"> <a href="/2014/07/29/2014_nodejs_1/">Jul 29 2014</a></time></span>      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-07-29T23:40:49.000Z"> <a href="/2014/07/29/2014_nodejs_1/">Jul 29 2014</a></time></span>      
     </header>
     
     
@@ -300,7 +300,7 @@
     
     
         <footer id="post-meta">
-        <div class="categories hm-article-w hm-article-w-h"style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/NodeJS/" itemprop="url"><span itemprop="title" >NodeJS</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/NodeJS/" class="label label-primary" itemprop="url"><span itemprop="title">NodeJS</span></a><a href="/tags/mongoDB/" class="label label-success" itemprop="url"><span itemprop="title">mongoDB</span></a><a href="/tags/笔记/" class="label label-info" itemprop="url"><span itemprop="title">笔记</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-04 17:35:20"datetime="2015-01-04 17:35:20"> Jan 4 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
+        <div class="categories hm-article-w hm-article-w-h"style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/NodeJS/" itemprop="url"><span itemprop="title" >NodeJS</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/NodeJS/" class="label label-primary" itemprop="url"><span itemprop="title">NodeJS</span></a><a href="/tags/mongoDB/" class="label label-success" itemprop="url"><span itemprop="title">mongoDB</span></a><a href="/tags/笔记/" class="label label-info" itemprop="url"><span itemprop="title">笔记</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-04 01:35:20"datetime="2015-01-04 01:35:20"> Jan 4 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
 <a href="http://haomou.net/2014/07/29/2014_nodejs_1/#comments" class="ds-thread-count comment-link" data-thread-key="2014_nodejs_1" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -332,11 +332,11 @@
 
 <div id="widget_search" class="widget hm-left-widget" style="clear:both">
   <div class="panel-heading">一般人我不告诉他？</div>  <div id="haomou_ad">
-<a target="_blank" href="http://2.taobao.com/item.htm?id=43628329037&spm=686.1000925.0.0.bugXVX">
+<a target="_blank" href="http://2.taobao.com/item.htm?id=43740725602&spm=686.1000925.0.0.b1Gqgx">
 <img src="/images/book.png" title="皓眸IT-我的书" alt="APP敏捷开发王道-我的新书" />
 </a>
 <br/>
-<p style="text-align:center;"><a target="_blank" href="http://2.taobao.com/item.htm?id=43628329037&spm=686.1000925.0.0.bugXVX">附整套项目代码，只要<b style="color:red;">9.9</b>元</a></p>
+<p style="text-align:center;"><a target="_blank" href="http://2.taobao.com/item.htm?id=43740725602&spm=686.1000925.0.0.b1Gqgx">附整套项目代码，只要<b style="color:red;">9.9</b>元</a></p>
 <p style="text-align:center;">APP敏捷开发交流群：<b style="color:red;">345413787</b></p>
 </div></div>
 
@@ -357,7 +357,7 @@
   <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
 <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 </span><span id='analytics-baidu'></span>  </div>
-  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.2 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-22 13:19:12</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-30 09:11:35</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
