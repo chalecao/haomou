@@ -1,0 +1,357 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="wumiiVerification" content="1747c9bc-e905-45aa-88ac-f13f2b210015" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Native messaging起动本地应用(chrome插件开发) | 皓眸IT</title>
+<meta name="author" content="Chale Cao">
+
+<meta name="description" content="问题由来今天研究支付宝的输入框插件，觉得挺有意思。研究了一下，原来是调用的chrome后台的插件，其中chrome后台插件也很简单，就是简单的一个方法chrome.runtime.sendNativeMessage()。查看系统进程后台实际上是有个监控程序在运行的。所以就带着好奇心，研究一下运行原理。转载请注明出处：http://www.haomou.net/2014/10/22/2014_chrome_plugin/">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="Native messaging起动本地应用(chrome插件开发)"/>
+<meta property="og:site_name" content="皓眸IT"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css">
+<![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="皓眸IT Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+
+<link rel="stylesheet" href="/css/nprogress.css" type="text/css">
+
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.bootcss.com/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+  
+  <header id="header" class="hm-menu-left-container"><nav id="main-nav" class="navbar navbar-default hm-navbar-menu-left  " role="navigation">
+    <div class="hm-navbar-header">
+    <a href="http://haomou.net" ><img class="hm-logo" src="/images/haomou.png" title="皓眸IT" width="64" height="64" /></a>
+    <br/>|<br/><span class="fa fa-tint hm-black shine_blue" ></span><br/>|<br/><span class="fa fa-heart hm-black shine_red" ></span><br/>|<br/>
+        <i class="fa fa-bars fa-2x hm-black hm-menu shine_blue" ></i><br/><div class="hm-line"></div>
+    </div>
+    <div class="collapse navbar-collapse">
+      <h1 style="color:black">皓眸IT</h1>
+      <ul class="nav navbar-nav hm-left-nav">
+  
+        <li item='2014/10/23/2014_chrome_plugin/' class='active'><a href="/" title="首页">首页</a></li>      
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>关于我<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://home.ustc.edu.cn/~chh1990/chero/chero.html" title="个人主页">个人主页</a></li>    
+        </ul>
+      </li>
+    
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>创业项目<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://pictcake.cn" title="照片蛋糕">照片蛋糕</a></li>    
+        </ul>
+      </li>
+    
+      </ul>
+
+        
+        <div id="widget_category" class="widget hm-left-widget">
+            <div class="panel-heading">分类：</div>            <div data-src='category' class='ajax_widgets'>正在加载...</div>
+        </div>
+        
+        <div id="widget_tagcloud" class="widget hm-left-widget">
+            <div class="panel-heading">标签云：</div>            <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div>        </div>
+        
+
+
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/chalecao">github</a></li>
+      
+      </ul>
+    </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div style="" id="headflash" class="headflash hm_container"><embed pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="/images/bck.swf" width="100%" height="313" style="undefined" id="headflash_f" name="headflash_f" bgcolor="#000" quality="high" allowscriptaccess="false" wmode="transparent" allowfullscreen="false"></div>
+  <div id='content' class=" container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>皓眸IT <small>写清楚，说明白</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article class="hm-article">
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left hm-article-w"></i>
+      <h1 class="title">Native messaging起动本地应用(chrome插件开发)</h1>
+      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-10-23T01:38:21.000Z"> <a href="/2014/10/23/2014_chrome_plugin/">Oct 23 2014</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry"  data-spy="scroll" data-target="#toc" >
+      
+        <h3 id="问题由来">问题由来</h3>
+<p>今天研究支付宝的输入框插件，觉得挺有意思。研究了一下，原来是调用的chrome后台的插件，其中chrome后台插件也很简单，就是简单的一个方法chrome.runtime.sendNativeMessage()。查看系统进程后台实际上是有个监控程序在运行的。所以就带着好奇心，研究一下运行原理。<br><a id="more"></a><br><img class="floatnone" src="/images/1044474.png"><br>转载请注明出处：<a href="http://www.haomou.net/2014/10/22/2014_chrome_plugin/" target="_blank" rel="external">http://www.haomou.net/2014/10/22/2014_chrome_plugin/</a></p>
+<h3 id="创建chrome插件">创建chrome插件</h3>
+<p>首先我们需要新建一个google的插件 这个插件包含了三个文件<br>manifest.json(名字不可改, 建插件必须文件),background.js(文件名可改, 后台文件),content.js(content script文件 负责与网站页面交互)</p>
+<h4 id="创建manifest-json">创建manifest.json</h4>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">{  </div><div class="line">    "<span class="attribute">name</span>" : <span class="value"><span class="string">"FastRun"</span></span>,  </div><div class="line">    "<span class="attribute">version</span>" : <span class="value"><span class="string">"1.0.1"</span></span>,  </div><div class="line">    "<span class="attribute">description</span>" : <span class="value"><span class="string">"Launch APP "</span></span>,  </div><div class="line">    "<span class="attribute">background</span>" : <span class="value">{ "<span class="attribute">scripts</span>": <span class="value">[<span class="string">"background.js"</span>] </span>}</span>,  </div><div class="line">  </div><div class="line">    "<span class="attribute">permissions</span>" : <span class="value">[  </span></div><div class="line">        <span class="string">"nativeMessaging"</span>,  </div><div class="line">        <span class="string">"tabs"</span>,  </div><div class="line">        <span class="string">"http://xxx/*"</span>  </div><div class="line">    ],  </div><div class="line">    "<span class="attribute">content_scripts</span>": <span class="value">[  </span></div><div class="line">    {  </div><div class="line">      "<span class="attribute">matches</span>": <span class="value">[<span class="string">"http://xxx/*"</span>]</span>,  </div><div class="line">      "<span class="attribute">js</span>": <span class="value">[<span class="string">"content.js"</span>]  </span></div><div class="line">    }  </div><div class="line">    ],  </div><div class="line">    "<span class="attribute">minimum_chrome_version</span>" : <span class="value"><span class="string">"6.0.0.0"</span></span>,  </div><div class="line">    "<span class="attribute">manifest_version</span>": <span class="value"><span class="number">2</span>  </span></div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>里面的premissions非常重要, 他表示我们的插件在什么条件运行, “nativeMessaging” 代表要在这个插件中允许调用这种方法<br> “xxx”填入你想要的载入的网址<br>“content_scripts” 中”xxx” 表示在什么网页下运行我们与界面交互的script.</p>
+<h4 id="background-js">background.js</h4>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> port = <span class="literal">null</span>;   </div><div class="line">chrome.runtime.onMessage.addListener(  </div><div class="line">  <span class="function"><span class="keyword">function</span><span class="params">(request, sender, sendResponse)</span> </span>{  </div><div class="line">     <span class="keyword">if</span> (request.type == <span class="string">"launch"</span>){  </div><div class="line">        connectToNativeHost(request.message);  </div><div class="line">    }  </div><div class="line">    <span class="keyword">return</span> <span class="literal">true</span>;  </div><div class="line">});  </div><div class="line">  </div><div class="line">  </div><div class="line"><span class="comment">//onNativeDisconnect  </span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">onDisconnected</span><span class="params">()</span>  </span></div><div class="line">{  </div><div class="line">    <span class="built_in">console</span>.log(chrome.runtime.lastError);  </div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'disconnected from native app.'</span>);  </div><div class="line">    port = <span class="literal">null</span>;  </div><div class="line">}  </div><div class="line">  </div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">onNativeMessage</span><span class="params">(message)</span> </span>{  </div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'recieved message from native app: '</span> + <span class="built_in">JSON</span>.stringify(message));  </div><div class="line">}  </div><div class="line">  </div><div class="line"><span class="comment">//connect to native host and get the communicatetion port  </span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">connectToNativeHost</span><span class="params">(msg)</span>  </span></div><div class="line">{  </div><div class="line">    <span class="keyword">var</span> nativeHostName = <span class="string">"com.my_company.my_application"</span>;  </div><div class="line">    <span class="built_in">console</span>.log(nativeHostName);  </div><div class="line">    port = chrome.runtime.connectNative(nativeHostName);  </div><div class="line">    port.onMessage.addListener(onNativeMessage);  </div><div class="line">    port.onDisconnect.addListener(onDisconnected);  </div><div class="line">    port.postMessage({message: msg});     </div><div class="line"> }</div></pre></td></tr></table></figure>
+
+<p>在这个文件里有两个方法非常重要 </p>
+<ol>
+<li>chrome.runtime.onMessage.addListener</li>
+<li>connectToNativeHost<br>先来看第一个方法，<br>是一个响应事件，当接收到类型为”launch”的消息时, 调用connectToNativeHost方法并传入数据。<br>com.my_company.my_application<br>这个是我们之后需要注册在Regestry和Native Messaging里面的名字 之后会讲到。<br>runtime.connectNative这个方法连接我们的Native Messaging然后利用 postMessage 去发送我们要的信息给我们的本地应用<br>当然这里我们可以替换为 sendNativeMessage 直接给本地应用传值详见<br><a href="https://developer.chrome.com/extensions/runtime#method-connectNative" target="_blank" rel="external">https://developer.chrome.com/extensions/runtime#method-connectNative</a></li>
+</ol>
+<h4 id="创建ContentScript:_content-js">创建ContentScript: content.js</h4>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> launch_message;  </div><div class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'myCustomEvent'</span>, <span class="function"><span class="keyword">function</span><span class="params">(evt)</span> </span>{  </div><div class="line">chrome.runtime.sendMessage({type: <span class="string">"launch"</span>, message: evt.detail}, <span class="function"><span class="keyword">function</span><span class="params">(response)</span> </span>{  </div><div class="line">  <span class="built_in">console</span>.log(response)  </div><div class="line">});  </div><div class="line">}, <span class="literal">false</span>);</div></pre></td></tr></table></figure>
+
+<p>很简单, 响应了一个页面中的事件”myCustomEvent”, 同时发布一个消息给我们的后台文件background.js，这个消息包含了消息标示 “launch” 和 我们要传的值 evt.detail<br>关于Content Script 的信息 详见 <a href="https://developer.chrome.com/extensions/content_scripts" target="_blank" rel="external">https://developer.chrome.com/extensions/content_scripts</a><br>到这里我们的google插件部分就做好了<br>别忘了在Chrome 插件里开启开发者模式 并加载这个插件</p>
+<h3 id="native部分">native部分</h3>
+<p>我们在来看看 Native Messaging 部分 我们再建一个 json 文件 我这里也叫做manifest.json(名字可以不是这个) 存在了我本地C:/Native目录下</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">{  </div><div class="line">    "<span class="attribute">name</span>": <span class="value"><span class="string">"com.my_company.my_application"</span></span>,  </div><div class="line">    "<span class="attribute">description</span>": <span class="value"><span class="string">"Chrome sent message to native app."</span></span>,  </div><div class="line">    "<span class="attribute">path</span>": <span class="value"><span class="string">"C:\\MyApp.exe"</span></span>,  </div><div class="line">    "<span class="attribute">type</span>": <span class="value"><span class="string">"stdio"</span></span>,  </div><div class="line">    "<span class="attribute">allowed_origins</span>": <span class="value">[  </span></div><div class="line">        <span class="string">"chrome-extension://ohmdeifpmliljjdkaehaojmiafihbbdd/"</span>  </div><div class="line">    ]  </div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>这里我们定义了 Native Messaging 的名字, 在path中定义了我们要运行的本地应用程序, allowed_origins 中长串的字符是我们插件的id 可以在安装插件后从google chrome 插件里看到(安装插件 可以在chrome中插件开启开发者模式并载入我们之前的插件文件包)</p>
+<p>完成这步以后我们需要在WIndows 注册表 中加入google 项目具体如下:<br>运行-&gt; Regedit -&gt; HKEY_Current_User-&gt;Software-&gt;Google-&gt;Chrome-&gt;新建一个叫NativeMessagingHosts的项-&gt;新建一个叫com.my_company.my_application的项,  同时在这个项里默认值设置为我们Native Messaging 的 位置 C:\Native\manifest.json</p>
+<p>这样我们就完成了NativeMessaging的设置</p>
+<h3 id="插件与本地程序交互">插件与本地程序交互</h3>
+<p>先建一个简单的网页内容如下</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="doctype">&lt;!DOCTYPE HTML&gt;</span>  </div><div class="line">  </div><div class="line"><span class="tag">&lt;<span class="title">html</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="title">head</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">  </span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">startApp</span><span class="params">()</span> </span>{  </div><div class="line">    <span class="keyword">var</span> evt = <span class="built_in">document</span>.createEvent(<span class="string">"CustomEvent"</span>);  </div><div class="line">    evt.initCustomEvent(<span class="string">'myCustomEvent'</span>, <span class="literal">true</span>, <span class="literal">false</span>, <span class="string">"im information"</span>);  </div><div class="line">    <span class="comment">// fire the event  </span></div><div class="line">    <span class="built_in">document</span>.dispatchEvent(evt);  </div><div class="line">}  </div><div class="line">  </div><div class="line"><span class="tag">&lt;/<span class="title">script</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="title">head</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="title">body</span>&gt;</span>  </div><div class="line">  </div><div class="line"><span class="tag">&lt;<span class="title">button</span> <span class="attribute">type</span>=<span class="value">"button"</span> <span class="attribute">onClick</span>=<span class="value">"startApp()"</span> <span class="attribute">id</span>=<span class="value">"startApp"</span>&gt;</span>startApp<span class="tag">&lt;/<span class="title">button</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="title">body</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="title">html</span>&gt;</span></div></pre></td></tr></table></figure>
+
+<p>里面有一个简单的按钮， 这个按钮会启动方法, 新建一个名叫”myCustomEvent”的事件, 同时附带有我们要传的信息, 并发布这个事件。 这样我们插件中的Content.js 就可以接收并响应这个事件了!</p>
+<h4 id="本地程序">本地程序</h4>
+<p>我们用c#写了一个简单程序，放到了C://MyApp.exe这里。<br>在Main里面 我们可以加入下面这个方法, 利用Console.OpenStandardInput这个 我们可以接收到由页面传到我们应用的值并进行我们想要的一些操作, 在这里我们用一个log4net 记录我们程序运行情况</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">[assembly: log4net.Config.XmlConfigurator(Watch = <span class="literal">true</span>)]  </div><div class="line"><span class="class"><span class="keyword">namespace</span> <span class="title">MyApp</span>  </span></div><div class="line">{  </div><div class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Program</span>  </span></div><div class="line">    {  </div><div class="line">        <span class="keyword">public</span> <span class="keyword">static</span> log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);  </div><div class="line">        [STAThread]  </div><div class="line">        <span class="keyword">static</span> <span class="keyword">void</span> Main(<span class="keyword">string</span>[] args)  </div><div class="line">        {  </div><div class="line">              </div><div class="line">            if (args.Length != <span class="number">0</span>)  </div><div class="line">            {  </div><div class="line">                <span class="keyword">string</span> chromeMessage = OpenStandardStreamIn();  </div><div class="line">                log.Info(<span class="string">"--------------------My application starts with Chrome Extension message: "</span> + chromeMessage + <span class="string">"---------------------------------"</span>);  </div><div class="line">            }  </div><div class="line">        }  </div><div class="line">  </div><div class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">string</span> OpenStandardStreamIn()  </div><div class="line">        {  </div><div class="line">            <span class="comment">//// We need to read first 4 bytes for length information  </span></div><div class="line">            Stream <span class="keyword">stdin</span> = Console.OpenStandardInput();  </div><div class="line">            <span class="keyword">int</span> length = <span class="number">0</span>;  </div><div class="line">            byte[] bytes = <span class="keyword">new</span> byte[<span class="number">4</span>];  </div><div class="line">            <span class="keyword">stdin</span>.Read(bytes, <span class="number">0</span>, <span class="number">4</span>);  </div><div class="line">            length = System.BitConverter.ToInt32(bytes, <span class="number">0</span>);  </div><div class="line">  </div><div class="line">            <span class="keyword">string</span> input = <span class="string">""</span>;  </div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; i++)  </div><div class="line">            {  </div><div class="line">                input += (<span class="keyword">char</span>)<span class="keyword">stdin</span>.ReadByte();  </div><div class="line">            }  </div><div class="line">  </div><div class="line">            <span class="keyword">return</span> input;  </div><div class="line">        }  </div><div class="line">    }  </div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>点击我们在页面上加入的按钮, 然后检查log文件:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="number">2014</span>-<span class="number">07</span>-<span class="number">30</span> <span class="number">09</span>:<span class="number">23</span>:<span class="number">14</span>,<span class="number">562</span> [<span class="number">1</span>] INFO  MyApp.Program ----------------------------------------My application starts with Chrome Extension <span class="class"><span class="keyword">message</span>: {</span><span class="string">"message"</span>:<span class="string">"im information"</span>}---------------------------------</div></pre></td></tr></table></figure>
+
+<p>最后一张图总结下整个过程</p>
+<p><img class="floatnone" src="/images/1044474.png"></p>
+<h3 id="其他资源">其他资源</h3>
+<ol>
+<li><a href="http://lmk123.duapp.com/extensions/index" target="_blank" rel="external">chrome 开发者文档</a><br><a href="http://lmk123.duapp.com/extensions/index" target="_blank" rel="external">http://lmk123.duapp.com/extensions/index</a></li>
+<li><a href="http://chrome.liuyixi.com/docs.html" target="_blank" rel="external">chrome 插件文档</a><br><a href="http://chrome.liuyixi.com/docs.html" target="_blank" rel="external">http://chrome.liuyixi.com/docs.html</a></li>
+</ol>
+<h3 id="谢谢！">谢谢！</h3>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/10/22/2014_chrome_plugin/" target="_blank" rel="external">http://www.haomou.net/2014/10/22/2014_chrome_plugin/</a></p>
+<p>有问题请留言。 请叫我皓眸哥 </p>
+
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://haomou.net">皓眸IT</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/10/23/2014_chrome_plugin/">Native messaging起动本地应用(chrome插件开发)</a></div>
+</div></div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/chrome/" itemprop="url"><span itemprop="title" >chrome</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/chrome/" class="label label-primary" itemprop="url"><span itemprop="title">chrome</span></a><a href="/tags/插件/" class="label label-success" itemprop="url"><span itemprop="title">插件</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-06 11:05:10"datetime="2015-01-06 11:05:10"> Jan 6 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://haomou.net/2014/10/23/2014_chrome_plugin/#comments" class="ds-thread-count comment-link" data-thread-key="2014_chrome_plugin" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  <li class="previous"><a href="/2014/10/24/2014_chrome_plugin1/" title="chrome插件开发消息传递机制">&larr; chrome插件开发消息传递机制</a></li>
+  
+  
+  <li class="next"><a href="/2014/10/21/2014_ionic_api3/" title="ionic中文javascript API(3)">ionic中文javascript API(3) &rarr;</a></li>
+  
+</ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="2014_chrome_plugin"  data-url="http://haomou.net/2014/10/23/2014_chrome_plugin/" data-title="Native messaging起动本地应用(chrome插件开发)"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_myself" class="widget hm-left-widget" style="clear:both">
+    <img alt="皓眸GEEK" src="/images/hm.jpg" width="100" height="120"  style="border-radius: 5px;margin-right: 5px;float:left;"/>
+<div style="color: #428bca;text-align: center;font-size: 18px;">曹欢欢(chale)</div>2014年毕业于中国科学技术大学，硕士研究生，目前在大武汉知名外企公司上班。<br/>喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身哈，等你来...吼吼...喜欢就写信给我喽，请叫我皓眸哥(^_^)
+<br/>擅长：NodeJS，JAVA，PHP，WebGL，WebRTC，PS ...
+<br/><span style="color: #fb6580;">Mail To: </span>chh1990@mail.ustc.edu.cn
+<br/><span style="color: #fb6580;">QQ：</span>807991555（chale）
+<br/><span style="color: #fb6580;">APP敏捷开发交流群：</span>345413787</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_search" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">一般人我不告诉他？</div>  <div id="haomou_ad">
+<a target="_blank" href="http://2.taobao.com/item.htm?id=43869349327&spm=686.1000925.0.0.mjUwtL&mt=">
+<img src="/images/book.png" title="皓眸IT-我的书" alt="APP敏捷开发王道-我的新书" />
+</a>
+<br/>
+<p style="text-align:center;"><a target="_blank" href="http://2.taobao.com/item.htm?id=43869349327&spm=686.1000925.0.0.mjUwtL&mt=">附整套项目代码，只要<b style="color:red;">9.9</b>元</a></p>
+<p style="text-align:center;">APP敏捷开发交流群：<b style="color:red;">345413787</b></p>
+</div></div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2014-2015 Chale Cao
+  
+    &nbsp;&nbsp;</span>
+  <a href='http://www.miibeian.gov.cn/'>苏ICP备13018740号-6</a></span>
+  <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'></span>  </div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-06 11:05:10</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haomou"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://haomou.net/2014/10/23/2014_chrome_plugin/";
+    var wumiiTitle = "Native messaging起动本地应用(chrome插件开发)";
+    var wumiiTags = "chrome,插件";
+    var wumiiCategories = ["chrome"];
+    var wumiiSitePrefix = "http://haomou.net";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />').wrap('<div class="img_block"></div>');
+     
+      if(alt){$(this).after('<span class="caption">' + alt + '</span>')};
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script src="/js/chenall.js" type="text/javascript"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,361 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="wumiiVerification" content="1747c9bc-e905-45aa-88ac-f13f2b210015" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ionic框架配置 | 皓眸IT</title>
+<meta name="author" content="Chale Cao">
+
+<meta name="description" content="ionic概述这段时间在做手机应用开发，由于目前部分缺少Android开发人员，所以想做个WebApp的形式，然后用phoneGap打包，先做第一个样品试用。研究了比较多的开发框架，后来自己用AngularJS和Ratchet搭建了一个小框架，做的差不多了，然后感觉有些限制，用cordova编译之后，在Android平台上的运行效果并是不太好。所以又看了一下其他的框架，比如：Lungo和QuoJS等，突然发现了一个目前比较先进的框架ionic，所以就拿来用用。目前文档比较少，有的也仅是翻译官网的，所以我把自己的配置过程记录一下，分享给喜欢的同学。">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="ionic框架配置"/>
+<meta property="og:site_name" content="皓眸IT"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css">
+<![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="皓眸IT Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+
+<link rel="stylesheet" href="/css/nprogress.css" type="text/css">
+
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.bootcss.com/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+  
+  <header id="header" class="hm-menu-left-container"><nav id="main-nav" class="navbar navbar-default hm-navbar-menu-left  " role="navigation">
+    <div class="hm-navbar-header">
+    <a href="http://haomou.net" ><img class="hm-logo" src="/images/haomou.png" title="皓眸IT" width="64" height="64" /></a>
+    <br/>|<br/><span class="fa fa-tint hm-black shine_blue" ></span><br/>|<br/><span class="fa fa-heart hm-black shine_red" ></span><br/>|<br/>
+        <i class="fa fa-bars fa-2x hm-black hm-menu shine_blue" ></i><br/><div class="hm-line"></div>
+    </div>
+    <div class="collapse navbar-collapse">
+      <h1 style="color:black">皓眸IT</h1>
+      <ul class="nav navbar-nav hm-left-nav">
+  
+        <li item='2014/08/08/2014_ionic/' class='active'><a href="/" title="首页">首页</a></li>      
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>关于我<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://home.ustc.edu.cn/~chh1990/chero/chero.html" title="个人主页">个人主页</a></li>    
+        </ul>
+      </li>
+    
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>创业项目<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://pictcake.cn" title="照片蛋糕">照片蛋糕</a></li>    
+        </ul>
+      </li>
+    
+      </ul>
+
+        
+        <div id="widget_category" class="widget hm-left-widget">
+            <div class="panel-heading">分类：</div>            <div data-src='category' class='ajax_widgets'>正在加载...</div>
+        </div>
+        
+        <div id="widget_tagcloud" class="widget hm-left-widget">
+            <div class="panel-heading">标签云：</div>            <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div>        </div>
+        
+
+
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/chalecao">github</a></li>
+      
+      </ul>
+    </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div style="" id="headflash" class="headflash hm_container"><embed pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="/images/bck.swf" width="100%" height="313" style="undefined" id="headflash_f" name="headflash_f" bgcolor="#000" quality="high" allowscriptaccess="false" wmode="transparent" allowfullscreen="false"></div>
+  <div id='content' class=" container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>皓眸IT <small>写清楚，说明白</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article class="hm-article">
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left hm-article-w"></i>
+      <h1 class="title">ionic框架配置</h1>
+      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-08-08T00:40:49.000Z"> <a href="/2014/08/08/2014_ionic/">Aug 8 2014</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry"  data-spy="scroll" data-target="#toc" >
+      
+        <h3 id="ionic概述">ionic概述</h3>
+<p>这段时间在做手机应用开发，由于目前部分缺少Android开发人员，所以想做个WebApp的形式，然后用phoneGap打包，先做第一个样品试用。研究了比较多的开发框架，后来自己用AngularJS和Ratchet搭建了一个小框架，做的差不多了，然后感觉有些限制，用cordova编译之后，在Android平台上的运行效果并是不太好。所以又看了一下其他的框架，比如：Lungo和QuoJS等，突然发现了一个目前比较先进的框架ionic，所以就拿来用用。目前文档比较少，有的也仅是翻译官网的，所以我把自己的配置过程记录一下，分享给喜欢的同学。<br><a id="more"></a><br><img class="floatnone" alt="皓眸哥" src="/images/ionicstart.png"></p>
+<p>教程索引：(持续更新)<br><a href="http://www.haomou.net/2014/10/06/2014_ionic_learn/" target="_blank" rel="external">ionic中文教程</a></p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/08/07/2014_ionic/" target="_blank" rel="external">http://www.haomou.net/2014/08/07/2014_ionic/</a></p>
+<h3 id="ionic简介">ionic简介</h3>
+<p>ionic是一个专注于用WEB开发技术，基于HTML5创建类似于手机平台原生应用的一个开发框架。目前绑定的与angularJS和SASS。这个框架的目的是从web的角度开发手机应用，基于PhoneGap的编译平台，可以实现编译成各个平台的应用程序。</p>
+<h3 id="ionic安装">ionic安装</h3>
+<p>首先需要安装cordova和android环境。这个参考我的另一篇文章：<a href="http://www.haomou.net/2014/08/06/2014_phonegap_android/" target="_blank" rel="external">phoneGap之Android环境搭建</a>，上面写的很详细，还有常见的错误及解决办法。<br>然后安装ionic:</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm <span class="operator"><span class="keyword">install</span> -g ionic</span></div></pre></td></tr></table></figure>
+
+<p>安装完成之后，就可以使用ionic创建项目了。</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ionic start myApp tabs   <span class="comment">//创建带有top栏和bottom栏的示例项目</span></div><div class="line">ionic start myApp sidemenu  <span class="comment">//创建带有左侧带有menu栏的示例项目</span></div><div class="line">ionic start myApp blank   <span class="comment">//创建空白项目</span></div></pre></td></tr></table></figure>
+
+<p>具体效果，可以查看官网： <a href="http://ionicframework.com/getting-started/" target="_blank" rel="external">http://ionicframework.com/getting-started/</a><br>然后可以使用：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="title">ionic</span> serve</div></pre></td></tr></table></figure>
+
+<p>该命令会自动启动流浏览器，查看当前效果。</p>
+<h3 id="添加Android平台">添加Android平台</h3>
+<p>添加android平台之前，需要先搭建Android开发环境。参考<a href="http://www.haomou.net/2014/08/06/2014_phonegap_android/" target="_blank" rel="external">phoneGap之Android环境搭建</a><br>如果是MAC系统，请参考<a href="http://www.haomou.net/2015/01/06/2015_mac_android/" target="_blank" rel="external">苹果MAC之Android环境搭建与phonegap集成</a></p>
+<p>执行下面的命令,</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd myApp</div><div class="line">ionic <span class="built_in">platform</span> <span class="built_in">add</span> android<span class="comment"> //这行可能会报错</span></div><div class="line">ionic build android</div><div class="line">ionic emulate android</div></pre></td></tr></table></figure>
+
+<p>其实上面的使用方法和cordova差不多，添加android的时候可能会报错，如下：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="header">The error is:</span></div><div class="line">=======================================</div><div class="line">events.js:72</div><div class="line">throw er; // Unhandled <span class="emphasis">'error'</span> event</div><div class="line">^</div><div class="line">Error: spawn ENOENT</div><div class="line">at errnoException (child<span class="emphasis">_process.js:1000:11)</span></div><div class="line">at Process.ChildProcess._handle.onexit (child<span class="emphasis">_process.js:791:34)</span></div></pre></td></tr></table></figure>
+
+<p>解决的方法很简单，将ionic换成cordova即可，经测试works fine。</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd myApp</div><div class="line">cordova <span class="built_in">platform</span> <span class="built_in">add</span> android<span class="comment"> //这行可能会报错</span></div><div class="line">cordova build android</div><div class="line">cordova emulate android</div></pre></td></tr></table></figure>
+
+<h3 id="添加ios平台">添加ios平台</h3>
+<p>需要先安装xcode，升级mac系统，安装最新的xcode版本。安装完xcode之后要启动一下，会安装一些组件。<br>首先安装ios-sim，然后添加ios平台。</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">npm install -<span class="keyword">g</span> ios-<span class="keyword">sim</span></div><div class="line"><span class="keyword">cd</span> myApp</div><div class="line">ionic platform <span class="built_in">add</span> ios //这行可能会报错</div><div class="line">ionic build ios</div><div class="line">ionic emulate ios</div></pre></td></tr></table></figure>
+
+<p>需要注意的坑爹事情来了，这是我亲自实践的，爬了好多的stack overflow，尝试了很多次，最后得到了结果。<br>在mac Mavericks 10.9.5 上安装Xcode 6.0.1之后，自动安装的是ios模拟器 是ios8.0版本，这个版本下不论你怎么搞，使用模拟运行命令时都是会报错的。错误如下：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Session could not be started: Error Domain=DTiPhoneSimulatorErrorDomain Code=<span class="number">2</span> <span class="string">"Simulator session timed out."</span> UserInfo=<span class="number">0</span>x7fe6e8f240d0 {NSLocalizedDescription=Simulator session timed out.}</div><div class="line">Error: <span class="regexp">/Users/</span>chale<span class="regexp">/ionic/i</span>osApp<span class="regexp">/platforms/i</span>os<span class="regexp">/cordova/</span>run: Command failed with exit code <span class="number">1</span></div><div class="line">    at ChildProcess.whenDone (<span class="regexp">/usr/</span>local<span class="regexp">/lib/</span>node_modules<span class="regexp">/cordova/</span>node_modules<span class="regexp">/cordova-lib/</span>src<span class="regexp">/cordova/</span>superspawn.js:<span class="number">135</span>:<span class="number">23</span>)</div><div class="line">    at ChildProcess.emit (events.js:<span class="number">98</span>:<span class="number">17</span>)</div><div class="line">    at maybeClose (child_process.js:<span class="number">766</span>:<span class="number">16</span>)</div><div class="line">    at Process.ChildProcess._handle.onexit (child_process.js:<span class="number">833</span>:<span class="number">5</span>)</div></pre></td></tr></table></figure>
+
+<p>关于这个错误网上的解决办法是, 直接启动模拟器，然后如下图操作，选择reset content：<br><img class="floatnone" alt="皓眸哥" src="/images/Fb0FA.png"><br>但是这个在ios 8.1下面是没用的，试了好多次，或许在早些版本有用。参考stack overflow的朋友的解决方法是：<br>进入Xcode-&gt;Preferences-&gt;Downloads，下载安装ios 7.1 simulators，然后在Product-&gt;Destination 中选择ios7.1，这样就正常了。<br>参考地址：<a href="http://stackoverflow.com/questions/12932750/ios-simulator-failed-to-install-the-application" target="_blank" rel="external">http://stackoverflow.com/questions/12932750/ios-simulator-failed-to-install-the-application</a></p>
+<p>今天又试了一下，成功了，还是ios8.1 但是是iphone 6.看下图：<br><img class="floatnone" alt="皓眸哥" src="/images/ionic_file2.png"><br>上面是实例项目:<br><a href="http://www.haomou.net/2015/01/07/2015_ionic_fileOP/" target="_blank" rel="external">4.1 ionic文件选择与上传</a></p>
+<h3 id="xcode和模拟器sdk下载">xcode和模拟器sdk下载</h3>
+<p>如果你的xcode和ios sdk下载慢，试试下面的地址，已经共享到网盘。<br>Xcode下载<br>Xcode 6.2 Beta 2:<br><a href="http://pan.baidu.com/s/1c0pNFC8" target="_blank" rel="external">http://pan.baidu.com/s/1c0pNFC8</a><br>Xcode 6.2 Beta:<br><a href="http://pan.baidu.com/s/1i3xe1qH" target="_blank" rel="external">http://pan.baidu.com/s/1i3xe1qH</a><br>Xcode 6.1.1 GM SEED:<br><a href="http://pan.baidu.com/s/1hqKhaGO" target="_blank" rel="external">http://pan.baidu.com/s/1hqKhaGO</a><br>支持Yosemite和Mavericks。<br>Xcode 6.1 正式版:<br><a href="http://pan.baidu.com/s/1dDtOkJv" target="_blank" rel="external">http://pan.baidu.com/s/1dDtOkJv</a><br>这个应该就是6.1的正式版了，支持Yosemite和Mavericks，包含iOS 8.1、OS X 10.10 、OS X 10.9的SDK，其中对Swift的语法和一些方法又有一些小改动。<br>Xcode 6.1 GM seed for OS X Yosemite：<br><a href="http://pan.baidu.com/s/1gdAEFBl" target="_blank" rel="external">http://pan.baidu.com/s/1gdAEFBl</a><br>Xcode 6.1 Beta3：<br><a href="http://pan.baidu.com/s/1gdxNxej" target="_blank" rel="external">http://pan.baidu.com/s/1gdxNxej</a><br>Xcode 6.1 Beta2（Swift 1.1）：<br><a href="http://pan.baidu.com/s/1c0GPT8c" target="_blank" rel="external">http://pan.baidu.com/s/1c0GPT8c</a><br>Xcode 6.1 Yosemite版：<br><a href="http://pan.baidu.com/s/1bnH7LwV" target="_blank" rel="external">http://pan.baidu.com/s/1bnH7LwV</a><br>Xcode6 GM版：<br><a href="http://pan.baidu.com/s/1mgl1veC" target="_blank" rel="external">http://pan.baidu.com/s/1mgl1veC</a><br>Xcode6 Beta7：<br><a href="http://pan.baidu.com/s/1q5u1K" target="_blank" rel="external">http://pan.baidu.com/s/1q5u1K</a><br>Xcode6 Beta6：<br><a href="http://pan.baidu.com/s/1c0peVsc" target="_blank" rel="external">http://pan.baidu.com/s/1c0peVsc</a><br>这是修复崩溃Bug的版本，版本号是(6A280e)。国内小水管下载相当不易。。支持的顶一下。。。<br>注：如果安装Xcode6 Beta6之后，编译之前的项目出现forceBridgeFromObjec以及getter、setter的问题，具体看这里。<br>Xcode6 Beta5：<br><a href="http://pan.baidu.com/s/1sjPmaW9" target="_blank" rel="external">http://pan.baidu.com/s/1sjPmaW9</a><br>可以说目前Xcode的每一个Beta版都修复了很多问题，如果你在用Beta版的话，保持最新总能解决很多疑难杂症。这一版中，对Swift的跳转定义终于变得好用了。</p>
+<p>模拟器下载<br>安装SDK就等于安装了模拟器，如果你嫌Xcode下载SDK太慢的话，可以选择手动安装，具体的手动安装方法：解压后放到以下目录即可。<br>/Applications/Xcode.App/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs</p>
+<p>iPhone Simulator 8.0 SDK:<br><a href="http://pan.baidu.com/s/1nt0XE8T" target="_blank" rel="external">http://pan.baidu.com/s/1nt0XE8T</a><br>iPhone Simulator 7.1 SDK:<br><a href="http://pan.baidu.com/s/1sjO6enF" target="_blank" rel="external">http://pan.baidu.com/s/1sjO6enF</a><br>iPhone Simulator 6.1 SDK:<br><a href="http://pan.baidu.com/s/1F7mto" target="_blank" rel="external">http://pan.baidu.com/s/1F7mto</a></p>
+<h3 id="其他常见错误">其他常见错误</h3>
+<ol>
+<li>生成项目(ionic start myApp tabs)时可能会报错，如下：</li>
+</ol>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Error: command failed:fatal:could not create work tree dir:'C:<span class="command">\Users</span>/ADMINI<span class="special">~</span>1<span class="command">\AppData</span><span class="command">\Local</span><span class="command">\Temp</span><span class="command">\plugman</span><span class="command">\git</span>\1402853493773'.:No such file or directory</div></pre></td></tr></table></figure>
+
+<p>解决办法：进入上面对应的目录，建立对应的文件。比如在temp目录下建立plugman目录，在plugman目录下建立git目录，然后再git下建立1402853493773目录。即可，经测试有效。</p>
+<h3 id="css组件">css组件</h3>
+<p>参考我的另一篇文章：<a href="http://www.haomou.net/2014/08/09/2014_ionic_api_css/" target="_blank" rel="external">ionic中文详解CSS组件</a></p>
+<h3 id="谢谢！">谢谢！</h3>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/08/07/2014_ionic/" target="_blank" rel="external">http://www.haomou.net/2014/08/07/2014_ionic/</a></p>
+<p>有问题请留言。  请叫我皓眸哥(^_^)  </p>
+
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://haomou.net">皓眸IT</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/08/08/2014_ionic/">ionic框架配置</a></div>
+</div></div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/ionic/" itemprop="url"><span itemprop="title" >ionic</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/ionic/" class="label label-primary" itemprop="url"><span itemprop="title">ionic</span></a><a href="/tags/phonegap/" class="label label-success" itemprop="url"><span itemprop="title">phonegap</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-08 08:54:06"datetime="2015-01-08 08:54:06"> Jan 8 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://haomou.net/2014/08/08/2014_ionic/#comments" class="ds-thread-count comment-link" data-thread-key="2014_ionic" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  <li class="previous"><a href="/2014/08/08/2014_session/" title="关于SESSION的理解">&larr; 关于SESSION的理解</a></li>
+  
+  
+  <li class="next"><a href="/2014/08/07/2014_phonegap_android/" title="phoneGap之Android环境搭建">phoneGap之Android环境搭建 &rarr;</a></li>
+  
+</ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="2014_ionic"  data-url="http://haomou.net/2014/08/08/2014_ionic/" data-title="ionic框架配置"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_myself" class="widget hm-left-widget" style="clear:both">
+    <img alt="皓眸GEEK" src="/images/hm.jpg" width="100" height="120"  style="border-radius: 5px;margin-right: 5px;float:left;"/>
+<div style="color: #428bca;text-align: center;font-size: 18px;">曹欢欢(chale)</div>2014年毕业于中国科学技术大学，硕士研究生，目前在大武汉知名外企公司上班。<br/>喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身哈，等你来...吼吼...喜欢就写信给我喽，请叫我皓眸哥(^_^)
+<br/>擅长：NodeJS，JAVA，PHP，WebGL，WebRTC，PS ...
+<br/><span style="color: #fb6580;">Mail To: </span>chh1990@mail.ustc.edu.cn
+<br/><span style="color: #fb6580;">QQ：</span>807991555（chale）
+<br/><span style="color: #fb6580;">APP敏捷开发交流群：</span>345413787</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_search" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">一般人我不告诉他？</div>  <div id="haomou_ad">
+<a target="_blank" href="http://2.taobao.com/item.htm?id=43869349327&spm=686.1000925.0.0.mjUwtL&mt=">
+<img src="/images/book.png" title="皓眸IT-我的书" alt="APP敏捷开发王道-我的新书" />
+</a>
+<br/>
+<p style="text-align:center;"><a target="_blank" href="http://2.taobao.com/item.htm?id=43869349327&spm=686.1000925.0.0.mjUwtL&mt=">附整套项目代码，只要<b style="color:red;">9.9</b>元</a></p>
+<p style="text-align:center;">APP敏捷开发交流群：<b style="color:red;">345413787</b></p>
+</div></div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2014-2015 Chale Cao
+  
+    &nbsp;&nbsp;</span>
+  <a href='http://www.miibeian.gov.cn/'>苏ICP备13018740号-6</a></span>
+  <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'></span>  </div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-08 08:54:06</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haomou"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://haomou.net/2014/08/08/2014_ionic/";
+    var wumiiTitle = "ionic框架配置";
+    var wumiiTags = "ionic,phonegap";
+    var wumiiCategories = ["ionic"];
+    var wumiiSitePrefix = "http://haomou.net";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />').wrap('<div class="img_block"></div>');
+     
+      if(alt){$(this).after('<span class="caption">' + alt + '</span>')};
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script src="/js/chenall.js" type="text/javascript"></script>
+
+
+  </body>
+</html>

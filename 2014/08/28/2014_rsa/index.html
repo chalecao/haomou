@@ -1,0 +1,431 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="wumiiVerification" content="1747c9bc-e905-45aa-88ac-f13f2b210015" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>RSA加密算法详解 | 皓眸IT</title>
+<meta name="author" content="Chale Cao">
+
+<meta name="description" content="研究RSA不知为何，这几天突然有些心烦。望苍茫大地，凭添几分忧伤，可能是下雨的缘故。本篇主要想详细介绍RSA加密算法的原理，经常听别人说，这里是自己想搞清楚，弄明白。首先介绍了基本的数学原理，然后给出一个具体的计算例子和相关的理论充分性证明。">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="RSA加密算法详解"/>
+<meta property="og:site_name" content="皓眸IT"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css">
+<![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="皓眸IT Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+
+<link rel="stylesheet" href="/css/nprogress.css" type="text/css">
+
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.bootcss.com/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+  
+  <header id="header" class="hm-menu-left-container"><nav id="main-nav" class="navbar navbar-default hm-navbar-menu-left  " role="navigation">
+    <div class="hm-navbar-header">
+    <a href="http://haomou.net" ><img class="hm-logo" src="/images/haomou.png" title="皓眸IT" width="64" height="64" /></a>
+    <br/>|<br/><span class="fa fa-tint hm-black shine_blue" ></span><br/>|<br/><span class="fa fa-heart hm-black shine_red" ></span><br/>|<br/>
+        <i class="fa fa-bars fa-2x hm-black hm-menu shine_blue" ></i><br/><div class="hm-line"></div>
+    </div>
+    <div class="collapse navbar-collapse">
+      <h1 style="color:black">皓眸IT</h1>
+      <ul class="nav navbar-nav hm-left-nav">
+  
+        <li item='2014/08/28/2014_rsa/' class='active'><a href="/" title="首页">首页</a></li>      
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>关于我<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://home.ustc.edu.cn/~chh1990/chero/chero.html" title="个人主页">个人主页</a></li>    
+        </ul>
+      </li>
+    
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>创业项目<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://pictcake.cn" title="照片蛋糕">照片蛋糕</a></li>    
+        </ul>
+      </li>
+    
+      </ul>
+
+        
+        <div id="widget_category" class="widget hm-left-widget">
+            <div class="panel-heading">分类：</div>            <div data-src='category' class='ajax_widgets'>正在加载...</div>
+        </div>
+        
+        <div id="widget_tagcloud" class="widget hm-left-widget">
+            <div class="panel-heading">标签云：</div>            <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div>        </div>
+        
+
+
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/chalecao">github</a></li>
+      
+      </ul>
+    </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div style="" id="headflash" class="headflash hm_container"><embed pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="/images/bck.swf" width="100%" height="313" style="undefined" id="headflash_f" name="headflash_f" bgcolor="#000" quality="high" allowscriptaccess="false" wmode="transparent" allowfullscreen="false"></div>
+  <div id='content' class=" container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>皓眸IT <small>写清楚，说明白</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article class="hm-article">
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left hm-article-w"></i>
+      <h1 class="title">RSA加密算法详解</h1>
+      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-08-27T17:40:49.000Z"> <a href="/2014/08/28/2014_rsa/">Aug 28 2014</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry"  data-spy="scroll" data-target="#toc" >
+      
+        <h3 id="研究RSA">研究RSA</h3>
+<p>不知为何，这几天突然有些心烦。望苍茫大地，凭添几分忧伤，可能是下雨的缘故。本篇主要想详细介绍RSA加密算法的原理，经常听别人说，这里是自己想搞清楚，弄明白。首先介绍了基本的数学原理，然后给出一个具体的计算例子和相关的理论充分性证明。<br><a id="more"></a><br><img class="floatnone" src="/images/rsa.png"></p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/08/27/2014_rsa/" target="_blank" rel="external">http://www.haomou.net/2014/08/27/2014_rsa/</a></p>
+<h3 id="RSA由来">RSA由来</h3>
+<p>1976年以前，所有的加密方法都是同一种模式：<br>　　（1）甲方选择某一种加密规则，对信息进行加密；<br>　　（2）乙方使用同一种规则，对信息进行解密。<br>由于加密和解密使用同样规则（简称”密钥”），这被称为”对称加密算法”（Symmetric-key algorithm）。这种加密模式有一个最大弱点：甲方必须把加密规则告诉乙方，否则无法解密。保存和传递密钥，就成了最头疼的问题。<br><img class="floatnone" src="/images/rsa1.jpg"><br>1976年，两位美国计算机学家Whitfield Diffie 和 Martin、Hellman，提出了一种崭新构思，可以在不直接传递密钥的情况下，完成解密。这被称为”Diffie-Hellman密钥交换算法”。这个算法启发了其他科学家。人们认识到，加密和解密可以使用不同的规则，只要这两种规则之间存在某种对应关系即可，这样就避免了直接传递密钥。这种新的加密模式被称为”非对称加密算法”。<br>　　（1）乙方生成两把密钥（公钥和私钥）。公钥是公开的，任何人都可以获得，私钥则是保密的。<br>　　（2）甲方获取乙方的公钥，然后用它对信息加密。<br>　　（3）乙方得到加密后的信息，用私钥解密。<br>如果公钥加密的信息只有私钥解得开，那么只要私钥不泄漏，通信就是安全的。<br><img class="floatnone" src="/images/rsa2.jpg"><br>1977年，三位数学家Rivest、Shamir 和 Adleman 设计了一种算法，可以实现非对称加密。这种算法用他们三个人的名字命名，叫做RSA算法。从那时直到现在，RSA算法一直是最广为使用的”非对称加密算法”。毫不夸张地说，只要有计算机网络的地方，就有RSA算法。<br>这种算法非常可靠，密钥越长，它就越难破解。根据已经披露的文献，目前被破解的最长RSA密钥是768个二进制位。也就是说，长度超过768位的密钥，还无法破解（至少没人公开宣布）。因此可以认为，1024位的RSA密钥基本安全，2048位的密钥极其安全。<br>下面，我就进入正题，解释RSA算法的原理。文章共分成两部分，今天是第一部分，介绍要用到的四个数学概念。你可以看到，RSA算法并不难，只需要一点数论知识就可以理解。</p>
+<h3 id="理论基础">理论基础</h3>
+<p>这里介绍一点理论基础，都是比较简单的，小学的数学知识。看我细细道来~</p>
+<h4 id="什么是“素数”？">什么是“素数”？</h4>
+<p>素数是这样的整数，它除了能表示为它自己和1的乘积以外，不能表示为任何其它两个整数的乘积。例如，15＝3＊5，所以15不是素数；又如，12＝6＊2＝4＊3，所以12也不是素数。另一方面，13除了等于13＊1以外，不能表示为其它任何两个整数的乘积，所以13是一个素数。素数也称为“质数”。</p>
+<h4 id="什么是“互质数”（或“互素数”）？">什么是“互质数”（或“互素数”）？</h4>
+<p>小学数学教材对互质数是这样定义的：“公约数只有1的两个数，叫做互质数。”这里所说的“两个数”是指自然数。<br>　　判别方法主要有以下几种（不限于此）：<br>（1）两个质数一定是互质数。例如，2与7、13与19。<br>（2）一个质数如果不能整除另一个合数，这两个数为互质数。例如，3与10、5与 26。<br>（3）1不是质数也不是合数，它和任何一个自然数在一起都是互质数。如1和9908。<br>（4）相邻的两个自然数是互质数。如 15与 16。<br>（5）相邻的两个奇数是互质数。如 49与 51。<br>（6）大数是质数的两个数是互质数。如97与88。<br>（7）小数是质数，大数不是小数的倍数的两个数是互质数。如 7和 16。<br>（8）两个数都是合数（二数差又较大），小数所有的质因数，都不是大数的约数，这两个数是互质数。如357与715，357=3×7×17，而3、7和17都不是715的约数，这两个数为互质数。等等。</p>
+<h4 id="什么是模指数运算？">什么是模指数运算？</h4>
+<p>指数运算谁都懂，不必说了，先说说模运算。模运算是整数运算，有一个整数m，以n为模做模运算，即m mod n。怎样做呢？让m去被n整除，只取所得的余数作为结果，就叫做模运算。例如，10 mod 3=1；26 mod 6=2；28 mod 2 =0等等。<br>　　模指数运算就是先做指数运算，取其结果再做模运算。如2^3 mod 5 = 3</p>
+<h4 id="什么是同余式">什么是同余式</h4>
+<p>表示同余关系的数学表达式，与等式相似。将等式中的等号“=”换成同余符号“≡”，必要时在式尾缀以(mod m) 注明模m（即除数），就是同余式。含有未知数的同余式叫做同余方程，通常要求整数解。<br>如果两个正整数 a和 b之差能被 n整除，那么我们就说 a和 b对模n同余，记作：<br>a ≡b (mod n)</p>
+<h4 id="什么是费马定理">什么是费马定理</h4>
+<p>若p是素数，a与p互素，则<br>a^(p-1）≡1 (mod p）</p>
+<h4 id="什么是欧拉定理">什么是欧拉定理</h4>
+<p>欧拉函数φ(n)表示不大于n且与n互素的正整数的个数。<br>当n是素数，φ(n)=n-1。n=pq,p,q均为素数时，则φ(n)= φ(p)φ(q)=(p-1)(q-1)。<br>对于互素的a和n，有a^φ(n)≡1(mod n)</p>
+<h4 id="什么是模反元素？">什么是模反元素？</h4>
+<p>如果两个正整数a和n互质，那么一定可以找到整数b，使得ab-1被n整除或者说ab被n除的余数是1。这时，b就叫做a的”模反元素”。<br>比如，3和11互质，那么3的模反元素就是4，因为 (3 × 4)-1 可以被11整除。显然，模反元素不止一个， 4加减11的整数倍都是3的模反元素 {…,-18,-7,4,15,26,…}，即如果b是a的模反元素，则 b+kn 都是a的模反元素。欧拉定理可以用来证明模反元素必然存在。</p>
+<h3 id="密钥生成步骤">密钥生成步骤</h3>
+<p>这里通过实例来说明。假设爱丽丝要与鲍勃进行加密通信，她该怎么生成公钥和私钥呢？<br><img class="floatnone" src="/images/rsa3.png"><br>第一步，随机选择两个不相等的质数p和q。<br>爱丽丝选择了61和53。（实际应用中，这两个质数越大，就越难破解。）<br>第二步，计算p和q的乘积n。<br>爱丽丝就把61和53相乘。<br>　　n = 61×53 = 3233<br>n的长度就是密钥长度。3233写成二进制是110010100001，一共有12位，所以这个密钥就是12位。实际应用中，RSA密钥一般是1024位，重要场合则为2048位。<br>第三步，计算n的欧拉函数φ(n)。<br>根据公式：<br>　　φ(n) = (p-1)(q-1)<br>爱丽丝算出φ(3233)等于60×52，即3120。<br>第四步，随机选择一个整数e，条件是1&lt; e &lt; φ(n)，且e与φ(n) 互质。<br>爱丽丝就在1到3120之间，随机选择了17。（实际应用中，常常选择65537。）<br>第五步，计算e对于φ(n)的模反元素d。<br>所谓”模反元素”就是指有一个整数d，可以使得ed被φ(n)除的余数为1。<br>　　ed ≡ 1 (mod φ(n))<br>这个式子等价于<br>　　ed - 1 = kφ(n)<br>于是，找到模反元素d，实质上就是对下面这个二元一次方程求解。<br>　　ex + φ(n)y = 1<br>已知 e=17, φ(n)=3120，<br>　　17x + 3120y = 1<br>这个方程可以用”扩展欧几里得算法”求解，此处省略具体过程。总之，爱丽丝算出一组整数解为 (x,y)=(2753,-15)，即 d=2753。<br>至此所有计算完成。<br>第六步，将n和e封装成公钥，n和d封装成私钥。<br>在爱丽丝的例子中，n=3233，e=17，d=2753，所以公钥就是 (3233,17)，私钥就是（3233, 2753）。<br>实际应用中，公钥和私钥的数据都采用ASN.1格式表达。如下：<br><img class="floatnone" src="/images/rsa4.jpg"><br>比如上面显示的这个公钥，那么怎么看出加密指数和模数呢？</p>
+<p>下面是我随便从IE里导出的一个证书的公钥</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="number">30</span> <span class="number">81</span> <span class="number">89</span> <span class="number">02</span> <span class="number">81</span> <span class="number">81</span> <span class="number">00</span> ee fa 1f c9 b0 <span class="number">43</span> df 7e <span class="number">75</span> <span class="number">81</span> 4e <span class="number">31</span> <span class="number">71</span> <span class="number">91</span> <span class="number">0b</span> fc <span class="number">15</span> <span class="number">9d</span> d9 4a 8a <span class="number">51</span> f5 <span class="number">09</span> <span class="number">18</span> c6 7c c5 f1 <span class="number">27</span> c4 <span class="number">01</span> <span class="number">62</span> fc bf fc <span class="number">84</span> <span class="number">29</span> a6 2f e6 1e <span class="number">02</span> <span class="number">06</span> <span class="number">0b</span> <span class="number">96</span> <span class="number">89</span> d3 <span class="number">42</span> b1 <span class="number">73</span> 9f <span class="number">02</span> ae <span class="number">75</span> <span class="number">62</span> <span class="number">09</span> 3f <span class="number">83</span> <span class="number">80</span> <span class="number">34</span> <span class="number">46</span> <span class="number">60</span> <span class="number">39</span> 0a e3 <span class="number">21</span> 4e e7 <span class="number">04</span> <span class="number">42</span> d5 7e 5e <span class="number">98</span> <span class="number">45</span> <span class="number">27</span> <span class="number">5d</span> <span class="number">04</span> b9 <span class="number">27</span> <span class="number">32</span> c0 <span class="number">65</span> a4 <span class="number">94</span> <span class="number">85</span> <span class="number">13</span> <span class="number">25</span> <span class="pseudo">db</span> <span class="number">16</span> f2 fb <span class="number">51</span> c7 ff <span class="number">28</span> <span class="number">62</span> d1 <span class="number">83</span> <span class="number">31</span> 4f a9 a4 f4 c5 4f <span class="number">9d</span> <span class="number">00</span> 2e <span class="number">14</span> 3f <span class="number">95</span> <span class="number">16</span> 9c 4e <span class="number">25</span> <span class="number">07</span> <span class="number">1b</span> d5 <span class="number">7d</span> <span class="number">38</span> <span class="number">71</span> d8 <span class="number">40</span> f8 aa <span class="number">71</span> <span class="number">02</span> <span class="number">03</span> <span class="number">01</span> <span class="number">00</span> <span class="number">01</span></div></pre></td></tr></table></figure>
+
+<p>在PKCS#1中的RSA的公钥的标准格式为</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">PKCS<span class="comment">#1 :</span></div><div class="line">An RSA public key should be represented <span class="operator">with</span> <span class="operator">the</span> ASN<span class="number">.1</span> type RSAPublickey:</div><div class="line"></div><div class="line">RSAPublickey ::= SEQUENCE {</div><div class="line">   modulus         INTEGER, <span class="comment">-- n</span></div><div class="line">   publicExponent INTEGER   <span class="comment">-- e</span></div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>然后按照ASN的标准编码，所以说：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="number">30</span> <span class="number">81</span> <span class="number">89</span> <span class="number">02</span> <span class="number">81</span> <span class="number">81</span> <span class="number">00</span> ee fa 1f c9 b0 <span class="number">43</span> df 7e <span class="number">75</span> <span class="number">81</span> 4e <span class="number">31</span> <span class="number">71</span> <span class="number">91</span> <span class="number">0b</span> fc <span class="number">15</span> </div><div class="line"><span class="number">9d</span> d9 4a 8a <span class="number">51</span> f5 <span class="number">09</span> <span class="number">18</span> c6 7c c5 f1 <span class="number">27</span> c4 <span class="number">01</span> <span class="number">62</span> fc bf fc <span class="number">84</span> <span class="number">29</span> a6 2f e6 1e </div><div class="line"><span class="number">02</span> <span class="number">06</span> <span class="number">0b</span> <span class="number">96</span> <span class="number">89</span> d3 <span class="number">42</span> b1 <span class="number">73</span> 9f <span class="number">02</span> ae <span class="number">75</span> <span class="number">62</span> <span class="number">09</span> 3f <span class="number">83</span> <span class="number">80</span> <span class="number">34</span> <span class="number">46</span> <span class="number">60</span> <span class="number">39</span> 0a e3 </div><div class="line"><span class="number">21</span> 4e e7 <span class="number">04</span> <span class="number">42</span> d5 7e 5e <span class="number">98</span> <span class="number">45</span> <span class="number">27</span> <span class="number">5d</span> <span class="number">04</span> b9 <span class="number">27</span> <span class="number">32</span> c0 <span class="number">65</span> a4 <span class="number">94</span> <span class="number">85</span> <span class="number">13</span> <span class="number">25</span> <span class="pseudo">db</span> </div><div class="line"><span class="number">16</span> f2 fb <span class="number">51</span> c7 ff <span class="number">28</span> <span class="number">62</span> d1 <span class="number">83</span> <span class="number">31</span> 4f a9 a4 f4 c5 4f <span class="number">9d</span> <span class="number">00</span> 2e <span class="number">14</span> 3f <span class="number">95</span> <span class="number">16</span> 9c 4e </div><div class="line"><span class="number">25</span> <span class="number">07</span> <span class="number">1b</span> d5 <span class="number">7d</span> <span class="number">38</span> <span class="number">71</span> d8 <span class="number">40</span> f8 aa <span class="number">71</span> <span class="number">02</span> <span class="number">03</span> <span class="number">01</span> <span class="number">00</span> <span class="number">01</span></div></pre></td></tr></table></figure>
+
+<p>0x30 0x81 0x89 是一个标识头，整个编码应该是：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="number">02</span> <span class="number">81</span> <span class="number">81</span> <span class="number">00</span> ee fa 1f c9 b0 <span class="number">43</span> df 7e <span class="number">75</span> <span class="number">81</span> 4e <span class="number">31</span> <span class="number">71</span> <span class="number">91</span> <span class="number">0b</span> fc <span class="number">15</span> <span class="number">9d</span> d9 4a </div><div class="line">8a <span class="number">51</span> f5 <span class="number">09</span> <span class="number">18</span> c6 7c c5 f1 <span class="number">27</span> c4 <span class="number">01</span> <span class="number">62</span> fc bf fc <span class="number">84</span> <span class="number">29</span> a6 2f e6 1e <span class="number">02</span> <span class="number">06</span> <span class="number">0b</span> </div><div class="line"><span class="number">96</span> <span class="number">89</span> d3 <span class="number">42</span> b1 <span class="number">73</span> 9f <span class="number">02</span> ae <span class="number">75</span> <span class="number">62</span> <span class="number">09</span> 3f <span class="number">83</span> <span class="number">80</span> <span class="number">34</span> <span class="number">46</span> <span class="number">60</span> <span class="number">39</span> 0a e3 <span class="number">21</span> 4e e7 </div><div class="line"><span class="number">04</span> <span class="number">42</span> d5 7e 5e <span class="number">98</span> <span class="number">45</span> <span class="number">27</span> <span class="number">5d</span> <span class="number">04</span> b9 <span class="number">27</span> <span class="number">32</span> c0 <span class="number">65</span> a4 <span class="number">94</span> <span class="number">85</span> <span class="number">13</span> <span class="number">25</span> <span class="pseudo">db</span> <span class="number">16</span> f2 fb </div><div class="line"><span class="number">51</span> c7 ff <span class="number">28</span> <span class="number">62</span> d1 <span class="number">83</span> <span class="number">31</span> 4f a9 a4 f4 c5 4f <span class="number">9d</span> <span class="number">00</span> 2e <span class="number">14</span> 3f <span class="number">95</span> <span class="number">16</span> 9c 4e <span class="number">25</span> <span class="number">07</span> </div><div class="line"><span class="number">1b</span> d5 <span class="number">7d</span> <span class="number">38</span> <span class="number">71</span> d8 <span class="number">40</span> f8 aa <span class="number">71</span> <span class="number">02</span> <span class="number">03</span> <span class="number">01</span> <span class="number">00</span> <span class="number">01</span></div></pre></td></tr></table></figure>
+
+<p>而</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="number">02</span> <span class="number">81</span> <span class="number">81</span> <span class="number">00</span> ee fa 1f c9 b0 <span class="number">43</span> df 7e <span class="number">75</span> <span class="number">81</span> 4e <span class="number">31</span> <span class="number">71</span> <span class="number">91</span> <span class="number">0b</span> fc <span class="number">15</span> <span class="number">9d</span> d9 4a </div><div class="line">8a <span class="number">51</span> f5 <span class="number">09</span> <span class="number">18</span> c6 7c c5 f1 <span class="number">27</span> c4 <span class="number">01</span> <span class="number">62</span> fc bf fc <span class="number">84</span> <span class="number">29</span> a6 2f e6 1e <span class="number">02</span> <span class="number">06</span> <span class="number">0b</span> </div><div class="line"><span class="number">96</span> <span class="number">89</span> d3 <span class="number">42</span> b1 <span class="number">73</span> 9f <span class="number">02</span> ae <span class="number">75</span> <span class="number">62</span> <span class="number">09</span> 3f <span class="number">83</span> <span class="number">80</span> <span class="number">34</span> <span class="number">46</span> <span class="number">60</span> <span class="number">39</span> 0a e3 <span class="number">21</span> 4e e7</div><div class="line"><span class="number">04</span> <span class="number">42</span> d5 7e 5e <span class="number">98</span> <span class="number">45</span> <span class="number">27</span> <span class="number">5d</span> <span class="number">04</span> b9 <span class="number">27</span> <span class="number">32</span> c0 <span class="number">65</span> a4 <span class="number">94</span> <span class="number">85</span> <span class="number">13</span> <span class="number">25</span> <span class="pseudo">db</span> <span class="number">16</span> f2 fb </div><div class="line"><span class="number">51</span> c7 ff <span class="number">28</span> <span class="number">62</span> d1 <span class="number">83</span> <span class="number">31</span> 4f a9 a4 f4 c5 4f <span class="number">9d</span> <span class="number">00</span> 2e <span class="number">14</span> 3f <span class="number">95</span> <span class="number">16</span> 9c 4e <span class="number">25</span> <span class="number">07</span> </div><div class="line"><span class="number">1b</span> d5 <span class="number">7d</span> <span class="number">38</span> <span class="number">71</span> d8 <span class="number">40</span> f8 aa <span class="number">71</span></div></pre></td></tr></table></figure>
+
+<p>是n的编码。</p>
+<p>0x02 0x03 0x01 0x00 0x01是e的编码，不过你还是看不出来这什么整数，<br>举个例子<br>对于上面的0x02,0x03,0x01,0x00,0x01 其中0x02,0x03是e的编码的标识头<br>e的表示是0x01,0x00,0x01，所以e就是0x01<em>256^2+0x00</em>256^1+1=65537</p>
+<p>同理n就是</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="number">81</span> <span class="number">00</span> ee fa 1f c9 b0 <span class="number">43</span> df 7e <span class="number">75</span> <span class="number">81</span> 4e <span class="number">31</span> <span class="number">71</span> <span class="number">91</span> <span class="number">0b</span> fc <span class="number">15</span> <span class="number">9d</span> d9 4a 8a <span class="number">51</span> f5 </div><div class="line"><span class="number">09</span> <span class="number">18</span> c6 7c c5 f1 <span class="number">27</span> c4 <span class="number">01</span> <span class="number">62</span> fc bf fc <span class="number">84</span> <span class="number">29</span> a6 2f e6 1e <span class="number">02</span> <span class="number">06</span> <span class="number">0b</span> <span class="number">96</span> <span class="number">89</span> d3 </div><div class="line"><span class="number">42</span> b1 <span class="number">73</span> 9f <span class="number">02</span> ae <span class="number">75</span> <span class="number">62</span> <span class="number">09</span> 3f <span class="number">83</span> <span class="number">80</span> <span class="number">34</span> <span class="number">46</span> <span class="number">60</span> <span class="number">39</span> 0a e3 <span class="number">21</span> 4e e7 <span class="number">04</span> <span class="number">42</span> d5 </div><div class="line">7e 5e <span class="number">98</span> <span class="number">45</span> <span class="number">27</span> <span class="number">5d</span> <span class="number">04</span> b9 <span class="number">27</span> <span class="number">32</span> c0 <span class="number">65</span> a4 <span class="number">94</span> <span class="number">85</span> <span class="number">13</span> <span class="number">25</span> <span class="pseudo">db</span> <span class="number">16</span> f2 fb <span class="number">51</span> c7 ff <span class="number">28</span> </div><div class="line"><span class="number">62</span> d1 <span class="number">83</span> <span class="number">31</span> 4f a9 a4 f4 c5 4f <span class="number">9d</span> <span class="number">00</span> 2e <span class="number">14</span> 3f <span class="number">95</span> <span class="number">16</span> 9c 4e <span class="number">25</span> <span class="number">07</span> <span class="number">1b</span> d5 <span class="number">7d</span> <span class="number">38</span> </div><div class="line"><span class="number">71</span> d8 <span class="number">40</span> f8 aa <span class="number">71</span> <span class="number">02</span> <span class="number">03</span> <span class="number">01</span> <span class="number">00</span> <span class="number">01</span></div></pre></td></tr></table></figure>
+
+<p>注意，这个是一个整数的编码，也要像e,那样解码。</p>
+<h3 id="RSA算法的可靠性">RSA算法的可靠性</h3>
+<p>回顾上面的密钥生成步骤，一共出现六个数字：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">　　<span class="title">p</span></div><div class="line">　　q</div><div class="line">　　n</div><div class="line">　　φ(n)</div><div class="line">　　e</div><div class="line">　　d</div></pre></td></tr></table></figure>
+
+<p>这六个数字之中，公钥用到了两个（n和e），其余四个数字都是不公开的。其中最关键的是d，因为n和d组成了私钥，一旦d泄漏，就等于私钥泄漏。<br>那么，有无可能在已知n和e的情况下，推导出d？<br>　　（1）ed≡1 (mod φ(n))。只有知道e和φ(n)，才能算出d。<br>　　（2）φ(n)=(p-1)(q-1)。只有知道p和q，才能算出φ(n)。<br>　　（3）n=pq。只有将n因数分解，才能算出p和q。<br>结论：如果n可以被因数分解，d就可以算出，也就意味着私钥被破解。<br>可是，大整数的因数分解，是一件非常困难的事情。目前，除了暴力破解，还没有发现别的有效方法。维基百科这样写道：<br>　　“对极大整数做因数分解的难度决定了RSA算法的可靠性。换言之，对一极大整数做因数分解愈困难，RSA算法愈可靠。<br>　　假如有人找到一种快速因数分解的算法，那么RSA的可靠性就会极度下降。但找到这样的算法的可能性是非常小的。今天只有短的RSA密钥才可能被暴力破解。到2008年为止，世界上还没有任何可靠的攻击RSA算法的方式。<br>　　只要密钥长度足够长，用RSA加密的信息实际上是不能被解破的。”<br>举例来说，你可以对3233进行因数分解（61×53），但是你没法对下面这个整数进行因数分解。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">　　12301866845301177551304949</div><div class="line">　　58384962720772853569595334</div><div class="line">　　79219732245215172640050726</div><div class="line">　　36575187452021997864693899</div><div class="line">　　56474942774063845925192557</div><div class="line">　　32630345373154826850791702</div><div class="line">　　61221429134616704292143116</div><div class="line">　　02221240479274737794080665</div><div class="line">　　351419597459856902143413</div></pre></td></tr></table></figure>
+
+<p>它等于这样两个质数的乘积：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">　　33478071698956898786044169</div><div class="line">　　84821269081770479498371376</div><div class="line">　　85689124313889828837938780</div><div class="line">　　02287614711652531743087737</div><div class="line">　　814467999489</div><div class="line">　　　　×</div><div class="line">　　36746043666799590428244633</div><div class="line">　　79962795263227915816434308</div><div class="line">　　76426760322838157396665112</div><div class="line">　　79233373417143396810270092</div><div class="line">　　798736308917</div></pre></td></tr></table></figure>
+
+<p>事实上，这大概是人类已经分解的最大整数（232个十进制位，768个二进制位）。比它更大的因数分解，还没有被报道过，因此目前被破解的最长RSA密钥就是768位。</p>
+<h3 id="加密和解密">加密和解密</h3>
+<p>有了公钥和密钥，就能进行加密和解密了。<br>（1）加密要用公钥 (n,e)<br>假设鲍勃要向爱丽丝发送加密信息m，他就要用爱丽丝的公钥 (n,e) 对m进行加密。这里需要注意，m必须是整数（字符串可以取ascii值或unicode值），且m必须小于n。<br>所谓”加密”，就是算出下式的c：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">　　<span class="keyword">me</span> ≡ <span class="keyword">c</span> (<span class="keyword">mod</span> <span class="keyword">n</span>)</div></pre></td></tr></table></figure>
+
+<p>爱丽丝的公钥是 (3233, 17)，鲍勃的m假设是65，那么可以算出下面的等式：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">　　<span class="number">6517</span> ≡ <span class="number">2790</span> (<span class="keyword">mod</span> <span class="number">3233</span>)</div></pre></td></tr></table></figure>
+
+<p>于是，c等于2790，鲍勃就把2790发给了爱丽丝。<br>（2）解密要用私钥(n,d)<br>爱丽丝拿到鲍勃发来的2790以后，就用自己的私钥(3233, 2753) 进行解密。可以证明，下面的等式一定成立：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">　　<span class="keyword">cd</span> ≡ <span class="keyword">m</span> (<span class="keyword">mod</span> <span class="keyword">n</span>)</div></pre></td></tr></table></figure>
+
+<p>也就是说，c的d次方除以n的余数为m。现在，c等于2790，私钥是(3233, 2753)，那么，爱丽丝算出</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">　　<span class="number">27902753</span> ≡ <span class="number">65</span> (<span class="keyword">mod</span> <span class="number">3233</span>)</div></pre></td></tr></table></figure>
+
+<p>因此，爱丽丝知道了鲍勃加密前的原文就是65。<br>至此，”加密—解密”的整个过程全部完成。<br>我们可以看到，如果不知道d，就没有办法从c求出m。而前面已经说过，要知道d就必须分解n，这是极难做到的，所以RSA算法保证了通信安全。<br>你可能会问，公钥(n,e) 只能加密小于n的整数m，那么如果要加密大于n的整数，该怎么办？有两种解决方法：一种是把长信息分割成若干段短消息，每段分别加密；另一种是先选择一种”对称性加密算法”（比如DES），用这种算法的密钥加密信息，再用RSA公钥加密DES密钥。</p>
+<h3 id="私钥解密的证明">私钥解密的证明</h3>
+<p>最后，我们来证明，为什么用私钥解密，一定可以正确地得到m。也就是证明下面这个式子：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">c</span>^<span class="keyword">d</span> ≡ <span class="keyword">m</span> (<span class="keyword">mod</span> <span class="keyword">n</span>)</div></pre></td></tr></table></figure>
+
+<p>因为，根据加密规则</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">m</span>^<span class="keyword">e</span> ≡ <span class="keyword">c</span> (<span class="keyword">mod</span> <span class="keyword">n</span>)</div></pre></td></tr></table></figure>
+
+<p>于是，c可以写成下面的形式：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">c </span>=<span class="string"> m^e - kn</span></div></pre></td></tr></table></figure>
+
+<p>将c代入要我们要证明的那个解密规则：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="xml">(m</span><span class="keyword">^e</span><span class="xml"> - kn)</span><span class="keyword">^d</span><span class="xml"> ≡ m (mod n)</span></div></pre></td></tr></table></figure>
+
+<p>它等同于求证</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">m</span>^ed ≡ <span class="keyword">m</span> (<span class="keyword">mod</span> <span class="keyword">n</span>)</div></pre></td></tr></table></figure>
+
+<p>由于</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ed ≡ <span class="number">1</span> (<span class="keyword">mod</span> φ(<span class="keyword">n</span>))</div></pre></td></tr></table></figure>
+
+<p>所以</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">ed </span>=<span class="string"> hφ(n)+1</span></div></pre></td></tr></table></figure>
+
+<p>将ed代入：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">m</span>^(<span class="keyword">h</span>φ(<span class="keyword">n</span>)+<span class="number">1</span>) ≡ <span class="keyword">m</span> (<span class="keyword">mod</span> <span class="keyword">n</span>)</div></pre></td></tr></table></figure>
+
+<p>接下来，分成两种情况证明上面这个式子。<br>（1）m与n互质。<br>根据欧拉定理，此时</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">　　<span class="keyword">m</span>^φ(<span class="keyword">n</span>) ≡ <span class="number">1</span> (<span class="keyword">mod</span> <span class="keyword">n</span>)</div></pre></td></tr></table></figure>
+
+<p>得到</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">　　(<span class="keyword">m</span>^φ(<span class="keyword">n</span>))^<span class="keyword">h</span> × <span class="keyword">m</span> ≡ <span class="keyword">m</span> (<span class="keyword">mod</span> <span class="keyword">n</span>)</div></pre></td></tr></table></figure>
+
+<p>原式得到证明。<br>（2）m与n不是互质关系。<br>此时，由于n等于质数p和q的乘积，所以m必然等于kp或kq。<br>以 m = kp为例，考虑到这时k与q必然互质，则根据欧拉定理，下面的式子成立：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">　　(kp)^<span class="keyword">q</span>-<span class="number">1</span> ≡ <span class="number">1</span> (<span class="keyword">mod</span> <span class="keyword">q</span>)</div></pre></td></tr></table></figure>
+
+<p>进一步得到</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">　　<span class="attr_selector">[(kp)^q-1]</span>^<span class="function">h</span>(<span class="tag">p</span>-1) × kp ≡ kp (mod <span class="tag">q</span>)</div></pre></td></tr></table></figure>
+
+<p>即</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">　　(kp)^ed ≡ kp (<span class="keyword">mod</span> <span class="keyword">q</span>)</div></pre></td></tr></table></figure>
+
+<p>将它改写成下面的等式</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">　　(kp)^ed </span>=<span class="string"> tq + kp</span></div></pre></td></tr></table></figure>
+
+<p>这时t必然能被p整除，即 t=t’p</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">　　(kp)^ed </span>=<span class="string"> t'pq + kp</span></div></pre></td></tr></table></figure>
+
+<p>因为 m=kp，n=pq，所以</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">　　<span class="keyword">m</span>^ed ≡ <span class="keyword">m</span> (<span class="keyword">mod</span> <span class="keyword">n</span>)</div></pre></td></tr></table></figure>
+
+<p>原式得到证明。</p>
+<h3 id="RSA缺陷">RSA缺陷</h3>
+<p>当p和q是一个大素数的时候，从它们的积pq去分解因子p和q，这是一个公认的数学难题。比如当pq大到1024位时，迄今为止还没有人能够利用任何计算工具去完成分解因子的任务。因此，RSA从提出到现在已近二十年，经历了各种攻击的考验，逐渐为人们接受，普遍认为是目前最优秀的公钥方案之一。<br>　　然而，虽然RSA的安全性依赖于大数的因子分解，但并没有从理论上证明破译RSA的难度与大数分解难度等价。即RSA的重大缺陷是无法从理论上把握它的保密性能如何。<br>　　此外，RSA的缺点还有：<br>A)产生密钥很麻烦，受到素数产生技术的限制，因而难以做到一次一密。<br>B)分组长度太大，为保证安全性，n 至少也要 600 bits 以上，使运算代价很高，尤其是速度较慢，较对称密码算法慢几个数量级；且随着大数分解技术的发展，这个长度还在增加，不利于数据格式的标准化。因此，使用RSA只能加密少量数据，大量的数据加密还要靠对称密码算法。</p>
+<h3 id="谢谢！">谢谢！</h3>
+<p>有问题请留言。  请叫我皓眸哥(^_^)  </p>
+
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://haomou.net">皓眸IT</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/08/28/2014_rsa/">RSA加密算法详解</a></div>
+</div></div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/加密算法/" itemprop="url"><span itemprop="title" >加密算法</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/RSA/" class="label label-primary" itemprop="url"><span itemprop="title">RSA</span></a><a href="/tags/加密/" class="label label-success" itemprop="url"><span itemprop="title">加密</span></a><a href="/tags/算法/" class="label label-info" itemprop="url"><span itemprop="title">算法</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-04 17:35:16"datetime="2015-01-04 17:35:16"> Jan 4 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://haomou.net/2014/08/28/2014_rsa/#comments" class="ds-thread-count comment-link" data-thread-key="2014_rsa" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  <li class="previous"><a href="/2014/08/30/2014_arm/" title="双核好？四核好？八核好？">&larr; 双核好？四核好？八核好？</a></li>
+  
+  
+  <li class="next"><a href="/2014/08/24/2014_web_question/" title="手机网页开发问题集锦">手机网页开发问题集锦 &rarr;</a></li>
+  
+</ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="2014_rsa"  data-url="http://haomou.net/2014/08/28/2014_rsa/" data-title="RSA加密算法详解"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_myself" class="widget hm-left-widget" style="clear:both">
+    <img alt="皓眸GEEK" src="/images/hm.jpg" width="100" height="120"  style="border-radius: 5px;margin-right: 5px;float:left;"/>
+<div style="color: #428bca;text-align: center;font-size: 18px;">曹欢欢(chale)</div>2014年毕业于中国科学技术大学，硕士研究生，目前在大武汉知名外企公司上班。<br/>喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身哈，等你来...吼吼...喜欢就写信给我喽，请叫我皓眸哥(^_^)
+<br/>擅长：NodeJS，JAVA，PHP，WebGL，WebRTC，PS ...
+<br/><span style="color: #fb6580;">Mail To: </span>chh1990@mail.ustc.edu.cn
+<br/><span style="color: #fb6580;">QQ：</span>807991555（chale）
+<br/><span style="color: #fb6580;">APP敏捷开发交流群：</span>345413787</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_search" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">一般人我不告诉他？</div>  <div id="haomou_ad">
+<a target="_blank" href="http://2.taobao.com/item.htm?id=43869349327&spm=686.1000925.0.0.mjUwtL&mt=">
+<img src="/images/book.png" title="皓眸IT-我的书" alt="APP敏捷开发王道-我的新书" />
+</a>
+<br/>
+<p style="text-align:center;"><a target="_blank" href="http://2.taobao.com/item.htm?id=43869349327&spm=686.1000925.0.0.mjUwtL&mt=">附整套项目代码，只要<b style="color:red;">9.9</b>元</a></p>
+<p style="text-align:center;">APP敏捷开发交流群：<b style="color:red;">345413787</b></p>
+</div></div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2014-2015 Chale Cao
+  
+    &nbsp;&nbsp;</span>
+  <a href='http://www.miibeian.gov.cn/'>苏ICP备13018740号-6</a></span>
+  <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'></span>  </div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-04 17:35:16</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haomou"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://haomou.net/2014/08/28/2014_rsa/";
+    var wumiiTitle = "RSA加密算法详解";
+    var wumiiTags = "RSA,加密,算法";
+    var wumiiCategories = ["加密算法"];
+    var wumiiSitePrefix = "http://haomou.net";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />').wrap('<div class="img_block"></div>');
+     
+      if(alt){$(this).after('<span class="caption">' + alt + '</span>')};
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script src="/js/chenall.js" type="text/javascript"></script>
+
+
+  </body>
+</html>

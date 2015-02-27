@@ -1,0 +1,475 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="wumiiVerification" content="1747c9bc-e905-45aa-88ac-f13f2b210015" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>使用json web token | 皓眸IT</title>
+<meta name="author" content="Chale Cao">
+
+<meta name="description" content="由来做了这么长时间的web开发，从JAVA EE中的jsf，spring，hibernate框架，到spring web MVC，到用php框架thinkPHP，到现在的nodejs，我自己的看法是越来越喜欢干净整洁的web层，之前用jsf开发做view层的时候，用的primefaces做的界面显示，虽然primefaces的确提供了很大的便利，可以让开发人员专注于业务逻辑开发，这样其实就省去了前端开发的工作。而后来发现有些客户需要的展现形式很难实现，或者通过拼凑的方法实现的结果效率不高。使用不灵活，后来自己渐渐的转向了做前端工程师。spring WEB MVC可以做到干净整洁的web层，可以做到web层分离，通过ajax和服务端通信。现在在学习AngularJS框架，后台数据服务端打算用REST风格的接口来做，这个在前后台交互上就要考虑数据通信的安全问题，关于这个在关于SESSION的理解一文中其实有提到的。">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="使用json web token"/>
+<meta property="og:site_name" content="皓眸IT"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css">
+<![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="皓眸IT Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+
+<link rel="stylesheet" href="/css/nprogress.css" type="text/css">
+
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.bootcss.com/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+  
+  <header id="header" class="hm-menu-left-container"><nav id="main-nav" class="navbar navbar-default hm-navbar-menu-left  " role="navigation">
+    <div class="hm-navbar-header">
+    <a href="http://haomou.net" ><img class="hm-logo" src="/images/haomou.png" title="皓眸IT" width="64" height="64" /></a>
+    <br/>|<br/><span class="fa fa-tint hm-black shine_blue" ></span><br/>|<br/><span class="fa fa-heart hm-black shine_red" ></span><br/>|<br/>
+        <i class="fa fa-bars fa-2x hm-black hm-menu shine_blue" ></i><br/><div class="hm-line"></div>
+    </div>
+    <div class="collapse navbar-collapse">
+      <h1 style="color:black">皓眸IT</h1>
+      <ul class="nav navbar-nav hm-left-nav">
+  
+        <li item='2014/08/14/2014_web_token/' class='active'><a href="/" title="首页">首页</a></li>      
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>关于我<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://home.ustc.edu.cn/~chh1990/chero/chero.html" title="个人主页">个人主页</a></li>    
+        </ul>
+      </li>
+    
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>创业项目<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://pictcake.cn" title="照片蛋糕">照片蛋糕</a></li>    
+        </ul>
+      </li>
+    
+      </ul>
+
+        
+        <div id="widget_category" class="widget hm-left-widget">
+            <div class="panel-heading">分类：</div>            <div data-src='category' class='ajax_widgets'>正在加载...</div>
+        </div>
+        
+        <div id="widget_tagcloud" class="widget hm-left-widget">
+            <div class="panel-heading">标签云：</div>            <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div>        </div>
+        
+
+
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/chalecao">github</a></li>
+      
+      </ul>
+    </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div style="" id="headflash" class="headflash hm_container"><embed pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="/images/bck.swf" width="100%" height="313" style="undefined" id="headflash_f" name="headflash_f" bgcolor="#000" quality="high" allowscriptaccess="false" wmode="transparent" allowfullscreen="false"></div>
+  <div id='content' class=" container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>皓眸IT <small>写清楚，说明白</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article class="hm-article">
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left hm-article-w"></i>
+      <h1 class="title">使用json web token</h1>
+      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-08-13T21:40:49.000Z"> <a href="/2014/08/14/2014_web_token/">Aug 14 2014</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry"  data-spy="scroll" data-target="#toc" >
+      
+        <h3 id="由来">由来</h3>
+<p>做了这么长时间的web开发，从JAVA EE中的jsf，spring，hibernate框架，到spring web MVC，到用php框架thinkPHP，到现在的nodejs，我自己的看法是越来越喜欢干净整洁的web层，之前用jsf开发做view层的时候，用的primefaces做的界面显示，虽然primefaces的确提供了很大的便利，可以让开发人员专注于业务逻辑开发，这样其实就省去了前端开发的工作。而后来发现有些客户需要的展现形式很难实现，或者通过拼凑的方法实现的结果效率不高。使用不灵活，后来自己渐渐的转向了做前端工程师。spring WEB MVC可以做到干净整洁的web层，可以做到web层分离，通过ajax和服务端通信。现在在学习AngularJS框架，后台数据服务端打算用REST风格的接口来做，这个在前后台交互上就要考虑数据通信的安全问题，关于这个在<a href="http://www.haomou.net/2014/08/07/2014_session/" target="_blank" rel="external">关于SESSION的理解</a>一文中其实有提到的。<br><a id="more"></a></p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/08/13/2014_web_token/" target="_blank" rel="external">http://www.haomou.net/2014/08/13/2014_web_token/</a></p>
+<h3 id="来龙去脉">来龙去脉</h3>
+<p>诸如Ember，Angular，Backbone之类的前端框架类库正随着更加精细的Web应用而日益壮大。正因如此，服务器端的组建也正正在从传统的任务中解脱，转而变的更像API。API使得传统的前端和后端的概念解耦。开发者可以脱离前端，独立的开发后端，在测试上获得更大的便利。这种途径也使得一个移动应用和网页应用可以使用相同的后端。</p>
+<p>当使用一个API时，其中一个挑战就是认证（authentication）。在传统的web应用中，服务端成功的返回一个响应（response）依赖于两件事。一是，他通过一种存储机制保存了会话信息（Session）。每一个会话都有它独特的信息（id），常常是一个长的，随机化的字符串，它被用来让未来的请求（Request）检索信息。其次，包含在响应头（Header）里面的信息使客户端保存了一个Cookie。服务器自动的在每个子请求里面加上了会话ID，这使得服务器可以通过检索Session中的信息来辨别用户。这就是传统的web应用逃避HTTP面向无连接的方法（This is how traditional web applications get around the fact that HTTP is stateless）。</p>
+<p>API应该被设计成无状态的（Stateless）。这意味着没有登陆，注销的方法，也没有sessions，API的设计者同样也不能依赖Cookie，因为不能保证这些request是由浏览器所发出的。自然，我们需要一个新的机制。这篇文章关注于JSON Web Tokens，简写为JWTs，一个可能的解决这个问题的机制。这篇文章利用Node的Express框架作为后端，以及Backbone作为前端。</p>
+<h3 id="常用方法">常用方法</h3>
+<p>第一个是使用在HTTP规范中所制定的Basic Auth， 它需要在在响应中设定一个验证身份的Header。客户端必须在每个子响应是附加它们的凭证（credenbtial），包括它的密码。如果这些凭证通过了，那么用户的信息就会被传递到服务端应用。</p>
+<p>第二个方面有点类似，但是使用应用自己的验证机制。通常包括将发送的凭证与存储的凭证进行检查。和Basic Auth相比，这种需要在每次请求（call）中发送凭证。</p>
+<p>第三种是OAuth（或者OAuth2）。为第三方的认证所设计，但是更难配置。至少在服务器端更难。</p>
+<p>在使用中，并不会每次都让用户提交用户名和密码，通常的情况是客户端通过一些可靠信息和服务器交换取token，这个token作为客服端再次请求的权限钥匙。Token通常比密码更加长而且复杂。比如说，JWTs通常会长达150个字符。一旦获得了token，在每次调用API的时候都要附加上它。然后，这仍然比直接发送账户和密码更加安全，哪怕是HTTPS。<br>把token想象成一个安全的护照。你在一个安全的前台验证你的身份（通过你的用户名和密码），如果你成功验证了自己，你就可以取得这个。当你走进大楼的时候（试图从调用API获取资源），你会被要求验证你的护照，而不是在前台重新验证。</p>
+<h3 id="JWTs">JWTs</h3>
+<p>JWTs是一份草案，尽管在本质上它是一个老生常谈的一种更加具体的认证授权的机制。一个JWT被周期（period）分成了三个部分。JWT是URL-safe的，意味着可以用来查询字符参数。（译者注：也就是可以脱离URL，不用考虑URL的信息）。关于Json Web Token，参考 <a href="http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html" target="_blank" rel="external">http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html</a> </p>
+<p>JWT的第一部分是对一个简单js对象的编码后的字符串，这个js对象是用来描述这个token类型以及使用的hash算法。下面的例子展示的是一个使用了HMAC SHA-256算法的JWT token。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">{</div><div class="line">  "<span class="attribute">typ</span>" : <span class="value"><span class="string">"JWT"</span></span>,</div><div class="line">  "<span class="attribute">alg</span>" : <span class="value"><span class="string">"HS256"</span></span></div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>在加密之后，这个对象变成了一个字符串：<br>    eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9<br>JWT的第二部分是token的核心，这部分同样是对一个js对象的编码，包含了一些摘要信息。有一些是必须的，有一些是选择性的。实例如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">{</div><div class="line">  "<span class="attribute">iss</span>": <span class="value"><span class="string">"joe"</span></span>,</div><div class="line">  "<span class="attribute">exp</span>": <span class="value"><span class="number">1300819380</span></span>,</div><div class="line">  "<span class="attribute">http://example.com/is_root</span>": <span class="value"><span class="literal">true</span></span></div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>这个结构被称为JWT Claims Set。这个iss是issuer的简写，表明请求的实体，可以是发出请求的用户的信息。exp是expires的简写，是用来指定token的生命周期。（相关参数参看：<a href="http://tools.ietf.org/html/draft-ietf-oauth-json-web-token-19" target="_blank" rel="external">the document</a>）加密编码之后如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ</div></pre></td></tr></table></figure>
+
+<p>JWT的第三个部分，是JWT根据第一部分和第二部分的签名（Signature）。像这个样子：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk</div></pre></td></tr></table></figure>
+
+<p>最后将上面的合并起来，JWT token如下：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk</div></pre></td></tr></table></figure>
+
+<h3 id="处理Tokens">处理Tokens</h3>
+<p>我们将用JWT simple模块去处理token，它将使我们从钻研如何加密解密中解脱出来。如果你有兴趣，可以阅读这篇说明，或者读这个仓库的源码。<br>首先我们将使用下面的命令安装这个库。记住你可以在命令中加入—save，让其自动的让其加入到你的package.json文件里面。</p>
+<pre><code>npm <span class="operator"><span class="keyword">install</span> jwt-simple</span>
+</code></pre><p>在你应用的初始环节，加入以下代码。这个代码引入了Express和JWT simple，而且创建了一个新的Express应用。最后一行设定了app的一个名为jwtTokenSecret的变量，其值为‘YOUR_SECRET_STRING’（记得把它换成别的）。</p>
+<pre><code><span class="keyword">var</span> express = <span class="keyword">require</span>(<span class="string">'express'</span>);
+<span class="keyword">var</span> jwt = <span class="keyword">require</span>(<span class="string">'jwt-simple'</span>);
+<span class="keyword">var</span> app = express();
+
+app.<span class="keyword">set</span>(<span class="string">'jwtTokenSecret'</span>, <span class="string">'YOUR_SECRET_STRING'</span>);
+</code></pre><h3 id="获取token">获取token</h3>
+<p>我们需要做的第一件事就是让客户端通过他们的账号密码交换token。这里有2种可能的方法在RESTful API里面。第一种是使用POST请求来通过验证，使服务端发送带有token的响应。除此之外，你可以使用GET请求，这需要他们使用参数提供凭证（指URL），或者更好的使用请求头。<br>这篇文章的目的是为了解释token验证的方法而不是基本的用户名/密码验证机制。所以我们假设我们已经通过请求得到了用户名和密码：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">User.findOne({ username: username }, <span class="function"><span class="keyword">function</span><span class="params">(err, user)</span> </span>{</div><div class="line">  <span class="keyword">if</span> (err) {</div><div class="line">    <span class="comment">// user not found</span></div><div class="line">    <span class="keyword">return</span> res.send(<span class="number">401</span>);</div><div class="line">  }</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (!user) {</div><div class="line">    <span class="comment">// incorrect username</span></div><div class="line">    <span class="keyword">return</span> res.send(<span class="number">401</span>);</div><div class="line">  }</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (!user.validPassword(password)) {</div><div class="line">    <span class="comment">// incorrect password</span></div><div class="line">    <span class="keyword">return</span> res.send(<span class="number">401</span>);</div><div class="line">  }</div><div class="line"></div><div class="line">  <span class="comment">// User has authenticated OK</span></div><div class="line">  res.send(<span class="number">200</span>);</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<p>如果用户成功验证账号和密码，然后我们生成一个token，返回给用户。</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> expires = moment().add(<span class="string">'days'</span>, <span class="number">7</span>).valueOf();</div><div class="line"><span class="keyword">var</span> token = jwt.encode({</div><div class="line">  iss: user.id,</div><div class="line">  exp: expires</div><div class="line">}, app.<span class="keyword">get</span>(<span class="string">'jwtTokenSecret'</span>));</div><div class="line"></div><div class="line">res.json({</div><div class="line">  token : token,</div><div class="line">  expires: expires,</div><div class="line">  user: user.toJSON()</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<p>注意到jwt.encode()函数有2个参数。第一个就是一个需要加密的对象，第二个是一个加密的密钥。这个token是由我们之前提到的iss和exp组成的。注意到Moment.js被用来设置token将在7天之后失效。而res.json()方法用来传递这个JSON对象给客户端。</p>
+<h3 id="验证Token">验证Token</h3>
+<p>客户端获取到token后，应该在每次向服务器请求数据时附带这个token，然后服务端验证token。<br>为了验证JWT，我们需要写出一些可以完成这些功能的中间件（Middleware）：</p>
+<ul>
+<li>检查附上的token</li>
+<li>试图解密</li>
+<li>验证token的可用性</li>
+<li>如果token是合法的，检索里面用户的信息，以及附加到请求的对象上<br>我们来写一个中间件的框架</li>
+</ul>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// @file jwtauth.js</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> UserModel = <span class="built_in">require</span>(<span class="string">'../models/user'</span>);</div><div class="line"><span class="keyword">var</span> jwt = <span class="built_in">require</span>(<span class="string">'jwt-simple'</span>);</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span><span class="params">(req, res, next)</span> </span>{</div><div class="line">  <span class="comment">// code goes here</span></div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>为了获得最大的可扩展性，我们允许客户端使用一下3个方法附加我们的token：作为请求链接（query)的参数，作为主体的参数（body），和作为请求头（Header）的参数。对于最后一个，我们将使用Header x-access-token。</p>
+<p>下面是我们的允许在中间件的代码，试图去检索token：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">var token = (req.<span class="keyword">body</span> && req.<span class="keyword">body</span>.access_token) || (req.query && req.query.access_token) || req.headers[<span class="attribute">'x</span>-<span class="keyword">access</span>-token'];</div></pre></td></tr></table></figure>
+
+<p>注意到他为了访问req.body，我们需要首先使用express.bodyParser()中间件（译者注，这个是Express 3.x的中间件）。<br>下一步，我们讲解析JWT:</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (token) {</div><div class="line">  <span class="keyword">try</span> {</div><div class="line">    <span class="keyword">var</span> decoded = jwt.decode(token, app.<span class="keyword">get</span>(<span class="string">'jwtTokenSecret'</span>));</div><div class="line"></div><div class="line">    <span class="comment">// handle token here</span></div><div class="line"></div><div class="line">  } <span class="keyword">catch</span> (err) {</div><div class="line">    <span class="keyword">return</span> next();</div><div class="line">  }</div><div class="line">} <span class="keyword">else</span> {</div><div class="line">  next();</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>如果解析的过程失败，那么JWT Simple组件将会抛出一段异常。如果异常发生了，或者没有token，我们将会调用next()来继续处理请求。这代表喆我们无法确定用户。如果一个合格的token合法并且被解码，我们应该得到2个属性，iss包含着用户ID以及exp包含token过期的时间戳。我们将首先处理后者，如果它过期了，我们就拒绝它：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (decoded.<span class="built_in">exp</span> &lt;= <span class="built_in">Date</span>.<span class="built_in">now</span>()) {</div><div class="line">  res.<span class="keyword">end</span>(<span class="comment">'Access token has expired', 400);</span></div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>如果token依旧合法，我们可以从中检索出用户信息，并且附加到请求对象里面去：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">User.findOne({ _id: decoded.iss }, function(err, <span class="literal">user</span>) {</div><div class="line">  req.<span class="literal">user</span> = <span class="literal">user</span><span class="comment">;</span></div><div class="line">})<span class="comment">;</span></div></pre></td></tr></table></figure>
+
+<p>最后，将这个中间件附加到路由里面：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> jwtauth = <span class="built_in">require</span>(<span class="string">'./jwtauth.js'</span>);</div><div class="line"></div><div class="line">app.get(<span class="string">'/something'</span>, [express.bodyParser(), jwtauth], <span class="function"><span class="keyword">function</span><span class="params">(req, res)</span></span>{</div><div class="line">  <span class="comment">// do something</span></div><div class="line">});</div></pre></td></tr></table></figure>
+
+<p>或者匹配一些路由</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">app.<span class="keyword">all</span>(<span class="string">'/api/*'</span>, [express.bodyParser(), jwtauth]);</div></pre></td></tr></table></figure>
+
+<h3 id="客户端请求">客户端请求</h3>
+<p>我们提供了一个简单的get端去获得一个远端的token。这非常直接了，所以我们不用纠结细节，就是发起一个请求，传递用户名和密码，如果请求成功了，我们就会得到一个包含着token的响应。</p>
+<p>我们现在研究的是后续的请求。一个方法是通过JQuery的ajaxSetup()方法。这可以直接用来做Ajax请求，或者通过前端框架使用包装过的Ajax方法。比如，假设我们将我们的请求使用window.localStorage.setItem(‘token’, ‘the-long-access-token’);放在本地存储（Local Storage）里面，我们可以通过这种方法将token附加到请求头里面：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> token = <span class="built_in">window</span>.localStorage.getItem(<span class="string">'token'</span>);</div><div class="line"></div><div class="line"><span class="keyword">if</span> (token) {</div><div class="line">  $.ajaxSetup({</div><div class="line">    headers: {</div><div class="line">      <span class="string">'x-access-token'</span>: token</div><div class="line">    }</div><div class="line">  });</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>很简单，但是这会劫持所有Ajax请求，如果这里有一个token在本地存储里面。它将会附加到一个名为x-access-token的Header里面。</p>
+<h3 id="bear_token">bear token</h3>
+<p>关于bear token，参看 <a href="http://tools.ietf.org/html/rfc6750" target="_blank" rel="external"> RFC 6750: The OAuth 2.0 Authorization Framework: Bearer Token Usage </a>, 目前国内各大网站都是用不同的token，也没说必须使用bear token，只有twitter明确说明的是使用bear token。</p>
+<p>OAuth 2.0 (RFC 6749) 定义了 Client 如何取得 Access Token 的方法。Client 可以用 Access Token 以 Resource Owner 的名义来向 Resource Server 取得 Protected Resource ，例如我 (Resource Owner) 授权一個手机 App (Client) 以我 (Resource Owner) 的名义去 Facebook (Resource Server) 取得我的朋友名单 (Protected Resource)。OAuth 2.0 定义Access Token 是 Resource Server 用来认证的唯一方式，有了这个， Resource Server 就不需要再提供其他认证方式，例如账号密码。</p>
+<p>然而在 RFC 6749 里面只定义抽象的概念，细节如 Access Token 格式、怎么传到 Resource Server ，以及 Access Token 无效时， Resource Server 怎么处理，都没有定义。所以在 RFC 6750 另外定义了 Bearer Token 的用法。Bearer Token 是一种 Access Token ，由 Authorization Server 在 Resource Owner 的允许下核发给 Client ，Resource Server 只要认在这个 Token 就可以认定 Client 已经获取 Resource Owner 的许可，不需要用密码学的方式来验证这个 Token 的真伪。关于Token 被偷走的安全性问题，另一篇再说。</p>
+<p>Bearer Token 的格式</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="title">Bearer</span> XXXXXXXX</div></pre></td></tr></table></figure>
+
+<p>其中 XXXXXXXX 的格式为 b64token ，ABNF 的定義：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">b64token = 1<span class="keyword">*</span>( ALPHA / DIGIT / <span class="string">"-"</span> / <span class="string">"."</span> / <span class="string">"_"</span> / <span class="string">"~"</span> / <span class="string">"+"</span> / <span class="string">"/"</span> ) <span class="keyword">*</span><span class="string">"="</span></div></pre></td></tr></table></figure>
+
+<p>写成 Regular Expression 即是：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/<span class="special">[</span>A-Za-z0-9<span class="command">\-</span><span class="command">\.</span>_<span class="special">~</span><span class="command">\+</span><span class="command">\/</span><span class="special">]</span>+=*/</div></pre></td></tr></table></figure>
+
+<p>关于Bear Token还是打算另起一篇，详细说明：<a href="http://www.haomou.net/2014/08/13/2014_bare_token/" target="_blank" rel="external">Bearer Token</a></p>
+<h3 id="express-jwt实例">express-jwt实例</h3>
+<p>下面给一个具体的实例，这个例子的客户端是web app，使用AngularJS框架。服务端使用NodeJS做的RESTful API接口，客户端直接调用接口数据，其中使用了token认证机制。<br>当用户把他的授权信息发过来的时候， Node.js 服务检查是否正确，然后返回一个基于用户信息的唯一 token 。 AngularJS 应用把 token 保存在用户的 SessionStorage ，之后的在发送请求的时候，在请求头里面加上包含这个 token 的 Authorization。如果 endpoint 需要确认用户授权，服务端检查验证这个 token，然后如果成功了就返回数据，如果失败了返回 401 或者其它的异常。<br>用到的技术：</p>
+<ul>
+<li>AngularJS</li>
+<li>NodeJS （ express.js, express-jwt 和 moongoose）</li>
+<li>MongoDB</li>
+<li>Redis （备用，用于记录用户退出登录时候还没有超时的token）</li>
+</ul>
+<h4 id="客户端_:_AngularJS_部分">客户端 : AngularJS 部分</h4>
+<p>首先，我们来创建我们的 AdminUserCtrl controller 和处理 login/logout 动作。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">appControllers.controller(<span class="string">'AdminUserCtrl'</span>, [<span class="string">'$scope'</span>, <span class="string">'$location'</span>, <span class="string">'$window'</span>, <span class="string">'UserService'</span>, <span class="string">'AuthenticationService'</span>,</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">AdminUserCtrl</span><span class="params">(<span class="variable">$scope</span>, <span class="variable">$location</span>, <span class="variable">$window</span>, UserService, AuthenticationService)</span> </span>{</div><div class="line"> </div><div class="line">        <span class="comment">//Admin User Controller (login, logout)</span></div><div class="line">        <span class="variable">$scope</span>.logIn = <span class="function"><span class="keyword">function</span> <span class="title">logIn</span><span class="params">(username, password)</span> </span>{</div><div class="line">            <span class="keyword">if</span> (username !== undefined && password !== undefined) {</div><div class="line"> </div><div class="line">                UserService.logIn(username, password).success(<span class="function"><span class="keyword">function</span><span class="params">(data)</span> </span>{</div><div class="line">                    AuthenticationService.isLogged = <span class="keyword">true</span>;</div><div class="line">                    <span class="variable">$window</span>.sessionStorage.token = data.token;</div><div class="line">                    <span class="variable">$location</span>.path(<span class="string">"/admin"</span>);</div><div class="line">                }).error(<span class="function"><span class="keyword">function</span><span class="params">(status, data)</span> </span>{</div><div class="line">                    console.log(status);</div><div class="line">                    console.log(data);</div><div class="line">                });</div><div class="line">            }</div><div class="line">        }</div><div class="line"> </div><div class="line">        <span class="variable">$scope</span>.logout = <span class="function"><span class="keyword">function</span> <span class="title">logout</span><span class="params">()</span> </span>{</div><div class="line">            <span class="keyword">if</span> (AuthenticationService.isLogged) {</div><div class="line">                AuthenticationService.isLogged = <span class="keyword">false</span>;</div><div class="line">                delete <span class="variable">$window</span>.sessionStorage.token;</div><div class="line">                <span class="variable">$location</span>.path(<span class="string">"/"</span>);</div><div class="line">            }</div><div class="line">        }</div><div class="line">    }</div><div class="line">]);</div></pre></td></tr></table></figure>
+
+<p>这个 controller 用了两个 service: UserService 和 AuthenticationService。第一个处理调用 REST api 用证书。后面一个处理用户的认证。它只有一个布尔值，用来表示用户是否被授权。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">appServices.factory(<span class="string">'AuthenticationService'</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">var</span> auth = {</div><div class="line">        isLogged: <span class="keyword">false</span></div><div class="line">    }</div><div class="line"> </div><div class="line">    <span class="keyword">return</span> auth;</div><div class="line">});</div><div class="line">appServices.factory(<span class="string">'UserService'</span>, <span class="function"><span class="keyword">function</span><span class="params">(<span class="variable">$http</span>)</span> </span>{</div><div class="line">    <span class="keyword">return</span> {</div><div class="line">        logIn: <span class="function"><span class="keyword">function</span><span class="params">(username, password)</span> </span>{</div><div class="line">            <span class="keyword">return</span> <span class="variable">$http</span>.post(options.api.base_url + <span class="string">'/login'</span>, {username: username, password: password});</div><div class="line">        },</div><div class="line"> </div><div class="line">        logOut: <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line"> </div><div class="line">        }</div><div class="line">    }</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<p>好了，我们需要做张登陆页面:</p>
+<figure class="highlight {html}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&lt;form <span class="type">class</span>=<span class="string">"form-horizontal"</span> role=<span class="string">"form"</span>&gt;</div><div class="line">    &lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"form-group"</span>&gt;</div><div class="line">        &lt;label <span class="keyword">for</span>=<span class="string">"inputUsername"</span> <span class="type">class</span>=<span class="string">"col-sm-4 control-label"</span>&gt;Username&lt;/label&gt;</div><div class="line">        &lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"col-sm-4"</span>&gt;</div><div class="line">            &lt;input type=<span class="string">"text"</span> <span class="type">class</span>=<span class="string">"form-control"</span> <span class="property">id</span>=<span class="string">"inputUsername"</span> placeholder=<span class="string">"Username"</span> ng-model=<span class="string">"login.email"</span>&gt;</div><div class="line">        &lt;/<span class="keyword">div</span>&gt;</div><div class="line">    &lt;/<span class="keyword">div</span>&gt;</div><div class="line">    &lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"form-group"</span>&gt;</div><div class="line">        &lt;label <span class="keyword">for</span>=<span class="string">"inputPassword"</span> <span class="type">class</span>=<span class="string">"col-sm-4 control-label"</span>&gt;Password&lt;/label&gt;</div><div class="line">        &lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"col-sm-4"</span>&gt;</div><div class="line">            &lt;input type=<span class="string">"password"</span> <span class="type">class</span>=<span class="string">"form-control"</span> <span class="property">id</span>=<span class="string">"inputPassword"</span> placeholder=<span class="string">"Password"</span> ng-model=<span class="string">"login.password"</span>&gt;</div><div class="line">        &lt;/<span class="keyword">div</span>&gt;</div><div class="line">    &lt;/<span class="keyword">div</span>&gt;</div><div class="line">    &lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"form-group"</span>&gt;</div><div class="line">        &lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"col-sm-offset-4 col-sm-10"</span>&gt;</div><div class="line">            &lt;button type=<span class="string">"submit"</span> <span class="type">class</span>=<span class="string">"btn btn-default"</span> ng-click=<span class="string">"logIn(login.email, login.password)"</span>&gt;Log In&lt;/button&gt;</div><div class="line">        &lt;/<span class="keyword">div</span>&gt;</div><div class="line">    &lt;/<span class="keyword">div</span>&gt;</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure>
+
+<p>当用户发送他的信息过来，我们的 controller 把内容发送到 Node.js 服务器，如果信息可用，我们把 AuthenticationService里面的 isLogged 设为 true。我们把从服务端发过来的 token 存起来，以便下次请求的时候使用。等讲到 Node.js 的时候我们会看看怎么处理。</p>
+<p>好了，我们要往每个请求里面追加一个特殊的头信息了:[Authorization: Bearer ] 。为了实现这个需求，我们建立一个服务，叫 TokenInterceptor。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">appServices.factory(<span class="string">'TokenInterceptor'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(<span class="variable">$q</span>, <span class="variable">$window</span>, AuthenticationService)</span> </span>{</div><div class="line">    <span class="keyword">return</span> {</div><div class="line">        request: <span class="function"><span class="keyword">function</span> <span class="params">(config)</span> </span>{</div><div class="line">            config.headers = config.headers || {};</div><div class="line">            <span class="keyword">if</span> (<span class="variable">$window</span>.sessionStorage.token) {</div><div class="line">                config.headers.Authorization = <span class="string">'Bearer '</span> + <span class="variable">$window</span>.sessionStorage.token;</div><div class="line">            }</div><div class="line">            <span class="keyword">return</span> config;</div><div class="line">        },</div><div class="line"> </div><div class="line">        response: <span class="function"><span class="keyword">function</span> <span class="params">(response)</span> </span>{</div><div class="line">            <span class="keyword">return</span> response || <span class="variable">$q</span>.when(response);</div><div class="line">        }</div><div class="line">    };</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<p>然后我们把这个interceptor 追加到 $httpProvider :</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">app.config(<span class="function"><span class="keyword">function</span> <span class="params">(<span class="variable">$httpProvider</span>)</span> </span>{</div><div class="line">    <span class="variable">$httpProvider</span>.interceptors.push(<span class="string">'TokenInterceptor'</span>);</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<p>然后，我们要开始配置路由了，让 AngularJS 知道哪些需要授权，在这里，我们需要检查用户是否已经被授权，也就是查看 AuthenticationService 的 isLogged 值。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line">app.config([<span class="string">'$locationProvider'</span>, <span class="string">'$routeProvider'</span>, </div><div class="line">  function(<span class="variable">$location</span>, <span class="variable">$routeProvider</span>) {</div><div class="line">    <span class="variable">$routeProvider</span>.</div><div class="line">        <span class="keyword">when</span>(<span class="string">'/'</span>, {</div><div class="line">            <span class="symbol">templateUrl:</span> <span class="string">'partials/post.list.html'</span>,</div><div class="line">            <span class="symbol">controller:</span> <span class="string">'PostListCtrl'</span></div><div class="line">        }).</div><div class="line">        <span class="keyword">when</span>(<span class="string">'/post/:id'</span>, {</div><div class="line">            <span class="symbol">templateUrl:</span> <span class="string">'partials/post.view.html'</span>,</div><div class="line">            <span class="symbol">controller:</span> <span class="string">'PostViewCtrl'</span></div><div class="line">        }).</div><div class="line">        <span class="keyword">when</span>(<span class="string">'/tag/:tagName'</span>, {</div><div class="line">            <span class="symbol">templateUrl:</span> <span class="string">'partials/post.list.html'</span>,</div><div class="line">            <span class="symbol">controller:</span> <span class="string">'PostListTagCtrl'</span></div><div class="line">        }).</div><div class="line">        <span class="keyword">when</span>(<span class="string">'/admin'</span>, {</div><div class="line">            <span class="symbol">templateUrl:</span> <span class="string">'partials/admin.post.list.html'</span>,</div><div class="line">            <span class="symbol">controller:</span> <span class="string">'AdminPostListCtrl'</span>,</div><div class="line">            <span class="symbol">access:</span> { <span class="symbol">requiredLogin:</span> <span class="keyword">true</span> }</div><div class="line">        }).</div><div class="line">        <span class="keyword">when</span>(<span class="string">'/admin/post/create'</span>, {</div><div class="line">            <span class="symbol">templateUrl:</span> <span class="string">'partials/admin.post.create.html'</span>,</div><div class="line">            <span class="symbol">controller:</span> <span class="string">'AdminPostCreateCtrl'</span>,</div><div class="line">            <span class="symbol">access:</span> { <span class="symbol">requiredLogin:</span> <span class="keyword">true</span> }</div><div class="line">        }).</div><div class="line">        <span class="keyword">when</span>(<span class="string">'/admin/post/edit/:id'</span>, {</div><div class="line">            <span class="symbol">templateUrl:</span> <span class="string">'partials/admin.post.edit.html'</span>,</div><div class="line">            <span class="symbol">controller:</span> <span class="string">'AdminPostEditCtrl'</span>,</div><div class="line">            <span class="symbol">access:</span> { <span class="symbol">requiredLogin:</span> <span class="keyword">true</span> }</div><div class="line">        }).</div><div class="line">        <span class="keyword">when</span>(<span class="string">'/admin/login'</span>, {</div><div class="line">            <span class="symbol">templateUrl:</span> <span class="string">'partials/admin.login.html'</span>,</div><div class="line">            <span class="symbol">controller:</span> <span class="string">'AdminUserCtrl'</span></div><div class="line">        }).</div><div class="line">        <span class="keyword">when</span>(<span class="string">'/admin/logout'</span>, {</div><div class="line">            <span class="symbol">templateUrl:</span> <span class="string">'partials/admin.logout.html'</span>,</div><div class="line">            <span class="symbol">controller:</span> <span class="string">'AdminUserCtrl'</span>,</div><div class="line">            <span class="symbol">access:</span> { <span class="symbol">requiredLogin:</span> <span class="keyword">true</span> }</div><div class="line">        }).</div><div class="line">        otherwise({</div><div class="line">            <span class="symbol">redirectTo:</span> <span class="string">'/'</span></div><div class="line">        });</div><div class="line">}]);</div><div class="line"></div><div class="line">app.run(function(<span class="variable">$rootScope</span>, <span class="variable">$location</span>, <span class="variable">$window</span>, <span class="constant">AuthenticationService</span>) {</div><div class="line">    <span class="variable">$rootScope</span>.<span class="variable">$on</span>(<span class="string">"$routeChangeStart"</span>, function(event, nextRoute, currentRoute) {</div><div class="line">        <span class="regexp">//redirect</span> only <span class="keyword">if</span> both isLogged is <span class="keyword">false</span> <span class="keyword">and</span> no token is set</div><div class="line">        <span class="keyword">if</span> (nextRoute != null && nextRoute.access != null && nextRoute.access.requiredLogin </div><div class="line">            && !<span class="constant">AuthenticationService</span>.isLogged && !<span class="variable">$window</span>.sessionStorage.token) {</div><div class="line"></div><div class="line">            <span class="variable">$location</span>.path(<span class="string">"/admin/login"</span>);</div><div class="line">        }</div><div class="line">    });</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<h4 id="服务端:_Node-js_+_MongoDB_部分">服务端: Node.js + MongoDB 部分</h4>
+<p>为了在我们的 RESTful api 处理授权信息，我们要用到 express-jwt (JSON Web Token) 来生成一个唯一 Token，基于用户的信息。以及验证 Token。</p>
+<p>首先，我们在 MongoDB 里面创建一个用户的 Schema。我们还要创建调用一个中间件，在创建和保存用户信息到数据库之前，用于加密密码。还有我们需要一个方法来解密密码，当收到用户请求的时候，检查是否在数据库里面有匹配的。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Schema = mongoose.Schema;</div><div class="line"> </div><div class="line"><span class="comment">// User schema</span></div><div class="line"><span class="keyword">var</span> User = <span class="keyword">new</span> Schema({</div><div class="line">    username: { type: <span class="built_in">String</span>, required: <span class="literal">true</span>, unique: <span class="literal">true</span> },</div><div class="line">    password: { type: <span class="built_in">String</span>, required: <span class="literal">true</span>}</div><div class="line">});</div><div class="line"> </div><div class="line"><span class="comment">// Bcrypt middleware on UserSchema</span></div><div class="line">User.pre(<span class="string">'save'</span>, <span class="function"><span class="keyword">function</span><span class="params">(next)</span> </span>{</div><div class="line">  <span class="keyword">var</span> user = <span class="keyword">this</span>;</div><div class="line"> </div><div class="line">  <span class="keyword">if</span> (!user.isModified(<span class="string">'password'</span>)) <span class="keyword">return</span> next();</div><div class="line"> </div><div class="line">  bcrypt.genSalt(SALT_WORK_FACTOR, <span class="function"><span class="keyword">function</span><span class="params">(err, salt)</span> </span>{</div><div class="line">    <span class="keyword">if</span> (err) <span class="keyword">return</span> next(err);</div><div class="line"> </div><div class="line">    bcrypt.hash(user.password, salt, <span class="function"><span class="keyword">function</span><span class="params">(err, hash)</span> </span>{</div><div class="line">        <span class="keyword">if</span> (err) <span class="keyword">return</span> next(err);</div><div class="line">        user.password = hash;</div><div class="line">        next();</div><div class="line">    });</div><div class="line">  });</div><div class="line">});</div><div class="line"> </div><div class="line"><span class="comment">//Password verification</span></div><div class="line">User.methods.comparePassword = <span class="function"><span class="keyword">function</span><span class="params">(password, cb)</span> </span>{</div><div class="line">    bcrypt.compare(password, <span class="keyword">this</span>.password, <span class="function"><span class="keyword">function</span><span class="params">(err, isMatch)</span> </span>{</div><div class="line">        <span class="keyword">if</span> (err) <span class="keyword">return</span> cb(err);</div><div class="line">        cb(isMatch);</div><div class="line">    });</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>然后我们开始写授权用户和创建 Token 的方法:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">exports.login = <span class="function"><span class="keyword">function</span><span class="params">(req, res)</span> </span>{</div><div class="line">    <span class="keyword">var</span> username = req.body.username || <span class="string">''</span>;</div><div class="line">    <span class="keyword">var</span> password = req.body.password || <span class="string">''</span>;</div><div class="line"> </div><div class="line">    <span class="keyword">if</span> (username == <span class="string">''</span> || password == <span class="string">''</span>) {</div><div class="line">        <span class="keyword">return</span> res.send(<span class="number">401</span>);</div><div class="line">    }</div><div class="line"> </div><div class="line">    db.userModel.findOne({username: username}, <span class="function"><span class="keyword">function</span> <span class="params">(err, user)</span> </span>{</div><div class="line">        <span class="keyword">if</span> (err) {</div><div class="line">            <span class="built_in">console</span>.log(err);</div><div class="line">            <span class="keyword">return</span> res.send(<span class="number">401</span>);</div><div class="line">        }</div><div class="line"> </div><div class="line">        user.comparePassword(password, <span class="function"><span class="keyword">function</span><span class="params">(isMatch)</span> </span>{</div><div class="line">            <span class="keyword">if</span> (!isMatch) {</div><div class="line">                <span class="built_in">console</span>.log(<span class="string">"Attempt failed to login with "</span> + user.username);</div><div class="line">                <span class="keyword">return</span> res.send(<span class="number">401</span>);</div><div class="line">            }</div><div class="line"> </div><div class="line">            <span class="keyword">var</span> token = jwt.sign(user, secret.secretToken, { expiresInMinutes: <span class="number">60</span> });</div><div class="line"> </div><div class="line">            <span class="keyword">return</span> res.json({token:token});</div><div class="line">        });</div><div class="line"> </div><div class="line">    });</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>最后，我们需要把 jwt 中间件加到所有的，访问时需要授权的路由上面:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line">Get all published posts</div><div class="line">*/</div><div class="line">app.<span class="keyword">get</span>(<span class="string">'/post'</span>, routes.posts.list);</div><div class="line"><span class="comment">/*</span></div><div class="line">    Get all posts</div><div class="line">*/</div><div class="line">app.<span class="keyword">get</span>(<span class="string">'/post/all'</span>, jwt({secret: secret.secretToken}), routes.posts.listAll);</div><div class="line"> </div><div class="line"><span class="comment">/*</span></div><div class="line">    Get an existing post. Require url</div><div class="line">*/</div><div class="line">app.<span class="keyword">get</span>(<span class="string">'/post/:id'</span>, routes.posts.read);</div><div class="line"> </div><div class="line"><span class="comment">/*</span></div><div class="line">    Get posts by tag</div><div class="line">*/</div><div class="line">app.<span class="keyword">get</span>(<span class="string">'/tag/:tagName'</span>, routes.posts.listByTag);</div><div class="line"> </div><div class="line"><span class="comment">/*</span></div><div class="line">    Login</div><div class="line">*/</div><div class="line">app.post(<span class="string">'/login'</span>, routes.users.login);</div><div class="line"> </div><div class="line"><span class="comment">/*</span></div><div class="line">    Logout</div><div class="line">*/</div><div class="line">app.<span class="keyword">get</span>(<span class="string">'/logout'</span>, routes.users.logout);</div><div class="line"> </div><div class="line"><span class="comment">/*</span></div><div class="line">    Create a new post. Require data</div><div class="line">*/</div><div class="line">app.post(<span class="string">'/post'</span>, jwt({secret: secret.secretToken}), routes.posts.create);</div><div class="line"> </div><div class="line"><span class="comment">/*</span></div><div class="line">    Update an existing post. Require id</div><div class="line">*/</div><div class="line">app.put(<span class="string">'/post'</span>, jwt({secret: secret.secretToken}), routes.posts.update);</div><div class="line"> </div><div class="line"><span class="comment">/*</span></div><div class="line">    Delete an existing post. Require id</div><div class="line">*/</div><div class="line">app.<span class="keyword">delete</span>(<span class="string">'/post/:id'</span>, jwt({secret: secret.secretToken}), routes.posts.<span class="keyword">delete</span>);</div></pre></td></tr></table></figure>
+
+<p>上面这个实例就采用了token的验证方式构建了api接口，但是有两个问题需要解决：</p>
+<ul>
+<li>用户退出登录，但是token并没有失效，因为服务端没有删除这个token</li>
+<li>token失效了，怎么办，如果还是让用于登录重新获取token，会体验不好。应该有token刷新机制。</li>
+</ul>
+<h3 id="使用Redis解决问题1">使用Redis解决问题1</h3>
+<p>解决方法是：当用户点了 logout 按钮的时候，Token 只会保存一段时间，就是你用 <a href="https://github.com/auth0/node-jsonwebtoken" target="_blank" rel="external">jsonwebtoken</a> 登陆之后，token 有效的这段时间，我们将这个token存放在Redis中，生存时间也是jwt获取这个token的时间。这个时间到期后，token 会被 redis 自动删掉。最后，我们创建一个 nodejs 的中间件，检查所有受限 endopoint 用的 token 是否存在 Redis 数据库中。</p>
+<h4 id="NodeJS_配置_Reids">NodeJS 配置 Reids</h4>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> redis = <span class="built_in">require</span>(<span class="string">'redis'</span>);</div><div class="line"><span class="keyword">var</span> redisClient = redis.createClient(<span class="number">6379</span>);</div><div class="line"> </div><div class="line">redisClient.on(<span class="string">'error'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(err)</span> </span>{</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'Error '</span> + err);</div><div class="line">});</div><div class="line"> </div><div class="line">redisClient.on(<span class="string">'connect'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'Redis is ready'</span>);</div><div class="line">});</div><div class="line"> </div><div class="line">exports.redis = redis;</div><div class="line">exports.redisClient = redisClient;</div></pre></td></tr></table></figure>
+
+<p>然后，我们来创建一个方法，用来检查提供的 token 是不是被</p>
+<h4 id="Token_管理和中间件">Token 管理和中间件</h4>
+<p>为了在 Redis 中保存 Token，我们要创建一个方法来拿到请求中的 Header 的 Token 参数，然后把它作为 Redis 的 key 保存起来。值是什么我们不管它。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> redisClient = <span class="built_in">require</span>(<span class="string">'./redis_database'</span>).redisClient;</div><div class="line"><span class="keyword">var</span> TOKEN_EXPIRATION = <span class="number">60</span>;</div><div class="line"><span class="keyword">var</span> TOKEN_EXPIRATION_SEC = TOKEN_EXPIRATION * <span class="number">60</span>;</div><div class="line"> </div><div class="line">exports.expireToken = <span class="function"><span class="keyword">function</span><span class="params">(headers)</span> </span>{</div><div class="line">    <span class="keyword">var</span> token = getToken(headers);</div><div class="line"> </div><div class="line">    <span class="keyword">if</span> (token != <span class="literal">null</span>) {</div><div class="line">        redisClient.set(token, { is_expired: <span class="literal">true</span> });</div><div class="line">        redisClient.expire(token, TOKEN_EXPIRATION_SEC);</div><div class="line">    }</div><div class="line">};</div><div class="line"> </div><div class="line"><span class="keyword">var</span> getToken = <span class="function"><span class="keyword">function</span><span class="params">(headers)</span> </span>{</div><div class="line">    <span class="keyword">if</span> (headers && headers.authorization) {</div><div class="line">        <span class="keyword">var</span> authorization = headers.authorization;</div><div class="line">        <span class="keyword">var</span> part = authorization.split(<span class="string">' '</span>);</div><div class="line"> </div><div class="line">        <span class="keyword">if</span> (part.length == <span class="number">2</span>) {</div><div class="line">            <span class="keyword">var</span> token = part[<span class="number">1</span>];</div><div class="line"> </div><div class="line">            <span class="keyword">return</span> part[<span class="number">1</span>];</div><div class="line">        }</div><div class="line">        <span class="keyword">else</span> {</div><div class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</div><div class="line">        }</div><div class="line">    }</div><div class="line">    <span class="keyword">else</span> {</div><div class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</div><div class="line">    }</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>然后，再创建一个中间件来验证一下 token，当用户发起请求的时候:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Middleware for token verification</span></div><div class="line">exports.verifyToken = <span class="function"><span class="keyword">function</span> <span class="params">(req, res, next)</span> </span>{</div><div class="line">    <span class="keyword">var</span> token = getToken(req.headers);</div><div class="line"> </div><div class="line">    redisClient.get(token, <span class="function"><span class="keyword">function</span> <span class="params">(err, reply)</span> </span>{</div><div class="line">        <span class="keyword">if</span> (err) {</div><div class="line">            <span class="built_in">console</span>.log(err);</div><div class="line">            <span class="keyword">return</span> res.send(<span class="number">500</span>);</div><div class="line">        }</div><div class="line"> </div><div class="line">        <span class="keyword">if</span> (reply) {</div><div class="line">            res.send(<span class="number">401</span>);</div><div class="line">        }</div><div class="line">        <span class="keyword">else</span> {</div><div class="line">            next();</div><div class="line">        }</div><div class="line"> </div><div class="line">    });</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>verifyToken 这个方法，是一个中间件，用来拿到请求头中的 token，然后在 Redis 里面查找它。如果 token 被发现了，我们就发 HTTP 401.否则我们就继续工作流，让请求访问 API。</p>
+<p>我们要在用户点 logout 的时候，执行 expireToken 方法:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">exports.logout = <span class="function"><span class="keyword">function</span><span class="params">(req, res)</span> </span>{</div><div class="line">    <span class="keyword">if</span> (req.user) {</div><div class="line">        tokenManager.expireToken(req.headers);</div><div class="line"> </div><div class="line">        <span class="keyword">delete</span> req.user;</div><div class="line">        <span class="keyword">return</span> res.send(<span class="number">200</span>);</div><div class="line">    }</div><div class="line">    <span class="keyword">else</span> {</div><div class="line">        <span class="keyword">return</span> res.send(<span class="number">401</span>);</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>最后我们更新路由，用上新的中间件:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Login</span></div><div class="line">app.post(<span class="string">'/user/signin'</span>, routes.users.signin);</div><div class="line"> </div><div class="line"><span class="comment">//Logout</span></div><div class="line">app.<span class="keyword">get</span>(<span class="string">'/user/logout'</span>, jwt({secret: secret.secretToken}), routes.users.logout);</div><div class="line"> </div><div class="line"><span class="comment">//Get all posts</span></div><div class="line">app.<span class="keyword">get</span>(<span class="string">'/post/all'</span>, jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.posts.listAll);</div><div class="line"> </div><div class="line"><span class="comment">//Create a new post</span></div><div class="line">app.post(<span class="string">'/post'</span>, jwt({secret: secret.secretToken}), tokenManager.verifyToken , routes.posts.create);</div><div class="line"> </div><div class="line"><span class="comment">//Edit the post id</span></div><div class="line">app.put(<span class="string">'/post'</span>, jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.posts.update);</div><div class="line"> </div><div class="line"><span class="comment">//Delete the post id</span></div><div class="line">app.<span class="keyword">delete</span>(<span class="string">'/post/:id'</span>, jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.posts.<span class="keyword">delete</span>);</div></pre></td></tr></table></figure>
+
+<p>好了，现在我们每次发送请求的时候，我们都去解析 token， 然后看看是不是有效的。<br>这里有整个项目的<a href="https://github.com/kdelemme/blogjs" target="_blank" rel="external">源代码</a></p>
+<h3 id="refresh_token解决问题2">refresh token解决问题2</h3>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">appServices.factory(<span class="string">'TokenInterceptor'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(<span class="variable">$q</span>, <span class="variable">$window</span>, <span class="variable">$location</span>, AuthenticationService)</span> </span>{</div><div class="line">    <span class="keyword">return</span> {</div><div class="line">        request: <span class="function"><span class="keyword">function</span> <span class="params">(config)</span> </span>{</div><div class="line">            config.headers = config.headers || {};</div><div class="line">            <span class="keyword">if</span> (<span class="variable">$window</span>.sessionStorage.token) {</div><div class="line">                config.headers.Authorization = <span class="string">'Bearer '</span> + <span class="variable">$window</span>.sessionStorage.token;</div><div class="line">            }</div><div class="line">            <span class="keyword">return</span> config;</div><div class="line">        },</div><div class="line"></div><div class="line">        requestError: <span class="function"><span class="keyword">function</span><span class="params">(rejection)</span> </span>{</div><div class="line">            <span class="keyword">return</span> <span class="variable">$q</span>.reject(rejection);</div><div class="line">        },</div><div class="line"></div><div class="line">        <span class="comment">/* Set Authentication.isAuthenticated to true if 200 received */</span></div><div class="line">        response: <span class="function"><span class="keyword">function</span> <span class="params">(response)</span> </span>{</div><div class="line">            <span class="keyword">if</span> (response != <span class="keyword">null</span> && response.status == <span class="number">200</span> && <span class="variable">$window</span>.sessionStorage.token && !AuthenticationService.isAuthenticated) {</div><div class="line">                AuthenticationService.isAuthenticated = <span class="keyword">true</span>;</div><div class="line">            }</div><div class="line">            <span class="keyword">return</span> response || <span class="variable">$q</span>.when(response);</div><div class="line">        },</div><div class="line"></div><div class="line">        <span class="comment">/* Revoke client authentication if 401 is received */</span></div><div class="line">        responseError: <span class="function"><span class="keyword">function</span><span class="params">(rejection)</span> </span>{</div><div class="line">            <span class="keyword">if</span> (rejection != <span class="keyword">null</span> && rejection.status === <span class="number">401</span> && (<span class="variable">$window</span>.sessionStorage.token || AuthenticationService.isAuthenticated)) {</div><div class="line">                delete <span class="variable">$window</span>.sessionStorage.token;</div><div class="line">                AuthenticationService.isAuthenticated = <span class="keyword">false</span>;</div><div class="line">                <span class="variable">$location</span>.path(<span class="string">"/admin/login"</span>);</div><div class="line">            }</div><div class="line"></div><div class="line">            <span class="keyword">return</span> <span class="variable">$q</span>.reject(rejection);</div><div class="line">        }</div><div class="line">    };</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<p>上面代码中的最后一部分responseError其实就是授权失败的部分，这里面的处理方法是返回到登录授权页面。<br>这里面考虑的方法是，如果是token超时，使用refresh_token来换取新的token。这个refresh_token，是一开始核发的时候一块发布给客户端的，这里就不能使用上面这个bear token了，要自己处理一下token的问题。<br>思路1：在user中记录token超时时间，计算一下剩余时间，如果剩余时间比如说小于1分钟，开始核发新的token，客户端自动使用新的token，等退出时，就不核发新的token。</p>
+<h3 id="谢谢！">谢谢！</h3>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/08/13/2014_web_token/" target="_blank" rel="external">http://www.haomou.net/2014/08/13/2014_web_token/</a></p>
+<p>有问题请留言。  请叫我皓眸哥(^_^)  </p>
+
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://haomou.net">皓眸IT</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/08/14/2014_web_token/">使用json web token</a></div>
+</div></div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/token/" itemprop="url"><span itemprop="title" >token</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/token/" class="label label-primary" itemprop="url"><span itemprop="title">token</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-16 16:06:54"datetime="2015-01-16 16:06:54"> Jan 16 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://haomou.net/2014/08/14/2014_web_token/#comments" class="ds-thread-count comment-link" data-thread-key="2014_web_token" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  <li class="previous"><a href="/2014/08/19/2014_tools_1/" title="Grunt，Gulp工具">&larr; Grunt，Gulp工具</a></li>
+  
+  
+  <li class="next"><a href="/2014/08/14/2014_bare_token/" title="Bearer Token">Bearer Token &rarr;</a></li>
+  
+</ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="2014_web_token"  data-url="http://haomou.net/2014/08/14/2014_web_token/" data-title="使用json web token"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_myself" class="widget hm-left-widget" style="clear:both">
+    <img alt="皓眸GEEK" src="/images/hm.jpg" width="100" height="120"  style="border-radius: 5px;margin-right: 5px;float:left;"/>
+<div style="color: #428bca;text-align: center;font-size: 18px;">曹欢欢(chale)</div>2014年毕业于中国科学技术大学，硕士研究生，目前在大武汉知名外企公司上班。<br/>喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身哈，等你来...吼吼...喜欢就写信给我喽，请叫我皓眸哥(^_^)
+<br/>擅长：NodeJS，JAVA，PHP，WebGL，WebRTC，PS ...
+<br/><span style="color: #fb6580;">Mail To: </span>chh1990@mail.ustc.edu.cn
+<br/><span style="color: #fb6580;">QQ：</span>807991555（chale）
+<br/><span style="color: #fb6580;">APP敏捷开发交流群：</span>345413787</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_search" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">一般人我不告诉他？</div>  <div id="haomou_ad">
+<a target="_blank" href="http://2.taobao.com/item.htm?id=43869349327&spm=686.1000925.0.0.mjUwtL&mt=">
+<img src="/images/book.png" title="皓眸IT-我的书" alt="APP敏捷开发王道-我的新书" />
+</a>
+<br/>
+<p style="text-align:center;"><a target="_blank" href="http://2.taobao.com/item.htm?id=43869349327&spm=686.1000925.0.0.mjUwtL&mt=">附整套项目代码，只要<b style="color:red;">9.9</b>元</a></p>
+<p style="text-align:center;">APP敏捷开发交流群：<b style="color:red;">345413787</b></p>
+</div></div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2014-2015 Chale Cao
+  
+    &nbsp;&nbsp;</span>
+  <a href='http://www.miibeian.gov.cn/'>苏ICP备13018740号-6</a></span>
+  <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'></span>  </div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-16 16:06:54</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haomou"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://haomou.net/2014/08/14/2014_web_token/";
+    var wumiiTitle = "使用json web token";
+    var wumiiTags = "token";
+    var wumiiCategories = ["token"];
+    var wumiiSitePrefix = "http://haomou.net";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />').wrap('<div class="img_block"></div>');
+     
+      if(alt){$(this).after('<span class="caption">' + alt + '</span>')};
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script src="/js/chenall.js" type="text/javascript"></script>
+
+
+  </body>
+</html>

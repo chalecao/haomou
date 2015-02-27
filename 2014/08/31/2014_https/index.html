@@ -1,0 +1,401 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="wumiiVerification" content="1747c9bc-e905-45aa-88ac-f13f2b210015" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>HTTPS详解SSL/TLS | 皓眸IT</title>
+<meta name="author" content="Chale Cao">
+
+<meta name="description" content="研究HTTPS曾几何时，只记得HTTPS的端口和HTTP的不同，一个是443，一个是80。以前做项目也是只晓得用第三方的jar包，只晓得怎么生成证书和使用方法与流程，对原理并不是很清楚。这里接着上一篇RSA算法，本篇就详细介绍HTTPS协议和相关的SSL/TLS加密协议。">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="HTTPS详解SSL/TLS"/>
+<meta property="og:site_name" content="皓眸IT"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css">
+<![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="皓眸IT Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+
+<link rel="stylesheet" href="/css/nprogress.css" type="text/css">
+
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.bootcss.com/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+  
+  <header id="header" class="hm-menu-left-container"><nav id="main-nav" class="navbar navbar-default hm-navbar-menu-left  " role="navigation">
+    <div class="hm-navbar-header">
+    <a href="http://haomou.net" ><img class="hm-logo" src="/images/haomou.png" title="皓眸IT" width="64" height="64" /></a>
+    <br/>|<br/><span class="fa fa-tint hm-black shine_blue" ></span><br/>|<br/><span class="fa fa-heart hm-black shine_red" ></span><br/>|<br/>
+        <i class="fa fa-bars fa-2x hm-black hm-menu shine_blue" ></i><br/><div class="hm-line"></div>
+    </div>
+    <div class="collapse navbar-collapse">
+      <h1 style="color:black">皓眸IT</h1>
+      <ul class="nav navbar-nav hm-left-nav">
+  
+        <li item='2014/08/31/2014_https/' class='active'><a href="/" title="首页">首页</a></li>      
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>关于我<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://home.ustc.edu.cn/~chh1990/chero/chero.html" title="个人主页">个人主页</a></li>    
+        </ul>
+      </li>
+    
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>创业项目<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://pictcake.cn" title="照片蛋糕">照片蛋糕</a></li>    
+        </ul>
+      </li>
+    
+      </ul>
+
+        
+        <div id="widget_category" class="widget hm-left-widget">
+            <div class="panel-heading">分类：</div>            <div data-src='category' class='ajax_widgets'>正在加载...</div>
+        </div>
+        
+        <div id="widget_tagcloud" class="widget hm-left-widget">
+            <div class="panel-heading">标签云：</div>            <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div>        </div>
+        
+
+
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/chalecao">github</a></li>
+      
+      </ul>
+    </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div style="" id="headflash" class="headflash hm_container"><embed pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="/images/bck.swf" width="100%" height="313" style="undefined" id="headflash_f" name="headflash_f" bgcolor="#000" quality="high" allowscriptaccess="false" wmode="transparent" allowfullscreen="false"></div>
+  <div id='content' class=" container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>皓眸IT <small>写清楚，说明白</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article class="hm-article">
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left hm-article-w"></i>
+      <h1 class="title">HTTPS详解SSL/TLS</h1>
+      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-08-30T17:40:49.000Z"> <a href="/2014/08/31/2014_https/">Aug 31 2014</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry"  data-spy="scroll" data-target="#toc" >
+      
+        <h3 id="研究HTTPS">研究HTTPS</h3>
+<p>曾几何时，只记得HTTPS的端口和HTTP的不同，一个是443，一个是80。以前做项目也是只晓得用第三方的jar包，只晓得怎么生成证书和使用方法与流程，对原理并不是很清楚。这里接着上一篇<a href="http://www.haomou.net/2014/08/27/2014_rsa/" target="_blank" rel="external">RSA算法</a>，本篇就详细介绍HTTPS协议和相关的SSL/TLS加密协议。<br><a id="more"></a><br><img class="floatnone" src="/images/https.jpg"></p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/08/30/2014_https/" target="_blank" rel="external">http://www.haomou.net/2014/08/30/2014_https/</a></p>
+<h3 id="什么是HTTPS">什么是HTTPS</h3>
+<p><a href="http://baike.baidu.com/view/14121.htm?fr=aladdin" target="_blank" rel="external">百科定义</a>：<br>HTTPS（全称：Hyper Text Transfer Protocol over Secure Socket Layer），是以安全为目标的HTTP通道，简单讲是HTTP的安全版。即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。 它是一个URI scheme（抽象标识符体系），句法类同http\:体系。用于安全的HTTP数据传输。https\:URL表明它使用了HTTP，但HTTPS存在不同于HTTP的默认端口及一个加密/身份验证层（在HTTP与TCP之间）。这个系统的最初研发由网景公司(Netscape)进行，并内置于其浏览器Netscape Navigator中，提供了身份验证与加密通讯方法。现在它被广泛用于万维网上安全敏感的通讯，例如交易支付方面。<br><strong>HTTPS和HTTP的区别</strong><br>一、https协议需要到ca申请证书，一般免费证书很少，需要交费。<br>二、http是超文本传输协议，信息是明文传输，https 则是具有安全性的ssl加密传输协议。<br>三、http和https使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443。<br>四、http的连接很简单，是无状态的；HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，比http协议安全。<br>采用https的服务器必须从CA （Certificate Authority）申请一个用于证明服务器用途类型的证书。该证书只有用于对应的服务器的时候，客户端才信任此主机。所以所有的银行系统网站，关键部分应用都是https 的。客户通过信任该证书，从而信任了该主机。其实这样做效率很低，但是银行更侧重安全。这一点对局域网对内提供服务处的服务器没有任何意义。局域网中的服务器，采用的证书不管是自己发布的还是从公众的地方发布的，其客户端都是自己人，所以该局域网中的客户端也就肯定信任该服务器。<br><strong>数据的泄密和被篡改</strong><br>1． 一般意义上的https，就是服务器有一个证书。<br>a) 主要目的是保证服务器就是他声称的服务器，这个跟第一点一样。<br>b)服务端和客户端之间的所有通讯，都是加密的。<br>i. 具体讲，是客户端产生一个对称的密钥，通过服务器的证书来交换密钥，即一般意义上的握手过程。<br>ii. 接下来所有的信息往来就都是加密的。第三方即使截获，也没有任何意义，因为他没有密钥，当然篡改也就没有什么意义了。<br>2． 少许对客户端有要求的情况下，会要求客户端也必须有一个证书。<br>a) 这里客户端证书，其实就类似表示个人信息的时候，除了用户名/密码，还有一个CA 认证过的身份。因为个人证书一般来说是别人无法模拟的，所有这样能够更深的确认自己的身份。<br>b) 目前大多数个人银行的专业版是这种做法，具体证书可能是拿U盘（即U盾）作为一个备份的载体。</p>
+<h3 id="SSL/TLS由来">SSL/TLS由来</h3>
+<p>不使用SSL/TLS的HTTP通信，就是不加密的通信。所有信息明文传播，带来了三大风险。<br>（1） 窃听风险（eavesdropping）：第三方可以获知通信内容。<br>（2） 篡改风险（tampering）：第三方可以修改通信内容。<br>（3） 冒充风险（pretending）：第三方可以冒充他人身份参与通信。<br>SSL/TLS协议是为了解决这三大风险而设计的，希望达到：<br>（1） 所有信息都是加密传播，第三方无法窃听。<br>（2） 具有校验机制，一旦被篡改，通信双方会立刻发现。<br>（3） 配备身份证书，防止身份被冒充。<br>互联网是开放环境，通信双方都是未知身份，这为协议的设计带来了很大的难度。而且，协议还必须能够经受所有匪夷所思的攻击，这使得SSL/TLS协议变得异常复杂。<br>互联网加密通信协议的历史，几乎与互联网一样长。<br>1994年，NetScape公司设计了SSL协议（Secure Sockets Layer）的1.0版，但是未发布。<br>1995年，NetScape公司发布SSL 2.0版，很快发现有严重漏洞。<br>1996年，SSL 3.0版问世，得到大规模应用。<br>1999年，互联网标准化组织ISOC接替NetScape公司，发布了SSL的升级版TLS 1.0版。<br>2006年和2008年，TLS进行了两次升级，分别为TLS 1.1版和TLS 1.2版。最新的变动是2011年TLS 1.2的修订版。<br>目前，应用最广泛的是TLS 1.0，接下来是SSL 3.0。但是，主流浏览器都已经实现了TLS 1.2的支持。<br>TLS 1.0通常被标示为SSL 3.1，TLS 1.1为SSL 3.2，TLS 1.2为SSL 3.3。</p>
+<h3 id="SSL介绍">SSL介绍</h3>
+<p>SSL（Secure Sockets Layer，安全套接层），及其继任者 TLS（Transport Layer Security，传输层安全）是为网络通信提供安全及数据完整性的一种安全协议。TLS与SSL在<strong>传输层</strong>对网络连接进行加密。</p>
+<p>SSL协议位于TCP/IP协议与各种应用层协议之间，为数据通讯提供安全支持。SSL协议可分为两层：<br>a)<strong>SSL记录协议（SSL Record Protocol）</strong>：<br>它建立在可靠的传输协议（如TCP）之上，为高层协议提供数据封装、压缩、加密等基本功能的支持。<br>b)<strong>SSL握手协议（SSL Handshake Protocol）</strong>：<br>它建立在SSL记录协议之上，用于在实际的数据传输开始前，通讯双方进行身份认证、协商加密算法、交换加密密钥等。</p>
+<p>SSL协议提供的服务主要有：<br>　　1）认证用户和服务器，确保数据发送到正确的客户机和服务器；<br>　　2）加密数据以防止数据中途被窃取；<br>　　3）维护数据的完整性，确保数据在传输过程中不被改变。</p>
+<p>SSL或者Secure Socket Layer，是一种允许web浏览器和web服务器通过一个安全的连接进行交流的技术。这意味着将被发送的数据在一端被翻译成密码，传送出去，然后在另一端解开密码，再进行处理。这是一个双向的过程，也就是浏览器和服务器都需要在发送数据之前对它们进行加密。</p>
+<p>SSL协定的另一个重要方面是认证(Authentication)。这就是说，在你开始试图通过一个安全连接与一个Web服务器交流的时候，这个服务器会要求你的浏览器出示一组证件，通过“鉴定”的方式来证明这就是你所声明的网站。在某些情况下，服务器还会要求你的web浏览器的认证书，证明你就是你所说的那个人。这就是所知的“客户认证”，尽管实际情况中，更多地用在商务-对-商务(B2B)交易，而不是对个人用户。大多数有SSL功能的web服务器不要求客户认证(Client Authentication)。</p>
+<p>SSL/TLS协议的基本思路是采用公钥加密法，也就是说，客户端先向服务器端索要公钥，然后用公钥加密信息，服务器收到密文后，用自己的私钥解密。<br>但是，这里有两个问题。<br>（1）<strong>如何保证公钥不被篡改？</strong><br>解决方法：将公钥放在数字证书中。只要证书是可信的，公钥就是可信的。<br>（2）<strong>公钥加密计算量太大，如何减少耗用的时间？</strong><br>解决方法：每一次对话（session），客户端和服务器端都生成一个”对话密钥”（session key），用它来加密信息。由于”对话密钥”是对称加密，所以运算速度非常快，而服务器公钥只用于加密”对话密钥”本身，这样就减少了加密运算的消耗时间。<br>因此，SSL/TLS协议的基本过程是这样的：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">（<span class="number">1</span>） 客户端向服务器端索要并验证公钥。</div><div class="line">（<span class="number">2</span>） 双方协商生成<span class="string">"对话密钥"</span>。</div><div class="line">（<span class="number">3</span>） 双方采用<span class="string">"对话密钥"</span>进行加密通信。</div></pre></td></tr></table></figure>
+
+<p>上面过程的前两步，又称为”握手阶段”（handshake）。</p>
+<h3 id="握手阶段详解">握手阶段详解</h3>
+<p><img class="floatnone" src="/images/https1.png"></p>
+<p>“握手阶段”涉及四次通信，我们一个个来看。需要注意的是，”握手阶段”的所有通信都是明文的。</p>
+<h4 id="客户端发出请求（ClientHello）">客户端发出请求（ClientHello）</h4>
+<p>首先，客户端（通常是浏览器）先向服务器发出加密通信的请求，这被叫做ClientHello请求。<br>在这一步，客户端主要向服务器提供以下信息。<br>    （1） 支持的协议版本，比如TLS 1.0版。<br>    （2） 一个客户端生成的随机数，稍后用于生成”会话密钥”(session secret)。<br>    （3） 支持的加密方法，比如RSA公钥加密。<br>    （4） 支持的压缩方法。</p>
+<p>这里需要注意的是，客户端发送的信息之中不包括服务器的域名。也就是说，理论上服务器只能包含一个网站，否则会分不清应该向客户端提供哪一个网站的数字证书。这就是为什么通常一台服务器只能有一张数字证书的原因。<br>对于虚拟主机的用户来说，这当然很不方便。2006年，TLS协议加入了一个Server Name Indication扩展，允许客户端向服务器提供它所请求的域名。</p>
+<h4 id="服务器回应（SeverHello）">服务器回应（SeverHello）</h4>
+<p>服务器收到客户端请求后，向客户端发出回应，这叫做SeverHello。服务器的回应包含以下内容。</p>
+<pre><code>（<span class="number">1</span>） 确认使用的加密通信协议版本，比如TLS <span class="number">1.0</span>版本。如果浏览器与服务器支持的版本不一致，服务器关闭加密通信。
+（<span class="number">2</span>） 一个服务器生成的随机数，稍后用于生成<span class="string">"会话密钥"</span>(session secret)。
+（<span class="number">3</span>） 确认使用的加密方法，比如RSA公钥加密。
+（<span class="number">4</span>） 服务器证书。
+</code></pre><p>除了上面这些信息，如果服务器需要确认客户端的身份，就会再包含一项请求，要求客户端提供”客户端证书”。比如，金融机构往往只允许认证客户连入自己的网络，就会向正式客户提供USB密钥，里面就包含了一张客户端证书。</p>
+<h4 id="客户端回应">客户端回应</h4>
+<p>客户端收到服务器回应以后，首先验证服务器证书。如果证书不是可信机构颁布、或者证书中的域名与实际域名不一致、或者证书已经过期，就会向访问者显示一个警告，由其选择是否还要继续通信。<br>如果证书没有问题，客户端就会从证书中取出服务器的公钥。然后，向服务器发送下面三项信息。<br>    （1） 一个随机数。该随机数用服务器公钥加密，防止被窃听。<br>    （2） 编码改变通知，表示随后的信息都将用双方商定的加密方法和密钥发送。<br>    （3） 客户端握手结束通知，表示客户端的握手阶段已经结束。这一项同时也是前面发送的所有内容的hash值，用来供服务器校验。<br>上面第一项的随机数，是整个握手阶段出现的第三个随机数，又称”pre-master key”。有了它以后，客户端和服务器就同时有了三个随机数，接着双方就用事先商定的加密方法，各自生成本次会话所用的同一把”会话密钥”。<br>至于为什么一定要用三个随机数，来生成”会话密钥”，dog250解释得很好：</p>
+<pre><code><span class="string">"不管是客户端还是服务器，都需要随机数，这样生成的密钥才不会每次都一样。由于SSL协议中证书是静态的，因此十分有必要引入一种随机因素来保证协商出来的密钥的随机性。
+</span>对于RSA密钥交换算法来说，<span class="keyword">pre</span>-master-key本身就是一个随机数，再加上hello消息中的随机，三个随机数通过一个密钥导出器（Master Secret）最终导出一个对称密钥。
+<span class="keyword">pre</span> master的存在在于SSL协议不信任每个主机都能产生完全随机的随机数，如果随机数不随机，那么<span class="keyword">pre</span> master secret就有可能被猜出来，那么仅适用<span class="keyword">pre</span> master secret作为密钥就不合适了，因此必须引入新的随机因素，那么客户端和服务器加上<span class="keyword">pre</span> master secret三个随机数一同生成的密钥就不容易被猜出了，一个伪随机可能完全不随机，可是是三个伪随机就十分接近随机了，每增加一个自由度，随机性增加的可不是一。"
+</code></pre><p>此外，如果前一步，服务器要求客户端证书，客户端会在这一步发送证书及相关信息。</p>
+<h4 id="服务器的最后回应">服务器的最后回应</h4>
+<p>服务器收到客户端的第三个随机数pre-master key之后，计算生成本次会话所用的”会话密钥”。然后，向客户端最后发送下面信息。<br>    （1）编码改变通知，表示随后的信息都将用双方商定的加密方法和密钥发送。<br>    （2）服务器握手结束通知，表示服务器的握手阶段已经结束。这一项同时也是前面发送的所有内容的hash值，用来供客户端校验。<br>至此，整个握手阶段全部结束。接下来，客户端与服务器进入加密通信，就完全是使用普通的HTTP协议，只不过用”会话密钥”加密内容。<br><img class="floatnone" src="/images/https2.gif"></p>
+<h3 id="Secret_Keys产生与使用">Secret Keys产生与使用</h3>
+<p>上面的分析和讲解主要是为了突出握手的过程，所以PreMaster secret，Master secret，session secret都是一代而过，但是对于Https，SSL/TLS深入的理解和掌握，这些Secret Keys是非常重要的部分。所以，准备把这些Secret Keys抽出来单独分析和讲解。</p>
+<p>我们先来看看这些Secret Keys的的生成过程以及作用流程图：<br><img class="floatnone" src="/images/https4.svg"><br>reMaster secret是在客户端使用RSA或者Diffie-Hellman等加密算法生成的。它将用来跟服务端和客户端在Hello阶段产生的随机数结合在一起生成Master secret。在客户端使用服务单的公钥对PreMaster secret进行加密之后传送给服务端，服务端将使用私钥进行解密得到PreMaster secret。也就是说服务端和客户端都有一份相同的PreMaster secret和随机数。</p>
+<p>PreMaster secret前两个字节是TLS的版本号，这是一个比较重要的用来核对握手数据的版本号，因为在Client Hello阶段，客户端会发送一份加密套件列表和当前支持的SSL/TLS的版本号给服务端，而且是使用明文传送的，如果握手的数据包被破解之后，攻击者很有可能串改数据包，选择一个安全性较低的加密套件和版本给服务端，从而对数据进行破解。所以，服务端需要对密文中解密出来对的PreMaster版本号跟之前Client Hello阶段的版本号进行对比，如果版本号变低，则说明被串改，则立即停止发送任何消息。</p>
+<p>关于PreMaster Secret(Key)的计算请参考<a href="http://www.fenesky.com/blog/2014/07/25/how-premaster-secret.html" target="_blank" rel="external">《Htttps SSL/TLS PreMaster/Master Secret(Key)计算》</a>。</p>
+<p>上面已经提到，由于服务端和客户端都有一份相同的PreMaster secret和随机数，这个随机数将作为后面产生Master secret的种子，结合PreMaster secret，客户端和服务端将计算出同样的Master secret。</p>
+<p>Master secret是有系列的hash值组成的，它将作为数据加解密相关的secret的Key Material。Master secret最终解析出来的数据如下：<br><img class="floatnone" src="/images/https5.svg"><br>其中，write MAC key，就是session secret或者说是session key。Client write MAC key是客户端发数据的session secret，Server write MAC secret是服务端发送数据的session key。MAC(Message Authentication Code)，是一个数字签名，用来验证数据的完整性，可以检测到数据是否被串改。关于MAC的工作原理详见<a href="http://en.wikipedia.org/wiki/Message_authentication_code" target="_blank" rel="external">MAC</a>。</p>
+<p>关于Session Secret(Key)的计算请参考<a href="http://www.fenesky.com/blog/2014/07/25/how-session-secret.html" target="_blank" rel="external">《Htttps SSL/TLS Session Secret(Key)计算》</a>。</p>
+<h3 id="加密算法">加密算法</h3>
+<p><strong>加密算法有俩大类，第一种是不基于KEY的，另一种是不基于KEY的。</strong></p>
+<pre><code>基于<span class="keyword">KEY</span>的，举个简单的例子，我要加密<span class="string">"fordesign"</span>这么一串字符，就把每个字符都变成它的后一个字符，那么就是<span class="string">"gpseftjhm"</span>了，这样的东西人家当然看不明白，接收方用相反的方法就可以得到原文。当然这只是个例子，现在应该没人用这么搞笑的加密算法了吧。
+
+不基于<span class="keyword">KEY</span>，好象一直用到了计算机出现。我记得古中国军事机密都是用这种方式加密的。打战的时候好象军队那些电报员也要带着密码本，也应该是用这种方式加密的。这种算法的安全性以保持算法的保密为前提。
+这种加密算法的缺点太明显了，就是一旦你的加密算法给人家知道，就肯定挂。日本中途岛惨败好象就是密码给老米破了。设计一种算法是很麻烦的，一旦给人破了就没用了，这也忑浪费。
+
+我们现在使用的加密算法一般是基于<span class="keyword">key</span>的，也就是说在加密过程中需要一个<span class="keyword">key</span>，用这个<span class="keyword">key</span>来对明文进行加密。这样的算法即使一次被破，下次改个<span class="keyword">key</span>，还可以继续用。<span class="keyword">key</span>是一个什么东西呢？随便你，可以是一个随机产生的数字，或者一个单词，啥都行，只要你用的算法认为你选来做<span class="keyword">key</span>的那玩意合法就行。
+
+这样的算法最重要的是：其安全性取决于<span class="keyword">key</span>，一般来说取决于<span class="keyword">key</span>的长度。也就是说应该保证人家在知道这个算法而不知道<span class="keyword">key</span>的情况下，破解也相当困难。其实现在常用的基于<span class="keyword">KEY</span>的加密算法在网络上都可以找到。
+</code></pre><p><strong>基于key的加密算法又包括俩类：对称加密和不对称加密。</strong></p>
+<pre><code>对称加密指的是双方使用完全相同的key， 最常见的是DES. DES3, RC4等。对称加密算法的原理很容易理解，通信一方用KEK加密明文，另一方收到之后用同样的KEY来解密就可以得到明文。
+
+不对称加密指双方用不同的KEY加密和解密明文，通信双方都要有自己的公共密钥和私有密钥。 
+举个例子比较容易理解， 我们们假设通信双方分别是<span class="literal">A</span>、B。
+<span class="literal">A</span> 拥有 KEY_A1、KEY_A2, 其中KEY_A1是<span class="literal">A</span>的私有密钥，KEY_A2是<span class="literal">A</span>的公共密钥。
+B 拥有 KEY_B1、KEY_B2, 其中KEY_B1是B的私有密钥，KEY_B2是B的公共密钥。
+公共密钥和私有密钥的特点是，经过其中任何一把加密过的明文，只能用另外一把才能够解开。也就是说经过KEY_A1加密过的明文，只有KEY_A2才能够解密，反之亦然。
+</code></pre><p>通信过程如下：</p>
+<pre><code><span class="comment">A</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span>&gt;<span class="comment">KEY_A2</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span>&gt;<span class="comment">B</span>
+<span class="comment">A</span>&lt;<span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="comment">KEY_B2</span>&lt;<span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="comment">A</span>
+
+<span class="comment">这个过程叫做公共密钥交换，老外管这叫key</span> <span class="comment">exchange。</span>
+<span class="comment">之后A和B就分别用对方的公共密钥加密，用自己的私有密钥解密。</span>
+<span class="comment">一般公共密钥是要发布出去的，然后你通过自己的私有密钥加密明文，人家用你的公共密钥解密，如果能解开，那么说明你是加密人，这就是SSL使用的验证机制。</span>
+</code></pre><p>我如果要发给你，我就用你的公钥加密，这让只有你能用自己的私钥解密。如果我用自己的私钥加密，然后发布出去，这就不属于保密，而是属于认证，证明这条信息是我发的，而且我不能赖帐，因为私钥只有我自己知道。</p>
+<p>常用的不对称加密一般有RSA、 DSA、 DH等。我们一般使用RSA。</p>
+<h3 id="数字签名">数字签名</h3>
+<p>数字签名也是不对称加密算法的一个重要应用，理解它对于理解SSL很重要的，放在这里一起介绍一下。</p>
+<p>签名是什么大家都很熟悉吧？证明该东西是你写的，是你发布的，你就用签名搞定。看看那些重要文件都要头头签名。数字签名就是数字化的签名了。记得公用密钥和私有密钥的特征吗？只有你一个人有你自己的私有密钥。而你的公用密钥是其他人都知道的 了。那么你在写完一封邮件之后，用自己的私有密钥加密自己的名字，接收人用你的公共密钥解开一看，哦，是你发的。这就是你的数字签名过程了。</p>
+<p>上面的解释是很简化的了，其实数字签名比这个复杂多了，但我们没有了解的必要，知道数字签名是这么一回事就可以了。</p>
+<p>还有一种我们需要知道的加密算法，其实我不觉得那是加密算法 ，应该叫哈希算法，英文是message digest, 是用来把任何长度的一串明文以一定规则变成固定长度的一串字符串。它在SSL中的作用也很重要，以后会慢慢提及的。一般使用的是MD5、SHA、base64不是加密算法，但也是SSL经常使用的一种算法，它是编码方式，用来把asc码和二进制码转来转去的。</p>
+<p>具体的加密解密过程我们不需要了解，因为SSL根本不关心。但了解加密算法的一些基本原理是必要的，否则很难理解SSL。</p>
+<h3 id="关于证书">关于证书</h3>
+<p>为了能实施SSL，一个web服务器对每个接受安全连接的外部接口(IP地址)必须要有相应的认证书(Certificate)。关于这个设计的理论是一个服务器必须提供某种合理的保证以证明这个服务器的主人就是你所认为的那个人，特别是在接收任何敏感信息之前要这样做。关于Certificates的更广泛的解释超过了这个文档资料的范围，就把一个认证书当作一个英特网地址的“数码驾驶执照”。这个认证书要陈述与这个网站相关联的公司，以及这个网站的所有者或系统管理员的一些基本联系信息。</p>
+<p>这个”驾驶执照”由所有人以密码方式签字，其他人非常难伪造。对于进行电子商务 (e-commerce)的网站，或其他身份认证至关重要的任何商业交易，认证书要向大家所熟知的认证权威 (Certificate Authority (CA))如VeriSign或Thawte来购买。这样的认证书可用电子技术证明属实——实际上，认证权威单位会担保它发出的认证书的真实性，如果你信任发出认证书的认证权威单位的话，你就可以相信这个认证书是有效的。</p>
+<p>从技术上说，SSL 证书（也称为数字证书）将身份与一对可用于加密和签名数字信息的电子密钥绑定。SSL 证书能够实现对某人自称有权使用特定密钥的声明的验证，有助于防止有人使用欺骗性密钥来模拟其他用户。当与加密配合使用时，SSL 证书可提供完整的安全解决方案，可以保证参与事务的一方或各方的身份。</p>
+<p>SSL 证书是由受信任的第三方（称为证书颁发机构 (CA)）发放的。CA 的作用有些像护照办理处。CA 必须采取一些措施来确定要向其发放 ID 的人或组织的身份。一旦 CA 建立某个组织的身份后，就可以发出一个包含该组织的公钥的证书，并用 CA 的私钥对其签名。</p>
+<p>通过使用 SSL 证书，您就能在自己的站点上开展验证身份的、加密的在线商务活动。访问您站点的用户将可以向站点提交信用卡号或其他个人信息，从而保证他们真心实意与您进行业务交易（并非是骗子），并且他们发送给您的信息不会被目标接收者以外的任何人截取或解密。您的 SSL 证书将包含下列信息：</p>
+<p>您的组织的公用名称（如 www.bea.com）<br>1)其它标识性信息（如 IP 和物理地址）<br>2)您的公钥<br>3)公钥的到期日期<br>4)发出此 ID 的 CA 的名称（如 VeriSign）<br>5)一个唯一的序列号<br>6)VeriSign 的数字签名</p>
+<p>主要的证书类型有：PEM、DER、PKCS#12<br>PEM<br>    可以包括所有私钥（RSA 和 DSA）、公钥（RSA 和 DSA）和 (x509) 证书。它存储用 Base64 编码的 DER 格式数据，用 ascii 报头包围，因此适合系统之间的文本模式传输。<br>——-BEGIN CERTIFICATE——-<br>MIICJjCCAdCgAwIBAgIBITANBgkqhkiG9w0BAQQFADCBqTELMAkGA1UEBhMCVVMx<br>EzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBGcmFuY2lzY28xFTAT<br>BgNVBAoTDEJFQSBXZWJMb2dpYzERMA8GA1UECxMIU2VjdXJpdHkxIzAhBgNVBAMT<br>GkRlbW8gQ2VydGlmaWNhdGUgQXV0aG9yaXR5MR4wHAYJKoZIhvcNAQkBFg9zdXBw<br>b3J0QGJlYS5jb20wHhcNMDAwNTMwMjEzODAxWhcNMDQwNTEzMjEzODAxWjCBjDEL<br>MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG<br>cmFuY2lzY28xFTATBgNVBAoTDEJFQSBXZWJMb2dpYzEZMBcGA1UEAxMQd2VibG9n<br>aWMuYmVhLmNvbTEeMBwGCSqGSIb3DQEJARYPc3VwcG9ydEBiZWEuY29tMFwwDQYJ<br>KoZIhvcNAQEBBQADSwAwSAJBALdsXEHqKHgs6zj0hU5sXMAUHzoT8kgWXmNkKHXH<br>79qbPh6EfdlriW9G/AbRF/pKrCQu7hhllAxREbqTuSlf2EMCAwEAATANBgkqhkiG<br>9w0BAQQFAANBACgmqflL5m5LNeJGpWx9aIoABCiuDcpw1fFyegsqGX7CBhffcruS<br>1p8h5vkHVbMu1frD1UgGnPlOO/K7Ig/KrsU=<br>——-END CERTIFICATE——-<br>DER<br>    辨别编码规则 (DER) 可包含所有私钥、公钥和证书。它是大多数浏览器的缺省格式，并按 ASN1 DER 格式存储。它是无报头的 － PEM 是用文本报头包围的 DER。</p>
+<p>PKCS#12<br>    公钥加密标准 #12 (PKCS#12) 可包含所有私钥、公钥和证书。其以二进制格式存储，也称为 PFX 文件。</p>
+<h3 id="参考链接">参考链接</h3>
+<p>MicroSoft TechNet, <a href="http://technet.microsoft.com/en-us/library/cc785811(v=ws.10" target="_blank" rel="external">SSL/TLS in Detail</a>.aspx )<br>Jeff Moser, <a href="http://www.moserware.com/2009/06/first-few-milliseconds-of-https.html" target="_blank" rel="external">The First Few Milliseconds of an HTTPS Connection</a><br>Wikipedia, <a href="http://en.wikipedia.org/wiki/Transport_Layer_Security" target="_blank" rel="external">Transport Layer Security</a><br>StackExchange, <a href="http://security.stackexchange.com/questions/20803/how-does-ssl-work" target="_blank" rel="external">How does SSL work?</a></p>
+<h3 id="谢谢！">谢谢！</h3>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/08/30/2014_https/" target="_blank" rel="external">http://www.haomou.net/2014/08/30/2014_https/</a></p>
+<p>有问题请留言。  请叫我皓眸哥(^_^)  </p>
+
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://haomou.net">皓眸IT</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/08/31/2014_https/">HTTPS详解SSL/TLS</a></div>
+</div></div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/HTTP协议/" itemprop="url"><span itemprop="title" >HTTP协议</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/HTTPS/" class="label label-primary" itemprop="url"><span itemprop="title">HTTPS</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-04 17:35:28"datetime="2015-01-04 17:35:28"> Jan 4 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://haomou.net/2014/08/31/2014_https/#comments" class="ds-thread-count comment-link" data-thread-key="2014_https" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  <li class="previous"><a href="/2014/09/03/2014_android1/" title="Android不同API Level差异">&larr; Android不同API Level差异</a></li>
+  
+  
+  <li class="next"><a href="/2014/08/30/2014_arm/" title="双核好？四核好？八核好？">双核好？四核好？八核好？ &rarr;</a></li>
+  
+</ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="2014_https"  data-url="http://haomou.net/2014/08/31/2014_https/" data-title="HTTPS详解SSL/TLS"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_myself" class="widget hm-left-widget" style="clear:both">
+    <img alt="皓眸GEEK" src="/images/hm.jpg" width="100" height="120"  style="border-radius: 5px;margin-right: 5px;float:left;"/>
+<div style="color: #428bca;text-align: center;font-size: 18px;">曹欢欢(chale)</div>2014年毕业于中国科学技术大学，硕士研究生，目前在大武汉知名外企公司上班。<br/>喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身哈，等你来...吼吼...喜欢就写信给我喽，请叫我皓眸哥(^_^)
+<br/>擅长：NodeJS，JAVA，PHP，WebGL，WebRTC，PS ...
+<br/><span style="color: #fb6580;">Mail To: </span>chh1990@mail.ustc.edu.cn
+<br/><span style="color: #fb6580;">QQ：</span>807991555（chale）
+<br/><span style="color: #fb6580;">APP敏捷开发交流群：</span>345413787</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_search" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">一般人我不告诉他？</div>  <div id="haomou_ad">
+<a target="_blank" href="http://2.taobao.com/item.htm?id=43869349327&spm=686.1000925.0.0.mjUwtL&mt=">
+<img src="/images/book.png" title="皓眸IT-我的书" alt="APP敏捷开发王道-我的新书" />
+</a>
+<br/>
+<p style="text-align:center;"><a target="_blank" href="http://2.taobao.com/item.htm?id=43869349327&spm=686.1000925.0.0.mjUwtL&mt=">附整套项目代码，只要<b style="color:red;">9.9</b>元</a></p>
+<p style="text-align:center;">APP敏捷开发交流群：<b style="color:red;">345413787</b></p>
+</div></div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2014-2015 Chale Cao
+  
+    &nbsp;&nbsp;</span>
+  <a href='http://www.miibeian.gov.cn/'>苏ICP备13018740号-6</a></span>
+  <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'></span>  </div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-04 17:35:28</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haomou"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://haomou.net/2014/08/31/2014_https/";
+    var wumiiTitle = "HTTPS详解SSL/TLS";
+    var wumiiTags = "HTTPS";
+    var wumiiCategories = ["HTTP协议"];
+    var wumiiSitePrefix = "http://haomou.net";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />').wrap('<div class="img_block"></div>');
+     
+      if(alt){$(this).after('<span class="caption">' + alt + '</span>')};
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script src="/js/chenall.js" type="text/javascript"></script>
+
+
+  </body>
+</html>

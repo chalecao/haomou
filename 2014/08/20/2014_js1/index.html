@@ -1,0 +1,408 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="wumiiVerification" content="1747c9bc-e905-45aa-88ac-f13f2b210015" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>JS闭包与原型链 | 皓眸IT</title>
+<meta name="author" content="Chale Cao">
+
+<meta name="description" content="前言突然想看一看javascript中的闭包与原型链的知识。这个记得不太清楚了，所以特地复习一下，看了网上许多博客，都讲解的不清楚。所以特地总结一下。
+
+转载请注明出处：http://www.haomou.net/2014/08/19/2014_js1/">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="JS闭包与原型链"/>
+<meta property="og:site_name" content="皓眸IT"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css">
+<![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="皓眸IT Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+
+<link rel="stylesheet" href="/css/nprogress.css" type="text/css">
+
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.bootcss.com/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+  
+  <header id="header" class="hm-menu-left-container"><nav id="main-nav" class="navbar navbar-default hm-navbar-menu-left  " role="navigation">
+    <div class="hm-navbar-header">
+    <a href="http://haomou.net" ><img class="hm-logo" src="/images/haomou.png" title="皓眸IT" width="64" height="64" /></a>
+    <br/>|<br/><span class="fa fa-tint hm-black shine_blue" ></span><br/>|<br/><span class="fa fa-heart hm-black shine_red" ></span><br/>|<br/>
+        <i class="fa fa-bars fa-2x hm-black hm-menu shine_blue" ></i><br/><div class="hm-line"></div>
+    </div>
+    <div class="collapse navbar-collapse">
+      <h1 style="color:black">皓眸IT</h1>
+      <ul class="nav navbar-nav hm-left-nav">
+  
+        <li item='2014/08/20/2014_js1/' class='active'><a href="/" title="首页">首页</a></li>      
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>关于我<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://home.ustc.edu.cn/~chh1990/chero/chero.html" title="个人主页">个人主页</a></li>    
+        </ul>
+      </li>
+    
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>创业项目<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://pictcake.cn" title="照片蛋糕">照片蛋糕</a></li>    
+        </ul>
+      </li>
+    
+      </ul>
+
+        
+        <div id="widget_category" class="widget hm-left-widget">
+            <div class="panel-heading">分类：</div>            <div data-src='category' class='ajax_widgets'>正在加载...</div>
+        </div>
+        
+        <div id="widget_tagcloud" class="widget hm-left-widget">
+            <div class="panel-heading">标签云：</div>            <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div>        </div>
+        
+
+
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/chalecao">github</a></li>
+      
+      </ul>
+    </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div style="" id="headflash" class="headflash hm_container"><embed pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="/images/bck.swf" width="100%" height="313" style="undefined" id="headflash_f" name="headflash_f" bgcolor="#000" quality="high" allowscriptaccess="false" wmode="transparent" allowfullscreen="false"></div>
+  <div id='content' class=" container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>皓眸IT <small>写清楚，说明白</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article class="hm-article">
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left hm-article-w"></i>
+      <h1 class="title">JS闭包与原型链</h1>
+      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-08-19T17:40:49.000Z"> <a href="/2014/08/20/2014_js1/">Aug 20 2014</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry"  data-spy="scroll" data-target="#toc" >
+      
+        <h3 id="前言">前言</h3>
+<p>突然想看一看javascript中的闭包与原型链的知识。这个记得不太清楚了，所以特地复习一下，看了网上许多博客，都讲解的不清楚。所以特地总结一下。<br><a id="more"></a></p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/08/19/2014_js1/" target="_blank" rel="external">http://www.haomou.net/2014/08/19/2014_js1/</a></p>
+<h3 id="JS闭包概念">JS闭包概念</h3>
+<p>闭包简单的理解就是能够读取其他函数内部变量的函数，从本质上理解，闭包就是将函数内部和函数外部连接起来的一座桥梁。</p>
+<h3 id="闭包用途">闭包用途</h3>
+<p>一个是前面提到的可以读取函数内部的变量，另一个就是让这些变量的值始终保持在内存中。举例如下：Js代码</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">function f1(){</div><div class="line">　　　　<span class="keyword">var</span> n=<span class="number">999</span>;</div><div class="line">　　　　nAdd=function(){n+=<span class="number">1</span>}</div><div class="line">　　　　function f2(){</div><div class="line">　　　　　　alert(n);</div><div class="line">　　　　}</div><div class="line">　　　　<span class="keyword">return</span> f2;</div><div class="line">}</div><div class="line">　　<span class="keyword">var</span> <span class="literal">result</span>=f1();</div><div class="line">　　<span class="literal">result</span>(); // <span class="number">999</span></div><div class="line">　　nAdd();</div><div class="line">　　<span class="literal">result</span>(); // <span class="number">1000</span></div></pre></td></tr></table></figure>
+
+<p>在这段代码中，result实际上就是闭包f2函数。它一共运行了两次，第一次的值是999，第二次的值是1000。这证明了，函数f1中的局部变量n一直保存在内存中，并没有在f1调用后被自动清除。<br>为什么会这样呢？原因就在于f1是f2的父函数，而f2被赋给了一个全局变量，这导致f2始终在内存中，而f2的存在依赖于f1，因此f1也始终在内存中，不会在调用结束后，被垃圾回收机制（garbage collection）回收。<br>这段代码中另一个值得注意的地方，就是“nAdd=function(){n+=1}”这一行，首先在nAdd前面没有使用var关键字，因此 nAdd是一个全局变量，而不是局部变量。其次，nAdd的值是一个匿名函数（anonymous function），而这个<br>匿名函数本身也是一个闭包，所以nAdd相当于是一个setter，可以在函数外部对函数内部的局部变量进行操作。</p>
+<h3 id="原型与构造函数">原型与构造函数</h3>
+<p>Js所有的函数都有一个prototype属性，这个属性引用了一个对象，即原型对象，也简称原型。这个函数包括构造函数和普通函数，我们讲的更多是构造函数的原型，但是也不能否定普通函数也有原型。譬如普通函数：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">F</span><span class="params">()</span></span>{</div><div class="line">　　;</div><div class="line">}</div><div class="line">alert(F.prototype <span class="keyword">instanceof</span> <span class="built_in">Object</span>) <span class="comment">//true</span></div></pre></td></tr></table></figure>
+
+<p>　　构造函数，也即构造对象。首先了解下通过构造函数实例化对象的过程。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">A</span><span class="params">(x)</span></span>{</div><div class="line">　　<span class="keyword">this</span>.x=x;</div><div class="line">}</div><div class="line"><span class="keyword">var</span> obj=<span class="keyword">new</span> A(<span class="number">1</span>);</div></pre></td></tr></table></figure>
+
+<p>实例化obj对象有三步：</p>
+<ol>
+<li>创建obj对象：obj=new Object();</li>
+<li>将obj的内部 <em>_proto_</em> 指向构造他的函数A的prototype，同时，obj.constructor===A.prototype.constructor(这个是永远成立的，即使A.prototype不再指向原来的A原型，也就是说：类的实例对象的constructor属性永远指向”构造函数”的prototype.constructor)，从而使得obj.constructor.prototype指向A.prototype（obj.constructor.prototype===A.prototype，当A.prototype改变时则不成立，下文有遇到）。obj.constructor.prototype与的内部<em>_proto_</em>是两码事，实例化对象时用的是<em>_proto_</em>，obj是没有prototype属性的，但是有内部的<em>_proto_</em>，通过<em>_proto_</em>来取得原型链上的原型属性和原型方法，FireFox公开了<em>_proto_</em>，可以在FireFox中alert（<em>obj._proto_</em>）；</li>
+<li>将obj作为this去调用构造函数A，从而设置成员（即对象属性和对象方法）并初始化。</li>
+</ol>
+<p>当这3步完成，这个obj对象就与构造函数A再无联系，这个时候即使构造函数A再加任何成员，都不再影响已经实例化的obj对象了。此时，obj对象具有了x属性，同时具有了构造函数A的原型对象的所有成员，当然，此时该原型对象是没有成员的。</p>
+<p>原型对象初始是空的，也就是没有一个成员（即原型属性和原型方法）。可以通过如下方法验证原型对象具有多少成员。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> num=<span class="number">0</span>;</div><div class="line"><span class="keyword">for</span>(o <span class="keyword">in</span> A.prototype) {</div><div class="line">　　alert(o);<span class="comment">//alert出原型属性名字</span></div><div class="line">　　num++;</div><div class="line">}</div><div class="line">alert(<span class="string">"member: "</span> + num);<span class="comment">//alert出原型所有成员个数。</span></div></pre></td></tr></table></figure>
+
+
+<p>但是，一旦定义了原型属性或原型方法，则所有通过该构造函数实例化出来的所有对象，都继承了这些原型属性和原型方法，这是通过内部的<em>_proto_</em>链来实现的。<br>譬如</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">　　A.prototype.say=<span class="function"><span class="keyword">function</span><span class="params">()</span></span>{alert(<span class="string">"Hi"</span>)};</div></pre></td></tr></table></figure>
+
+<p>　　那所有的A的对象都具有了say方法，这个原型对象的say方法是唯一的副本给大家共享的，而不是每一个对象都有关于say方法的一个副本。</p>
+<h3 id="原型与继承">原型与继承</h3>
+<p> 首先，看个简单的继承实现。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">A</span><span class="params">(x)</span></span>{</div><div class="line">　　<span class="keyword">this</span>.x=x;</div><div class="line">}  <span class="number">4</span>  <span class="function"><span class="keyword">function</span> <span class="title">B</span><span class="params">(x,y)</span></span>{</div><div class="line">　　<span class="keyword">this</span>.tmpObj=A;</div><div class="line">　　<span class="keyword">this</span>.tmpObj(x);</div><div class="line">　　<span class="keyword">delete</span> <span class="keyword">this</span>.tmpObj;</div><div class="line">　　<span class="keyword">this</span>.y=y;</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>第5、6、7行：创建临时属性tmpObj引用构造函数A，然后在B内部执行，执行完后删除。当在B内部执行了this.x=x后（这里的this是B的对象），B当然就拥有了x属性，当然B的x属性和A的x属性两者是独立，所以并不能算严格的继承。第5、6、7行有更简单的实现，就是通过call(apply)方法：A.call(this,x);</p>
+<p>这两种方法都有将this传递到A的执行里，this指向的是B的对象，这就是为什么不直接A(x)的原因。这种继承方式即是类继承（js没有类，这里只是指构造函数），虽然继承了A构造对象的所有属性方法，但是不能继承A的原型对象的成员。而要实现这个目的，就是在此基础上再添加原型继承。</p>
+<p>通过下面的例子，就能很深入地了解原型，以及原型参与实现的完美继承。（本文核心在此^_^）</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">A</span><span class="params">(x)</span></span>{</div><div class="line"> 　　<span class="keyword">this</span>.x = x;</div><div class="line"> }</div><div class="line"> A.prototype.a = <span class="string">"a"</span>;</div><div class="line"> <span class="function"><span class="keyword">function</span> <span class="title">B</span><span class="params">(x,y)</span></span>{</div><div class="line"> 　　<span class="keyword">this</span>.y = y;</div><div class="line"> 　　A.call(<span class="keyword">this</span>,x);</div><div class="line"> }</div><div class="line"> B.prototype.b1 = <span class="function"><span class="keyword">function</span><span class="params">()</span></span>{</div><div class="line"> 　　alert(<span class="string">"b1"</span>);</div><div class="line"> }</div><div class="line"> B.prototype = <span class="keyword">new</span> A();</div><div class="line"> B.prototype.b2 = <span class="function"><span class="keyword">function</span><span class="params">()</span></span>{</div><div class="line"> 　　alert(<span class="string">"b2"</span>);</div><div class="line"> }</div><div class="line"> B.prototype.constructor = B;</div><div class="line"> <span class="keyword">var</span> obj = <span class="keyword">new</span> B(<span class="number">1</span>,<span class="number">3</span>);</div></pre></td></tr></table></figure>
+
+<p> 这个例子讲的就是B继承A。第7行类继承：A.call(this.x);上面已讲过。实现原型继承的是第12行：B.prototype = new A();</p>
+<p>　　就是说把B的原型指向了A的1个实例对象，这个实例对象具有x属性，为undefined，还具有a属性，值为”a”。所以B原型也具有了这2个属性（或者说，B和A建立了原型链，B是A的下级）。而因为方才的类继承，B的实例对象也具有了x属性，也就是说obj对象有2个同名的x属性，此时原型属性x要让位于实例对象属性x，所以obj.x是1，而非undefined。第13行又定义了原型方法b2，所以B原型也具有了b2。虽然第9~11行设置了原型方法b1，但是你会发现第12行执行后，B原型不再具有b1方法，也就是obj.b1是undefined。因为第12行使得B原型指向改变，原来具有b1的原型对象被抛弃，自然就没有b1了。</p>
+<p>　　第12行执行完后，B原型（B.prototype）指向了A的实例对象，而A的实例对象的构造器是构造函数A，所以B.prototype.constructor就是构造对象A了（换句话说，A构造了B的原型）。</p>
+<p>alert(B.prototype.constructor)出来后就是”function A(x){…}” 。同样地，obj.constructor也是A构造对象，alert(obj.constructor)出来后就是”function A(x){…}” ，也就是说B.prototype.constructor===obj.constructor（true），但是B.prototype===obj.constructor.prototype（false），因为前者是B的原型，具有成员：x,a,b2，后者是A的原型，具有成员：a。如何修正这个问题呢，就在第16行，将B原型的构造器重新指向了B构造函数，那么B.prototype===obj.constructor.prototype（true），都具有成员：x,a,b2。</p>
+<p>　　如果没有第16行，那是不是obj = new B(1,3)会去调用A构造函数实例化呢？答案是否定的，你会发现obj.y=3，所以仍然是调用的B构造函数实例化的。虽然obj.constructor===A(true)，但是对于new B()的行为来说，执行了上面所说的通过构造函数创建实例对象的3个步骤，第一步，创建空对象；第二步，obj.<strong>proto</strong> === B.prototype，B.prototype是具有x,a,b2成员的，obj.constructor指向了B.prototype.constructor，即构造函数A；第三步，调用的构造函数B去设置和初始化成员，具有了属性x,y。虽然不加16行不影响obj的属性，但如上一段说，却影响obj.constructor和obj.constructor.prototype。所以在使用了原型继承后，要进行修正的操作。</p>
+<p>　　关于第12、16行，总言之，第12行使得B原型继承了A的原型对象的所有成员，但是也使得B的实例对象的构造器的原型指向了A原型，所以要通过第16行修正这个缺陷。</p>
+<h3 id="原型使用">原型使用</h3>
+<h4 id="原型使用方式1">原型使用方式1</h4>
+<p>个人理解，之前写JS都是这样:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> decimalDigits = <span class="number">2</span>,</div><div class="line">            tax = <span class="number">5</span>;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">function</span> <span class="title">add</span><span class="params">(x, y)</span> </span>{</div><div class="line">            <span class="keyword">return</span> x + y;</div><div class="line">        }</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">function</span> <span class="title">subtract</span><span class="params">(x, y)</span> </span>{</div><div class="line">            <span class="keyword">return</span> x - y;</div><div class="line">        }</div><div class="line"></div><div class="line">        <span class="comment">//alert(add(1, 3));</span></div></pre></td></tr></table></figure>
+
+<p>但是，这个并不能体现OOP思想，看了原型与原型链之后觉得OOP一目了然:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Calculator = <span class="function"><span class="keyword">function</span> <span class="params">(decimalDigits, tax)</span> </span>{</div><div class="line">             <span class="keyword">this</span>.decimalDigits = decimalDigits;</div><div class="line">             <span class="keyword">this</span>.tax = tax;</div><div class="line">         };</div></pre></td></tr></table></figure>
+
+<p>然后给Calculator的prototype属性赋值对象字面量来设定Calculator对象的原型。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Calculator.prototype = {</div><div class="line">            add: <span class="function"><span class="keyword">function</span> <span class="params">(x, y)</span> </span>{</div><div class="line">                <span class="keyword">return</span> x + y;</div><div class="line">            },</div><div class="line"></div><div class="line">            subtract: <span class="function"><span class="keyword">function</span> <span class="params">(x, y)</span> </span>{</div><div class="line">                <span class="keyword">return</span> x - y;</div><div class="line">            }</div><div class="line">        };</div><div class="line">        <span class="comment">//alert((new Calculator()).add(1, 3));</span></div></pre></td></tr></table></figure>
+
+<p>这样，通过new 一个对象就可以调用里面的公开的方法，属性。</p>
+<h4 id="原型使用方式2">原型使用方式2</h4>
+<p>当我们把一堆方法写到Calculator中，但是有些方法我们不想对外公开，即实现public/private，那么我们只能返回公开的方法:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Calculaotr = <span class="function"><span class="keyword">function</span><span class="params">(x, y)</span> </span>{</div><div class="line">    <span class="keyword">this</span>.x = x;</div><div class="line">    <span class="keyword">this</span>.y = y;</div><div class="line">};</div><div class="line">Calculaotr.prototype = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    add= <span class="function"><span class="keyword">function</span> <span class="params">(x,y)</span> </span>{</div><div class="line">        <span class="keyword">return</span> x + y;</div><div class="line">    },</div><div class="line">    subtract=<span class="function"><span class="keyword">function</span> <span class="params">(x,y)</span> </span>{</div><div class="line">        <span class="keyword">return</span> x - y;</div><div class="line">    }</div><div class="line">    <span class="keyword">return</span> {</div><div class="line">        A:add,</div><div class="line">        S:subtract</div><div class="line">    } </div><div class="line">}();</div></pre></td></tr></table></figure>
+
+<p>这里用利用函数自执行在加载文件同时，执行上面的JS代码，那么我们就可以访问对外公开的方法和属性。访问方法：(new Calculaotr()).A(1,2); 错误的访问方法：(new Calculaotr()).add(1,2);</p>
+<p>我们可能会遇到这样的情况，类A的一个属性是B类型，在JS中，可以通过以下方式实现:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> BaseCalculator = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.decimalDigits = <span class="number">2</span>;</div><div class="line">};</div><div class="line">BaseCalculator.prototype = {</div><div class="line">    A: <span class="function"><span class="keyword">function</span><span class="params">(x, y)</span> </span>{</div><div class="line">        <span class="keyword">return</span> x + y;</div><div class="line">    },</div><div class="line">    S: <span class="function"><span class="keyword">function</span><span class="params">(x, y)</span> </span>{</div><div class="line">        <span class="keyword">return</span> x - y;</div><div class="line">    }</div><div class="line">};</div><div class="line"><span class="keyword">var</span> Calculator = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.tax = <span class="number">3</span>;</div><div class="line">};</div><div class="line">Calculator.prototype = <span class="keyword">new</span> BaseCalculator();</div></pre></td></tr></table></figure>
+
+<p>这里我们可以看到Calculator的原型是指向到BaseCalculator的一个实例上，目的是让Calculator集成它的add(x,y)和subtract(x,y)这2个function，</p>
+<p>还有一点要说的是，由于它的原型是BaseCalculator的一个实例，所以不管你创建多少个Calculator对象实例，他们的原型指向的都是同一个实例。</p>
+<p>如果我们不想让Calculator对象访问BaseCalculator的decimalDigits属性，可以这样:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> BaseCalculator = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.decimalDigits = <span class="number">2</span>;</div><div class="line">};</div><div class="line">BaseCalculator.prototype = {</div><div class="line">    A: <span class="function"><span class="keyword">function</span><span class="params">(x, y)</span> </span>{</div><div class="line">        <span class="keyword">return</span> x + y;</div><div class="line">    },</div><div class="line">    S: <span class="function"><span class="keyword">function</span><span class="params">(x, y)</span> </span>{</div><div class="line">        <span class="keyword">return</span> x - y;</div><div class="line">    }</div><div class="line">};</div><div class="line"><span class="keyword">var</span> Calculator = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.tax = <span class="number">3</span>;</div><div class="line">};</div><div class="line">Calculator.prototype =<span class="keyword">new</span> prototype;</div></pre></td></tr></table></figure>
+
+<p>通过以上两种原型使用方式，结合C#中的继承，不难想到JS中如何重写原型。</p>
+<p>重写原型:</p>
+<p>在项目中，引入外部JS库，但是有些方法并不是我们想要的，此时我们通过重写原型，就可以达到我们想要的结果:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//重写原型</span></div><div class="line">Calculaotor.prototype.add = <span class="function"><span class="keyword">function</span><span class="params">(x, y)</span> </span>{</div><div class="line">    <span class="keyword">return</span> x + y + <span class="keyword">this</span>.tax;</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<h3 id="原型链应用">原型链应用</h3>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">function</span> Foo() {</div><div class="line">    this.value = <span class="number">42</span>;</div><div class="line">}</div><div class="line">Foo.prototype = {</div><div class="line">    method: <span class="keyword">function</span>() {}</div><div class="line">};</div><div class="line"></div><div class="line"><span class="keyword">function</span> Bar() {}</div><div class="line"></div><div class="line">// 设置Bar的prototype属性为Foo的实例对象</div><div class="line">Bar.prototype = new Foo();</div><div class="line">Bar.prototype.foo = <span class="string">'Hello World'</span>;</div><div class="line"></div><div class="line">// 修正Bar.prototype.constructor为Bar本身</div><div class="line">Bar.prototype.constructor = Bar;</div><div class="line"></div><div class="line">var test = new Bar() // 创建Bar的一个新实例</div><div class="line"></div><div class="line">// 原型链</div><div class="line">test [Bar的实例]</div><div class="line">    Bar.prototype [Foo的实例] </div><div class="line">        { foo: <span class="string">'Hello World'</span> }</div><div class="line">        Foo.prototype</div><div class="line">            {method: <span class="keyword">...</span>};</div><div class="line">            Object.prototype</div><div class="line">                {toString: <span class="keyword">...</span> /* etc. */};</div></pre></td></tr></table></figure>
+
+<p>上面的例子中，test 对象从 Bar.prototype 和 Foo.prototype 继承下来；因此，它能访问 Foo 的原型方法 method。同时，它也能够访问那个定义在原型上的 Foo 实例属性 value。需要注意的是 new Bar() 不会创造出一个新的 Foo 实例，而是重复使用它原型上的那个实例；因此，所有的 Bar 实例都会共享相同的 value 属性。</p>
+<p>当查找一个对象的属性时，会遍历原型链，一直往顶层Object找，如果没有找到，则返回undefined.</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span> </span>{</div><div class="line">            <span class="keyword">this</span>.add = <span class="function"><span class="keyword">function</span> <span class="params">(x, y)</span> </span>{</div><div class="line">                <span class="keyword">return</span> x + y;</div><div class="line">            }</div><div class="line">        }</div><div class="line"></div><div class="line">        foo.prototype.add = <span class="function"><span class="keyword">function</span> <span class="params">(x, y)</span> </span>{</div><div class="line">            <span class="keyword">return</span> x + y + <span class="number">10</span>;</div><div class="line">        }</div><div class="line"></div><div class="line">        <span class="built_in">Object</span>.prototype.subtract = <span class="function"><span class="keyword">function</span> <span class="params">(x, y)</span> </span>{</div><div class="line">            <span class="keyword">return</span> x - y;</div><div class="line">        }</div><div class="line"></div><div class="line">        <span class="keyword">var</span> f = <span class="keyword">new</span> foo();</div><div class="line">        alert(f.add(<span class="number">1</span>, <span class="number">2</span>)); <span class="comment">//结果是3，而不是13</span></div><div class="line">        alert(f.subtract(<span class="number">1</span>, <span class="number">2</span>)); <span class="comment">//结果是-1</span></div></pre></td></tr></table></figure>
+
+<p>以上add函数返回的是3，而不是13则说明，属性查找时，优先查找自己的属性。然后在往上一级找，最后找Object，这样看来，在遍历时用for in效率就是个问题。</p>
+<p>还有一点，我们可以赋值任何类型的对象到原型上，但是不能赋值原子类型的值，比如如下代码是无效的：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span><span class="params">()</span> </span>{}</div><div class="line">Foo.prototype = <span class="number">1</span>; <span class="comment">// 无效</span></div></pre></td></tr></table></figure>
+
+<p>hasOwnProperty是判断一个对象是否包含自定义属性而不是原型链上的属性，是JS中唯一一个查找属性，但不查找原型链的函数。</p>
+<p>但是JS不会保护hasOwnProperty函数，如果刚好某个对象中也有hasOwnProperty函数，则我们可以通过以下方式正确获得想要的结果:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">alert({}.hasOwnProperty.call(c, <span class="string">'tax'</span>));<span class="regexp">//</span>返回<span class="keyword">true</span></div></pre></td></tr></table></figure>
+
+<p>这里的c是Calculator的一个对象,tax是我们要找的属性。</p>
+<p>当我面在for in loop 语句中查找属性时，用hasOwnProperty函数，提高效率:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">Object</span>.prototype.bar = <span class="number">1</span>;</div><div class="line">    <span class="keyword">var</span> foo={moo : <span class="number">1</span>}</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i <span class="keyword">in</span> foo) {</div><div class="line">        <span class="keyword">if</span>(foo.hasOwnProperty(i)) {</div><div class="line">            alert(<span class="built_in">console</span>.log(i));</div><div class="line">        } </div><div class="line">    }<span class="comment">//此时只会输出moo属性</span></div></pre></td></tr></table></figure>
+
+<h3 id="谢谢！">谢谢！</h3>
+<p>有问题请留言。  请叫我皓眸哥(^_^)  </p>
+
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://haomou.net">皓眸IT</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/08/20/2014_js1/">JS闭包与原型链</a></div>
+</div></div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/JavaScript/" itemprop="url"><span itemprop="title" >JavaScript</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/JavaScript/" class="label label-primary" itemprop="url"><span itemprop="title">JavaScript</span></a><a href="/tags/闭包/" class="label label-success" itemprop="url"><span itemprop="title">闭包</span></a><a href="/tags/原型链/" class="label label-info" itemprop="url"><span itemprop="title">原型链</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-04 17:35:22"datetime="2015-01-04 17:35:22"> Jan 4 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://haomou.net/2014/08/20/2014_js1/#comments" class="ds-thread-count comment-link" data-thread-key="2014_js1" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  <li class="previous"><a href="/2014/08/20/2014_oauth/" title="OAuth 2.0详细解析">&larr; OAuth 2.0详细解析</a></li>
+  
+  
+  <li class="next"><a href="/2014/08/19/2014_grunt_gulp/" title="Grunt，Gulp工具">Grunt，Gulp工具 &rarr;</a></li>
+  
+</ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="2014_js1"  data-url="http://haomou.net/2014/08/20/2014_js1/" data-title="JS闭包与原型链"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_myself" class="widget hm-left-widget" style="clear:both">
+    <img alt="皓眸GEEK" src="/images/hm.jpg" width="100" height="120"  style="border-radius: 5px;margin-right: 5px;float:left;"/>
+<div style="color: #428bca;text-align: center;font-size: 18px;">曹欢欢(chale)</div>2014年毕业于中国科学技术大学，硕士研究生，目前在大武汉知名外企公司上班。<br/>喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身哈，等你来...吼吼...喜欢就写信给我喽，请叫我皓眸哥(^_^)
+<br/>擅长：NodeJS，JAVA，PHP，WebGL，WebRTC，PS ...
+<br/><span style="color: #fb6580;">Mail To: </span>chh1990@mail.ustc.edu.cn
+<br/><span style="color: #fb6580;">QQ：</span>807991555（chale）
+<br/><span style="color: #fb6580;">APP敏捷开发交流群：</span>345413787</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_search" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">一般人我不告诉他？</div>  <div id="haomou_ad">
+<a target="_blank" href="http://2.taobao.com/item.htm?id=43869349327&spm=686.1000925.0.0.mjUwtL&mt=">
+<img src="/images/book.png" title="皓眸IT-我的书" alt="APP敏捷开发王道-我的新书" />
+</a>
+<br/>
+<p style="text-align:center;"><a target="_blank" href="http://2.taobao.com/item.htm?id=43869349327&spm=686.1000925.0.0.mjUwtL&mt=">附整套项目代码，只要<b style="color:red;">9.9</b>元</a></p>
+<p style="text-align:center;">APP敏捷开发交流群：<b style="color:red;">345413787</b></p>
+</div></div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2014-2015 Chale Cao
+  
+    &nbsp;&nbsp;</span>
+  <a href='http://www.miibeian.gov.cn/'>苏ICP备13018740号-6</a></span>
+  <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'></span>  </div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-04 17:35:22</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haomou"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://haomou.net/2014/08/20/2014_js1/";
+    var wumiiTitle = "JS闭包与原型链";
+    var wumiiTags = "JavaScript,闭包,原型链";
+    var wumiiCategories = ["JavaScript"];
+    var wumiiSitePrefix = "http://haomou.net";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />').wrap('<div class="img_block"></div>');
+     
+      if(alt){$(this).after('<span class="caption">' + alt + '</span>')};
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script src="/js/chenall.js" type="text/javascript"></script>
+
+
+  </body>
+</html>

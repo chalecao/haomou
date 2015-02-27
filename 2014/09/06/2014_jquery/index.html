@@ -1,0 +1,356 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="wumiiVerification" content="1747c9bc-e905-45aa-88ac-f13f2b210015" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>jQuery数组操作、克隆、伪类选择器 | 皓眸IT</title>
+<meta name="author" content="Chale Cao">
+
+<meta name="description" content="前言这几天一直忙着制作一个关于虹膜认证的demo，都没时间更新博客了。由于项目中用到的前端操作比较多，所以这里就总结一下jQuery的常用操作。我目前用的前端框架是AngularJS + jQuery + BootStrap，由于主要是做电脑网页，所以这三者的组合还是挺方便的。当然好多使用AngularJS的高手都不推荐使用jQuery，但是有些功能用Angular实现起来确实麻烦，像一些动画效果有的可以用css3来制作，但是有的还是用jQuery来的方便。不多说了，看看今天总结的内容。">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="jQuery数组操作、克隆、伪类选择器"/>
+<meta property="og:site_name" content="皓眸IT"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css">
+<![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="皓眸IT Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+
+<link rel="stylesheet" href="/css/nprogress.css" type="text/css">
+
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.bootcss.com/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+  
+  <header id="header" class="hm-menu-left-container"><nav id="main-nav" class="navbar navbar-default hm-navbar-menu-left  " role="navigation">
+    <div class="hm-navbar-header">
+    <a href="http://haomou.net" ><img class="hm-logo" src="/images/haomou.png" title="皓眸IT" width="64" height="64" /></a>
+    <br/>|<br/><span class="fa fa-tint hm-black shine_blue" ></span><br/>|<br/><span class="fa fa-heart hm-black shine_red" ></span><br/>|<br/>
+        <i class="fa fa-bars fa-2x hm-black hm-menu shine_blue" ></i><br/><div class="hm-line"></div>
+    </div>
+    <div class="collapse navbar-collapse">
+      <h1 style="color:black">皓眸IT</h1>
+      <ul class="nav navbar-nav hm-left-nav">
+  
+        <li item='2014/09/06/2014_jquery/' class='active'><a href="/" title="首页">首页</a></li>      
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>关于我<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://home.ustc.edu.cn/~chh1990/chero/chero.html" title="个人主页">个人主页</a></li>    
+        </ul>
+      </li>
+    
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>创业项目<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://pictcake.cn" title="照片蛋糕">照片蛋糕</a></li>    
+        </ul>
+      </li>
+    
+      </ul>
+
+        
+        <div id="widget_category" class="widget hm-left-widget">
+            <div class="panel-heading">分类：</div>            <div data-src='category' class='ajax_widgets'>正在加载...</div>
+        </div>
+        
+        <div id="widget_tagcloud" class="widget hm-left-widget">
+            <div class="panel-heading">标签云：</div>            <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div>        </div>
+        
+
+
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/chalecao">github</a></li>
+      
+      </ul>
+    </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div style="" id="headflash" class="headflash hm_container"><embed pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="/images/bck.swf" width="100%" height="313" style="undefined" id="headflash_f" name="headflash_f" bgcolor="#000" quality="high" allowscriptaccess="false" wmode="transparent" allowfullscreen="false"></div>
+  <div id='content' class=" container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>皓眸IT <small>写清楚，说明白</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article class="hm-article">
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left hm-article-w"></i>
+      <h1 class="title">jQuery数组操作、克隆、伪类选择器</h1>
+      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-09-05T23:40:49.000Z"> <a href="/2014/09/06/2014_jquery/">Sep 6 2014</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry"  data-spy="scroll" data-target="#toc" >
+      
+        <h3 id="前言">前言</h3>
+<p>这几天一直忙着制作一个关于虹膜认证的demo，都没时间更新博客了。由于项目中用到的前端操作比较多，所以这里就总结一下jQuery的常用操作。我目前用的前端框架是AngularJS + jQuery + BootStrap，由于主要是做电脑网页，所以这三者的组合还是挺方便的。当然好多使用AngularJS的高手都不推荐使用jQuery，但是有些功能用Angular实现起来确实麻烦，像一些动画效果有的可以用css3来制作，但是有的还是用jQuery来的方便。不多说了，看看今天总结的内容。<br><a id="more"></a><br><img class="floatnone" alt="皓眸哥" src="/images/jquery-Plugins.png"></p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/09/05/2014_jquery/" target="_blank" rel="external">http://www.haomou.net/2014/09/05/2014_jquery/</a></p>
+<h3 id="jQuery数组操作">jQuery数组操作</h3>
+<h4 id="$-each(array,_[callback])遍历,很常用">$.each(array, [callback])遍历,很常用</h4>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> arr = [<span class="string">'javascript'</span>, <span class="string">'php'</span>, <span class="string">'java'</span>, <span class="string">'c++'</span>, <span class="string">'c#'</span>, <span class="string">'perl'</span>, <span class="string">'vb'</span>, <span class="string">'html'</span>, <span class="string">'css'</span>, <span class="string">'objective-c'</span>];</div><div class="line">$.each(arr, <span class="function"><span class="keyword">function</span><span class="params">(key, val)</span> </span>{</div><div class="line">    <span class="comment">// firebug console</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'index in arr:'</span> + key + <span class="string">", corresponding value:"</span> + val);</div><div class="line">    <span class="comment">// 如果想退出循环</span></div><div class="line">    <span class="comment">// return false;</span></div><div class="line">});</div></pre></td></tr></table></figure>
+
+<h4 id="$-grep(array,_callback,_[invert])过滤,常用">$.grep(array, callback, [invert])过滤,常用</h4>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> temp = [];</div><div class="line">temp = $.grep(arr, <span class="function"><span class="keyword">function</span><span class="params">(val, key)</span> </span>{</div><div class="line">    <span class="keyword">if</span>(val.indexOf(<span class="string">'c'</span>) != -<span class="number">1</span>) </div><div class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">    <span class="comment">// 如果[invert]参数不给或为false, $.grep只收集回调函数返回true的数组元素</span></div><div class="line">    <span class="comment">// 反之[invert]参数为true, $.grep收集回调函数返回false的数组元素</span></div><div class="line">}, <span class="literal">false</span>);</div><div class="line"><span class="built_in">console</span>.dir(temp);</div></pre></td></tr></table></figure>
+
+<h4 id="$-map(array,_[callback])用的不是太多">$.map(array, [callback])用的不是太多</h4>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//1.6之前的版本只支持数组</span></div><div class="line">temp = $.map(arr, <span class="function"><span class="keyword">function</span><span class="params">(val, key)</span> </span>{</div><div class="line">    <span class="comment">//返回null,返回的数组长度减1</span></div><div class="line">    <span class="keyword">if</span>(val === <span class="string">'vb'</span>) <span class="keyword">return</span> <span class="literal">null</span>;</div><div class="line">    <span class="keyword">return</span> val;</div><div class="line">});</div><div class="line"><span class="built_in">console</span>.dir(temp);</div><div class="line"><span class="comment">//1.6开始支持json格式的object</span></div><div class="line"><span class="keyword">var</span> obj = {key1: <span class="string">'val1'</span>, key2: <span class="string">'val2'</span>, key3: <span class="string">'val3'</span>};</div><div class="line">temp = $.map(obj, <span class="function"><span class="keyword">function</span><span class="params">(val, key)</span> </span>{</div><div class="line">    <span class="keyword">return</span> val;</div><div class="line">});</div><div class="line"><span class="built_in">console</span>.dir(temp);</div></pre></td></tr></table></figure>
+
+<h4 id="$-inArray(val,_array)判断是否在指定数组中,常用">$.inArray(val, array)判断是否在指定数组中,常用</h4>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//返回元素在数组中的位置,0为起始位置,返回-1则未找到该元素</span></div><div class="line"><span class="built_in">console</span>.log($.inArray(<span class="string">'javascript'</span>, arr));</div></pre></td></tr></table></figure>
+
+<h4 id="$-merge(first,_second)合并两个数组,使用频率一般">$.merge(first, second)合并两个数组,使用频率一般</h4>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> frontEnd = [<span class="string">'javascript'</span>, <span class="string">'css'</span>, <span class="string">'html'</span>],</div><div class="line">      backEnd = [<span class="string">'java'</span>, <span class="string">'php'</span>, <span class="string">'c++'</span>];</div><div class="line"><span class="comment">// 这种方式会修改第一个参数, 即frontEnd数组</span></div><div class="line">temp = $.merge(frontEnd, backEnd);</div><div class="line"><span class="built_in">console</span>.dir(temp);</div><div class="line"><span class="built_in">console</span>.dir(frontEnd);</div><div class="line"><span class="comment">// 可以用下面的方式来避免对原数组的影响</span></div><div class="line"><span class="comment">// $.merge($.merge([], frontEnd), backEnd);</span></div></pre></td></tr></table></figure>
+
+<h4 id="$-unique(array)过滤数组中的重复元素,不常用">$.unique(array)过滤数组中的重复元素,不常用</h4>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// $.unique只支持DOM元素数组,去除重复DOM元素,不支持其他类型数组(String或者Number)</span></div><div class="line"><span class="comment">// 获得原始的DOM数组,而不是jQuery封装的</span></div><div class="line"><span class="keyword">var</span> divs = $(<span class="string">'div'</span>).get(); </div><div class="line"><span class="comment">// 增加几个class为dup的div</span></div><div class="line">divs = divs.concat($(<span class="string">'div.dup'</span>).get()); </div><div class="line"><span class="built_in">console</span>.log(<span class="string">"before unique:"</span> + divs.length);</div><div class="line">divs = $.unique(divs);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"after unique:"</span> + divs.length);</div></pre></td></tr></table></figure>
+
+<h4 id="$-makeArray(obj)将类数组对象转成数组,不常用">$.makeArray(obj)将类数组对象转成数组,不常用</h4>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">//首先什么是类数组对象?jQuery官网上用divs = getElementsByTag(<span class="string">'div'</span>)来做例子</div><div class="line">//这个divs有类似数组的一些方法比如<span class="keyword">length</span>,通过[<span class="keyword">index</span>]方式获取元素等</div><div class="line">//然后通过<span class="variable">$.</span>makeArray(divs)使它转为数组,就可以用数组的其他功能</div><div class="line">//比如<span class="keyword">reverse</span>(), <span class="keyword">pop</span>()等</div></pre></td></tr></table></figure>
+
+<h3 id="$(dom)-toArray()将jQuery集合恢复成DOM数组,不常用">$(dom).toArray()将jQuery集合恢复成DOM数组,不常用</h3>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//跟makeArray一样,相当的不常用,一般情况可以忽略</span></div></pre></td></tr></table></figure>
+
+<h3 id="jQuery克隆对象">jQuery克隆对象</h3>
+<p>有时候需要克隆一个json对象，像是购物车中的商品。浅克隆会存在很多问题。<br>方法如下：</p>
+<p>// 浅层复制（只复制顶层的非 object 元素）<br>var newObject = jQuery.extend({}, oldObject);</p>
+<p>// 深层复制（一层一层往下复制直到最底层）<br>var newObject = jQuery.extend(true, {}, oldObject);</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj1 = {</div><div class="line">  <span class="string">'a'</span>: <span class="string">'s1'</span>,</div><div class="line">  <span class="string">'b'</span>: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,{<span class="string">'a'</span>:<span class="string">'s2'</span>}],</div><div class="line">  <span class="string">'c'</span>: {<span class="string">'a'</span>:<span class="string">'s3'</span>, <span class="string">'b'</span>: [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]}</div><div class="line">}</div><div class="line"></div><div class="line"><span class="keyword">var</span> obj2 = $.extend(<span class="literal">true</span>, {}, obj1);</div><div class="line">obj2.a=<span class="string">'s1s1'</span>;</div><div class="line">obj2.b[<span class="number">0</span>]=<span class="number">100</span>;</div><div class="line">obj2.c.b[<span class="number">0</span>]=<span class="number">400</span>;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(obj1);</div><div class="line"><span class="built_in">console</span>.log(obj2);</div></pre></td></tr></table></figure>
+
+<p>obj2 内部元素的值改变之后，如果 obj1 的相应值保持不变，就说明复制成功。</p>
+<h4 id="$(“”)-clone()">$(“”).clone()</h4>
+<p>这样可以完整的复制一个元素，并且可以通过prependTo(“”);等实现元素位置控制，但是这样写不能完整的复制事件驱动过来</p>
+<h4 id="$(“”)-clone(true);">$(“”).clone(true);</h4>
+<p> 这样可以完整发复制一个元素，且还可以复制所有事件驱动。而且也可以通过insertAfter(“”);等实现位置控制</p>
+<h3 id="jQuery使用伪类选择器">jQuery使用伪类选择器</h3>
+<p>使用伪类选择器有时候真的能达到事半功倍的效果。<br>比如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//选择【表情】为test的父元素的子元素的第一个<span class="keyword">div</span>元素</div><div class="line"><span class="function"><span class="title">jQuery</span><span class="params">(<span class="string">"#test"</span>)</span>.<span class="title">parent</span><span class="params">()</span>.<span class="title">find</span><span class="params">(<span class="string">"div:first"</span>)</span></span></div></pre></td></tr></table></figure>
+
+<h4 id="同级元素选取">同级元素选取</h4>
+<p>jquery中的相邻元素，就是同级的标签元素的意思~<br> next()相邻下一个同辈元素<br> prev()相邻上一个同辈元素<br> siblings()相邻所有同辈元素</p>
+<h3 id="谢谢！">谢谢！</h3>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/09/05/2014_jquery/" target="_blank" rel="external">http://www.haomou.net/2014/09/05/2014_jquery/</a></p>
+<p>有问题请留言。  请叫我皓眸哥(^_^)  </p>
+
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://haomou.net">皓眸IT</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/09/06/2014_jquery/">jQuery数组操作、克隆、伪类选择器</a></div>
+</div></div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/JavaScript/" itemprop="url"><span itemprop="title" >JavaScript</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/jQuery/" class="label label-primary" itemprop="url"><span itemprop="title">jQuery</span></a><a href="/tags/数组/" class="label label-success" itemprop="url"><span itemprop="title">数组</span></a><a href="/tags/选择器/" class="label label-info" itemprop="url"><span itemprop="title">选择器</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-04 17:35:24"datetime="2015-01-04 17:35:24"> Jan 4 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://haomou.net/2014/09/06/2014_jquery/#comments" class="ds-thread-count comment-link" data-thread-key="2014_jquery" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  <li class="previous"><a href="/2014/09/09/2014_css1/" title="伪类使用技巧">&larr; 伪类使用技巧</a></li>
+  
+  
+  <li class="next"><a href="/2014/09/03/2014_android1/" title="Android不同API Level差异">Android不同API Level差异 &rarr;</a></li>
+  
+</ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="2014_jquery"  data-url="http://haomou.net/2014/09/06/2014_jquery/" data-title="jQuery数组操作、克隆、伪类选择器"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_myself" class="widget hm-left-widget" style="clear:both">
+    <img alt="皓眸GEEK" src="/images/hm.jpg" width="100" height="120"  style="border-radius: 5px;margin-right: 5px;float:left;"/>
+<div style="color: #428bca;text-align: center;font-size: 18px;">曹欢欢(chale)</div>2014年毕业于中国科学技术大学，硕士研究生，目前在大武汉知名外企公司上班。<br/>喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身哈，等你来...吼吼...喜欢就写信给我喽，请叫我皓眸哥(^_^)
+<br/>擅长：NodeJS，JAVA，PHP，WebGL，WebRTC，PS ...
+<br/><span style="color: #fb6580;">Mail To: </span>chh1990@mail.ustc.edu.cn
+<br/><span style="color: #fb6580;">QQ：</span>807991555（chale）
+<br/><span style="color: #fb6580;">APP敏捷开发交流群：</span>345413787</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_search" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">一般人我不告诉他？</div>  <div id="haomou_ad">
+<a target="_blank" href="http://2.taobao.com/item.htm?id=43869349327&spm=686.1000925.0.0.mjUwtL&mt=">
+<img src="/images/book.png" title="皓眸IT-我的书" alt="APP敏捷开发王道-我的新书" />
+</a>
+<br/>
+<p style="text-align:center;"><a target="_blank" href="http://2.taobao.com/item.htm?id=43869349327&spm=686.1000925.0.0.mjUwtL&mt=">附整套项目代码，只要<b style="color:red;">9.9</b>元</a></p>
+<p style="text-align:center;">APP敏捷开发交流群：<b style="color:red;">345413787</b></p>
+</div></div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2014-2015 Chale Cao
+  
+    &nbsp;&nbsp;</span>
+  <a href='http://www.miibeian.gov.cn/'>苏ICP备13018740号-6</a></span>
+  <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'></span>  </div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-04 17:35:24</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haomou"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://haomou.net/2014/09/06/2014_jquery/";
+    var wumiiTitle = "jQuery数组操作、克隆、伪类选择器";
+    var wumiiTags = "jQuery,数组,选择器";
+    var wumiiCategories = ["JavaScript"];
+    var wumiiSitePrefix = "http://haomou.net";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />').wrap('<div class="img_block"></div>');
+     
+      if(alt){$(this).after('<span class="caption">' + alt + '</span>')};
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script src="/js/chenall.js" type="text/javascript"></script>
+
+
+  </body>
+</html>

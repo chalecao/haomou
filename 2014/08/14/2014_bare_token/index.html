@@ -1,0 +1,406 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="wumiiVerification" content="1747c9bc-e905-45aa-88ac-f13f2b210015" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bearer Token | 皓眸IT</title>
+<meta name="author" content="Chale Cao">
+
+<meta name="description" content="说明上一篇博客中我详细说明了如何在web客户端和REST服务端建立token通信机制，详见使用json web token。本篇文章中，我主要介绍Bearer Token的相关定义与使用方法。以及安全性问题的一些处理对策。">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="Bearer Token"/>
+<meta property="og:site_name" content="皓眸IT"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css">
+<![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="皓眸IT Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+
+<link rel="stylesheet" href="/css/nprogress.css" type="text/css">
+
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.bootcss.com/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+  
+  <header id="header" class="hm-menu-left-container"><nav id="main-nav" class="navbar navbar-default hm-navbar-menu-left  " role="navigation">
+    <div class="hm-navbar-header">
+    <a href="http://haomou.net" ><img class="hm-logo" src="/images/haomou.png" title="皓眸IT" width="64" height="64" /></a>
+    <br/>|<br/><span class="fa fa-tint hm-black shine_blue" ></span><br/>|<br/><span class="fa fa-heart hm-black shine_red" ></span><br/>|<br/>
+        <i class="fa fa-bars fa-2x hm-black hm-menu shine_blue" ></i><br/><div class="hm-line"></div>
+    </div>
+    <div class="collapse navbar-collapse">
+      <h1 style="color:black">皓眸IT</h1>
+      <ul class="nav navbar-nav hm-left-nav">
+  
+        <li item='2014/08/14/2014_bare_token/' class='active'><a href="/" title="首页">首页</a></li>      
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>关于我<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://home.ustc.edu.cn/~chh1990/chero/chero.html" title="个人主页">个人主页</a></li>    
+        </ul>
+      </li>
+    
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>创业项目<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://pictcake.cn" title="照片蛋糕">照片蛋糕</a></li>    
+        </ul>
+      </li>
+    
+      </ul>
+
+        
+        <div id="widget_category" class="widget hm-left-widget">
+            <div class="panel-heading">分类：</div>            <div data-src='category' class='ajax_widgets'>正在加载...</div>
+        </div>
+        
+        <div id="widget_tagcloud" class="widget hm-left-widget">
+            <div class="panel-heading">标签云：</div>            <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div>        </div>
+        
+
+
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/chalecao">github</a></li>
+      
+      </ul>
+    </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div style="" id="headflash" class="headflash hm_container"><embed pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="/images/bck.swf" width="100%" height="313" style="undefined" id="headflash_f" name="headflash_f" bgcolor="#000" quality="high" allowscriptaccess="false" wmode="transparent" allowfullscreen="false"></div>
+  <div id='content' class=" container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>皓眸IT <small>写清楚，说明白</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article class="hm-article">
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left hm-article-w"></i>
+      <h1 class="title">Bearer Token</h1>
+      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-08-13T21:40:49.000Z"> <a href="/2014/08/14/2014_bare_token/">Aug 14 2014</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry"  data-spy="scroll" data-target="#toc" >
+      
+        <h3 id="说明">说明</h3>
+<p>上一篇博客中我详细说明了如何在web客户端和REST服务端建立token通信机制，详见<a href="http://www.haomou.net/2014/08/13/2014_web_token/" target="_blank" rel="external">使用json web token</a>。本篇文章中，我主要介绍Bearer Token的相关定义与使用方法。以及安全性问题的一些处理对策。<br><a id="more"></a><br><img class="floatnone" alt="皓眸哥" src="/images/token.png"></p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/08/13/2014_bare_token/" target="_blank" rel="external">http://www.haomou.net/2014/08/13/2014_bare_token/</a></p>
+<h3 id="来龙去脉">来龙去脉</h3>
+<p>诸如Ember，Angular，Backbone之类的前端框架类库正随着更加精细的Web应用而日益壮大。正因如此，服务器端的组建也正正在从传统的任务中解脱，转而变的更像API。API使得传统的前端和后端的概念解耦。开发者可以脱离前端，独立的开发后端，在测试上获得更大的便利。这种途径也使得一个移动应用和网页应用可以使用相同的后端。</p>
+<p>当使用一个API时，其中一个挑战就是认证（authentication）。在传统的web应用中，服务端成功的返回一个响应（response）依赖于两件事。一是，他通过一种存储机制保存了会话信息（Session）。每一个会话都有它独特的信息（id），常常是一个长的，随机化的字符串，它被用来让未来的请求（Request）检索信息。其次，包含在响应头（Header）里面的信息使客户端保存了一个Cookie。服务器自动的在每个子请求里面加上了会话ID，这使得服务器可以通过检索Session中的信息来辨别用户。这就是传统的web应用逃避HTTP面向无连接的方法（This is how traditional web applications get around the fact that HTTP is stateless）。</p>
+<p>API应该被设计成无状态的（Stateless）。这意味着没有登陆，注销的方法，也没有sessions，API的设计者同样也不能依赖Cookie，因为不能保证这些request是由浏览器所发出的。自然，我们需要一个新的机制。这篇文章关注于JSON Web Tokens，简写为JWTs，一个可能的解决这个问题的机制。这篇文章利用Node的Express框架作为后端，以及Backbone作为前端。</p>
+<h3 id="常用方法">常用方法</h3>
+<p>第一个是使用在HTTP规范中所制定的Basic Auth， 它需要在在响应中设定一个验证身份的Header。客户端必须在每个子响应是附加它们的凭证（credenbtial），包括它的密码。如果这些凭证通过了，那么用户的信息就会被传递到服务端应用。</p>
+<p>第二个方面有点类似，但是使用应用自己的验证机制。通常包括将发送的凭证与存储的凭证进行检查。和Basic Auth相比，这种需要在每次请求（call）中发送凭证。</p>
+<p>第三种是OAuth（或者OAuth2）。为第三方的认证所设计，但是更难配置。至少在服务器端更难。</p>
+<p>在使用中，并不会每次都让用户提交用户名和密码，通常的情况是客户端通过一些可靠信息和服务器交换取token，这个token作为客服端再次请求的权限钥匙。Token通常比密码更加长而且复杂。比如说，JWTs通常会长达150个字符。一旦获得了token，在每次调用API的时候都要附加上它。然后，这仍然比直接发送账户和密码更加安全，哪怕是HTTPS。<br>把token想象成一个安全的护照。你在一个安全的前台验证你的身份（通过你的用户名和密码），如果你成功验证了自己，你就可以取得这个。当你走进大楼的时候（试图从调用API获取资源），你会被要求验证你的护照，而不是在前台重新验证。</p>
+<h3 id="JWTs">JWTs</h3>
+<p>JWTs是一份草案，尽管在本质上它是一个老生常谈的一种更加具体的认证授权的机制。一个JWT被周期（period）分成了三个部分。JWT是URL-safe的，意味着可以用来查询字符参数。（译者注：也就是可以脱离URL，不用考虑URL的信息）。</p>
+<p>JWT的第一部分是对一个简单js对象的编码后的字符串，这个js对象是用来描述这个token类型以及使用的hash算法。下面的例子展示的是一个使用了HMAC SHA-256算法的JWT token。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">{</div><div class="line">  "<span class="attribute">typ</span>" : <span class="value"><span class="string">"JWT"</span></span>,</div><div class="line">  "<span class="attribute">alg</span>" : <span class="value"><span class="string">"HS256"</span></span></div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>在加密之后，这个对象变成了一个字符串：<br>    eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9<br>JWT的第二部分是token的核心，这部分同样是对一个js对象的编码，包含了一些摘要信息。有一些是必须的，有一些是选择性的。实例如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">{</div><div class="line">  "<span class="attribute">iss</span>": <span class="value"><span class="string">"joe"</span></span>,</div><div class="line">  "<span class="attribute">exp</span>": <span class="value"><span class="number">1300819380</span></span>,</div><div class="line">  "<span class="attribute">http://example.com/is_root</span>": <span class="value"><span class="literal">true</span></span></div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>这个结构被称为JWT Claims Set。这个iss是issuer的简写，表明请求的实体，可以是发出请求的用户的信息。exp是expires的简写，是用来指定token的生命周期。（相关参数参看：<a href="http://tools.ietf.org/html/draft-ietf-oauth-json-web-token-19" target="_blank" rel="external">the document</a>）加密编码之后如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ</div></pre></td></tr></table></figure>
+
+<p>JWT的第三个部分，是JWT根据第一部分和第二部分的签名（Signature）。像这个样子：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk</div></pre></td></tr></table></figure>
+
+<p>最后将上面的合并起来，JWT token如下：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk</div></pre></td></tr></table></figure>
+
+<h3 id="处理Tokens">处理Tokens</h3>
+<p>我们将用JWT simple模块去处理token，它将使我们从钻研如何加密解密中解脱出来。如果你有兴趣，可以阅读这篇说明，或者读这个仓库的源码。<br>首先我们将使用下面的命令安装这个库。记住你可以在命令中加入—save，让其自动的让其加入到你的package.json文件里面。</p>
+<pre><code>npm <span class="operator"><span class="keyword">install</span> jwt-simple</span>
+</code></pre><p>在你应用的初始环节，加入以下代码。这个代码引入了Express和JWT simple，而且创建了一个新的Express应用。最后一行设定了app的一个名为jwtTokenSecret的变量，其值为‘YOUR_SECRET_STRING’（记得把它换成别的）。</p>
+<pre><code><span class="keyword">var</span> express = <span class="keyword">require</span>(<span class="string">'express'</span>);
+<span class="keyword">var</span> jwt = <span class="keyword">require</span>(<span class="string">'jwt-simple'</span>);
+<span class="keyword">var</span> app = express();
+
+app.<span class="keyword">set</span>(<span class="string">'jwtTokenSecret'</span>, <span class="string">'YOUR_SECRET_STRING'</span>);
+</code></pre><h3 id="获取token">获取token</h3>
+<p>我们需要做的第一件事就是让客户端通过他们的账号密码交换token。这里有2种可能的方法在RESTful API里面。第一种是使用POST请求来通过验证，使服务端发送带有token的响应。除此之外，你可以使用GET请求，这需要他们使用参数提供凭证（指URL），或者更好的使用请求头。<br>这篇文章的目的是为了解释token验证的方法而不是基本的用户名/密码验证机制。所以我们假设我们已经通过请求得到了用户名和密码：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">User.findOne({ username: username }, <span class="function"><span class="keyword">function</span><span class="params">(err, user)</span> </span>{</div><div class="line">  <span class="keyword">if</span> (err) {</div><div class="line">    <span class="comment">// user not found</span></div><div class="line">    <span class="keyword">return</span> res.send(<span class="number">401</span>);</div><div class="line">  }</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (!user) {</div><div class="line">    <span class="comment">// incorrect username</span></div><div class="line">    <span class="keyword">return</span> res.send(<span class="number">401</span>);</div><div class="line">  }</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (!user.validPassword(password)) {</div><div class="line">    <span class="comment">// incorrect password</span></div><div class="line">    <span class="keyword">return</span> res.send(<span class="number">401</span>);</div><div class="line">  }</div><div class="line"></div><div class="line">  <span class="comment">// User has authenticated OK</span></div><div class="line">  res.send(<span class="number">200</span>);</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<p>如果用户成功验证账号和密码，然后我们生成一个token，返回给用户。</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> expires = moment().add(<span class="string">'days'</span>, <span class="number">7</span>).valueOf();</div><div class="line"><span class="keyword">var</span> token = jwt.encode({</div><div class="line">  iss: user.id,</div><div class="line">  exp: expires</div><div class="line">}, app.<span class="keyword">get</span>(<span class="string">'jwtTokenSecret'</span>));</div><div class="line"></div><div class="line">res.json({</div><div class="line">  token : token,</div><div class="line">  expires: expires,</div><div class="line">  user: user.toJSON()</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<p>注意到jwt.encode()函数有2个参数。第一个就是一个需要加密的对象，第二个是一个加密的密钥。这个token是由我们之前提到的iss和exp组成的。注意到Moment.js被用来设置token将在7天之后失效。而res.json()方法用来传递这个JSON对象给客户端。</p>
+<h3 id="验证Token">验证Token</h3>
+<p>客户端获取到token后，应该在每次向服务器请求数据时附带这个token，然后服务端验证token。<br>为了验证JWT，我们需要写出一些可以完成这些功能的中间件（Middleware）：</p>
+<ul>
+<li>检查附上的token</li>
+<li>试图解密</li>
+<li>验证token的可用性</li>
+<li>如果token是合法的，检索里面用户的信息，以及附加到请求的对象上<br>我们来写一个中间件的框架</li>
+</ul>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// @file jwtauth.js</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> UserModel = <span class="built_in">require</span>(<span class="string">'../models/user'</span>);</div><div class="line"><span class="keyword">var</span> jwt = <span class="built_in">require</span>(<span class="string">'jwt-simple'</span>);</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span><span class="params">(req, res, next)</span> </span>{</div><div class="line">  <span class="comment">// code goes here</span></div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>为了获得最大的可扩展性，我们允许客户端使用一下3个方法附加我们的token：作为请求链接（query)的参数，作为主体的参数（body），和作为请求头（Header）的参数。对于最后一个，我们将使用Header x-access-token。</p>
+<p>下面是我们的允许在中间件的代码，试图去检索token：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">var token = (req.<span class="keyword">body</span> && req.<span class="keyword">body</span>.access_token) || (req.query && req.query.access_token) || req.headers[<span class="attribute">'x</span>-<span class="keyword">access</span>-token'];</div></pre></td></tr></table></figure>
+
+<p>注意到他为了访问req.body，我们需要首先使用express.bodyParser()中间件（译者注，这个是Express 3.x的中间件）。<br>下一步，我们讲解析JWT:</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (token) {</div><div class="line">  <span class="keyword">try</span> {</div><div class="line">    <span class="keyword">var</span> decoded = jwt.decode(token, app.<span class="keyword">get</span>(<span class="string">'jwtTokenSecret'</span>));</div><div class="line"></div><div class="line">    <span class="comment">// handle token here</span></div><div class="line"></div><div class="line">  } <span class="keyword">catch</span> (err) {</div><div class="line">    <span class="keyword">return</span> next();</div><div class="line">  }</div><div class="line">} <span class="keyword">else</span> {</div><div class="line">  next();</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>如果解析的过程失败，那么JWT Simple组件将会抛出一段异常。如果异常发生了，或者没有token，我们将会调用next()来继续处理请求。这代表喆我们无法确定用户。如果一个合格的token合法并且被解码，我们应该得到2个属性，iss包含着用户ID以及exp包含token过期的时间戳。我们将首先处理后者，如果它过期了，我们就拒绝它：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (decoded.<span class="built_in">exp</span> &lt;= <span class="built_in">Date</span>.<span class="built_in">now</span>()) {</div><div class="line">  res.<span class="keyword">end</span>(<span class="comment">'Access token has expired', 400);</span></div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>如果token依旧合法，我们可以从中检索出用户信息，并且附加到请求对象里面去：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">User.findOne({ _id: decoded.iss }, function(err, <span class="literal">user</span>) {</div><div class="line">  req.<span class="literal">user</span> = <span class="literal">user</span><span class="comment">;</span></div><div class="line">})<span class="comment">;</span></div></pre></td></tr></table></figure>
+
+<p>最后，将这个中间件附加到路由里面：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> jwtauth = <span class="built_in">require</span>(<span class="string">'./jwtauth.js'</span>);</div><div class="line"></div><div class="line">app.get(<span class="string">'/something'</span>, [express.bodyParser(), jwtauth], <span class="function"><span class="keyword">function</span><span class="params">(req, res)</span></span>{</div><div class="line">  <span class="comment">// do something</span></div><div class="line">});</div></pre></td></tr></table></figure>
+
+<p>或者匹配一些路由</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">app.<span class="keyword">all</span>(<span class="string">'/api/*'</span>, [express.bodyParser(), jwtauth]);</div></pre></td></tr></table></figure>
+
+<h3 id="客户端请求">客户端请求</h3>
+<p>我们提供了一个简单的get端去获得一个远端的token。这非常直接了，所以我们不用纠结细节，就是发起一个请求，传递用户名和密码，如果请求成功了，我们就会得到一个包含着token的响应。</p>
+<p>我们现在研究的是后续的请求。一个方法是通过JQuery的ajaxSetup()方法。这可以直接用来做Ajax请求，或者通过前端框架使用包装过的Ajax方法。比如，假设我们将我们的请求使用window.localStorage.setItem(‘token’, ‘the-long-access-token’);放在本地存储（Local Storage）里面，我们可以通过这种方法将token附加到请求头里面：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> token = <span class="built_in">window</span>.localStorage.getItem(<span class="string">'token'</span>);</div><div class="line"></div><div class="line"><span class="keyword">if</span> (token) {</div><div class="line">  $.ajaxSetup({</div><div class="line">    headers: {</div><div class="line">      <span class="string">'x-access-token'</span>: token</div><div class="line">    }</div><div class="line">  });</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>很简单，但是这会劫持所有Ajax请求，如果这里有一个token在本地存储里面。它将会附加到一个名为x-access-token的Header里面。</p>
+<h3 id="bear_token">bear token</h3>
+<p>关于bear token，参看 <a href="http://tools.ietf.org/html/rfc6750" target="_blank" rel="external"> RFC 6750: The OAuth 2.0 Authorization Framework: Bearer Token Usage </a>, 目前国内各大网站都是用不同的token，也没说必须使用bear token，只有twitter明确说明的是使用bear token。</p>
+<p>OAuth 2.0 (RFC 6749) 定义了 Client 如何取得 Access Token 的方法。Client 可以用 Access Token 以 Resource Owner 的名义来向 Resource Server 取得 Protected Resource ，例如我 (Resource Owner) 授权一個手机 App (Client) 以我 (Resource Owner) 的名义去 Facebook (Resource Server) 取得我的朋友名单 (Protected Resource)。OAuth 2.0 定义Access Token 是 Resource Server 用来认证的唯一方式，有了这个， Resource Server 就不需要再提供其他认证方式，例如账号密码。</p>
+<p>然而在 RFC 6749 里面只定义抽象的概念，细节如 Access Token 格式、怎么传到 Resource Server ，以及 Access Token 无效时， Resource Server 怎么处理，都没有定义。所以在 RFC 6750 另外定义了 Bearer Token 的用法。Bearer Token 是一种 Access Token ，由 Authorization Server 在 Resource Owner 的允许下核发给 Client ，Resource Server 只要认在这个 Token 就可以认定 Client 已经获取 Resource Owner 的许可，不需要用密码学的方式来验证这个 Token 的真伪。关于Token 被偷走的安全性问题，另一篇再说。</p>
+<p>Bearer Token 的格式</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="title">Bearer</span> XXXXXXXX</div></pre></td></tr></table></figure>
+
+<p>其中 XXXXXXXX 的格式 b64token ，ABNF 的定義：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">b64token = 1<span class="keyword">*</span>( ALPHA / DIGIT / <span class="string">"-"</span> / <span class="string">"."</span> / <span class="string">"_"</span> / <span class="string">"~"</span> / <span class="string">"+"</span> / <span class="string">"/"</span> ) <span class="keyword">*</span><span class="string">"="</span></div></pre></td></tr></table></figure>
+
+<p>写成 Regular Expression 即是：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/<span class="special">[</span>A-Za-z0-9<span class="command">\-</span><span class="command">\.</span>_<span class="special">~</span><span class="command">\+</span><span class="command">\/</span><span class="special">]</span>+=*/</div></pre></td></tr></table></figure>
+
+<p>关于使用，参看我的另一篇：<br><a href="http://haomou.net/2014/08/13/2014_web_token/" target="_blank" rel="external">使用json web token</a>:<br><a href="http://haomou.net/2014/08/13/2014_web_token/" target="_blank" rel="external">http://haomou.net/2014/08/13/2014_web_token/</a></p>
+<h3 id="谢谢！">谢谢！</h3>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/08/13/2014_bare_token/" target="_blank" rel="external">http://www.haomou.net/2014/08/13/2014_bare_token/</a></p>
+<p>有问题请留言。  请叫我皓眸哥  </p>
+
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://haomou.net">皓眸IT</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/08/14/2014_bare_token/">Bearer Token</a></div>
+</div></div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/token/" itemprop="url"><span itemprop="title" >token</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/token/" class="label label-primary" itemprop="url"><span itemprop="title">token</span></a><a href="/tags/bearer/" class="label label-success" itemprop="url"><span itemprop="title">bearer</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-04 18:08:38"datetime="2015-01-04 18:08:38"> Jan 4 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://haomou.net/2014/08/14/2014_bare_token/#comments" class="ds-thread-count comment-link" data-thread-key="2014_bare_token" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  <li class="previous"><a href="/2014/08/14/2014_web_token/" title="使用json web token">&larr; 使用json web token</a></li>
+  
+  
+  <li class="next"><a href="/2014/08/12/2014_ionic_api/" title="ionic中文javascript API(1)">ionic中文javascript API(1) &rarr;</a></li>
+  
+</ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="2014_bare_token"  data-url="http://haomou.net/2014/08/14/2014_bare_token/" data-title="Bearer Token"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_myself" class="widget hm-left-widget" style="clear:both">
+    <img alt="皓眸GEEK" src="/images/hm.jpg" width="100" height="120"  style="border-radius: 5px;margin-right: 5px;float:left;"/>
+<div style="color: #428bca;text-align: center;font-size: 18px;">曹欢欢(chale)</div>2014年毕业于中国科学技术大学，硕士研究生，目前在大武汉知名外企公司上班。<br/>喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身哈，等你来...吼吼...喜欢就写信给我喽，请叫我皓眸哥(^_^)
+<br/>擅长：NodeJS，JAVA，PHP，WebGL，WebRTC，PS ...
+<br/><span style="color: #fb6580;">Mail To: </span>chh1990@mail.ustc.edu.cn
+<br/><span style="color: #fb6580;">QQ：</span>807991555（chale）
+<br/><span style="color: #fb6580;">APP敏捷开发交流群：</span>345413787</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_search" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">一般人我不告诉他？</div>  <div id="haomou_ad">
+<a target="_blank" href="http://2.taobao.com/item.htm?id=43869349327&spm=686.1000925.0.0.mjUwtL&mt=">
+<img src="/images/book.png" title="皓眸IT-我的书" alt="APP敏捷开发王道-我的新书" />
+</a>
+<br/>
+<p style="text-align:center;"><a target="_blank" href="http://2.taobao.com/item.htm?id=43869349327&spm=686.1000925.0.0.mjUwtL&mt=">附整套项目代码，只要<b style="color:red;">9.9</b>元</a></p>
+<p style="text-align:center;">APP敏捷开发交流群：<b style="color:red;">345413787</b></p>
+</div></div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2014-2015 Chale Cao
+  
+    &nbsp;&nbsp;</span>
+  <a href='http://www.miibeian.gov.cn/'>苏ICP备13018740号-6</a></span>
+  <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'></span>  </div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-04 18:08:38</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haomou"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://haomou.net/2014/08/14/2014_bare_token/";
+    var wumiiTitle = "Bearer Token";
+    var wumiiTags = "token,bearer";
+    var wumiiCategories = ["token"];
+    var wumiiSitePrefix = "http://haomou.net";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />').wrap('<div class="img_block"></div>');
+     
+      if(alt){$(this).after('<span class="caption">' + alt + '</span>')};
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script src="/js/chenall.js" type="text/javascript"></script>
+
+
+  </body>
+</html>

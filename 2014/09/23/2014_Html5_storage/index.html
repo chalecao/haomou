@@ -1,0 +1,356 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="wumiiVerification" content="1747c9bc-e905-45aa-88ac-f13f2b210015" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>WebStorge使用 | 皓眸IT</title>
+<meta name="author" content="Chale Cao">
+
+<meta name="description" content="WebStorge简介互联网的未来，是移动互联网；移动互联网网页的未来是WEB App。对于Web APP或者许多的富客户端网页来说，Web Storage是很重要的一部分。对于提升用户体验和网页页面优化有很重要的价值。使用者需要对网页或app的数据结构分层整合，区分出可以用于web storage和不能storage的数据，对于需要存储的数据，再格式化成key/value形式。">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="WebStorge使用"/>
+<meta property="og:site_name" content="皓眸IT"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css">
+<![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="皓眸IT Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+
+<link rel="stylesheet" href="/css/nprogress.css" type="text/css">
+
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.bootcss.com/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+  
+  <header id="header" class="hm-menu-left-container"><nav id="main-nav" class="navbar navbar-default hm-navbar-menu-left  " role="navigation">
+    <div class="hm-navbar-header">
+    <a href="http://haomou.net" ><img class="hm-logo" src="/images/haomou.png" title="皓眸IT" width="64" height="64" /></a>
+    <br/>|<br/><span class="fa fa-tint hm-black shine_blue" ></span><br/>|<br/><span class="fa fa-heart hm-black shine_red" ></span><br/>|<br/>
+        <i class="fa fa-bars fa-2x hm-black hm-menu shine_blue" ></i><br/><div class="hm-line"></div>
+    </div>
+    <div class="collapse navbar-collapse">
+      <h1 style="color:black">皓眸IT</h1>
+      <ul class="nav navbar-nav hm-left-nav">
+  
+        <li item='2014/09/23/2014_Html5_storage/' class='active'><a href="/" title="首页">首页</a></li>      
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>关于我<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://home.ustc.edu.cn/~chh1990/chero/chero.html" title="个人主页">个人主页</a></li>    
+        </ul>
+      </li>
+    
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>创业项目<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://pictcake.cn" title="照片蛋糕">照片蛋糕</a></li>    
+        </ul>
+      </li>
+    
+      </ul>
+
+        
+        <div id="widget_category" class="widget hm-left-widget">
+            <div class="panel-heading">分类：</div>            <div data-src='category' class='ajax_widgets'>正在加载...</div>
+        </div>
+        
+        <div id="widget_tagcloud" class="widget hm-left-widget">
+            <div class="panel-heading">标签云：</div>            <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div>        </div>
+        
+
+
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/chalecao">github</a></li>
+      
+      </ul>
+    </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div style="" id="headflash" class="headflash hm_container"><embed pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="/images/bck.swf" width="100%" height="313" style="undefined" id="headflash_f" name="headflash_f" bgcolor="#000" quality="high" allowscriptaccess="false" wmode="transparent" allowfullscreen="false"></div>
+  <div id='content' class=" container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>皓眸IT <small>写清楚，说明白</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article class="hm-article">
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left hm-article-w"></i>
+      <h1 class="title">WebStorge使用</h1>
+      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-09-22T16:23:45.000Z"> <a href="/2014/09/23/2014_Html5_storage/">Sep 23 2014</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry"  data-spy="scroll" data-target="#toc" >
+      
+        <h3 id="WebStorge简介">WebStorge简介</h3>
+<p>互联网的未来，是移动互联网；移动互联网网页的未来是WEB App。对于Web APP或者许多的富客户端网页来说，Web Storage是很重要的一部分。对于提升用户体验和网页页面优化有很重要的价值。使用者需要对网页或app的数据结构分层整合，区分出可以用于web storage和不能storage的数据，对于需要存储的数据，再格式化成key/value形式。<br><a id="more"></a><br><img class="floatnone" src="/images/storage.jpg"></p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/09/22/2014_Html5_storage/" target="_blank" rel="external">http://www.haomou.net/2014/09/22/2014_Html5_storage/</a></p>
+<h3 id="webstorage和cookie的区别">webstorage和cookie的区别</h3>
+<p>Web Storage的概念和cookie相似，区别是它是为了更大容量存储设计的。Cookie的大小是受限的（上限4kb），并且每次你请求一个新的页面的时候Cookie都会被发送过去，这样无形中浪费了带宽，另外cookie还需要指定作用域，不可以跨域调用。</p>
+<p>除此之外，Web Storage拥有setItem,getItem,removeItem,clear等方法，不像cookie需要前端开发者自己封装setCookie，getCookie。</p>
+<p>但是Cookie也是不可以或缺的：Cookie的作用是与服务器进行交互，作为HTTP规范的一部分而存在 ，而Web Storage仅仅是为了在本地“存储”数据而生。</p>
+<p>html5之前，更多的存储空间需要浏览器本身或是插件的支持，例如只在 Internet Explorer 上使用的 userData，需要额外安装插件的 Google Gears 和 Flash。现在，HTML5 提供了一种标准的接口，使程序员可以简单地访问存储的数据。由于键值对存储在本地计算机上，在页面加载完毕后可以通过 JavaScript 来操作这些数据。</p>
+<h3 id="两种storage">两种storage</h3>
+<p>html5中的Web Storage包括了两种存储方式：sessionStorage和localStorage。</p>
+<p>sessionStorage用于本地存储一个会话（session）中的数据，这些数据只有在同一个会话中的页面才能访问并且当会话结束后数据也随之销毁。因此sessionStorage不是一种持久化的本地存储，仅仅是会话级别的存储。</p>
+<p>而localStorage用于持久化的本地存储，除非主动删除数据，否则数据是永远不会过期的。<br>下面是 DOM Storage 的接口定义：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">interface Storage { </div><div class="line"> <span class="keyword">readonly</span> <span class="keyword">attribute</span> unsigned long <span class="built_in">length</span>; </div><div class="line"> getter DOMString key(<span class="keyword">in</span> unsigned long index); </div><div class="line"> getter <span class="built_in">any</span> getItem(<span class="keyword">in</span> DOMString key); </div><div class="line"> setter creator <span class="keyword">void</span> setItem(<span class="keyword">in</span> DOMString key, <span class="keyword">in</span> <span class="built_in">any</span> data); </div><div class="line"> deleter <span class="keyword">void</span> removeItem(<span class="keyword">in</span> DOMString key); </div><div class="line"> <span class="keyword">void</span> clear(); </div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>length：返回当前存储在 Storage 对象中的键值对数量。<br>key(index)：返回列表中第 n 个键的名字。Index 从 0 开始。<br>getItem(key)：返回指定键对应的值。<br>setItem(key, value)：存入一个键值对。<br>removeItem(key) ：删除指定的键值对。<br>clear()：删除 Storage 对象中的所有键值对。<br>通常，使用最多的方法是 getItem 和 setItem。</p>
+<h3 id="常用操作">常用操作</h3>
+<p>localStorage和sessionStorage都具有相同的操作方法，例如setItem、getItem和removeItem等</p>
+<p>localStorage和sessionStorage的方法<br>setItem存储value<br>用途：将value存储到key字段<br>用法：.setItem( key, value)<br>代码示例：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sessionStorage.setItem(<span class="string">"key"</span>, <span class="string">"value"</span>); 	</div><div class="line">localStorage.setItem(<span class="string">"site"</span>, <span class="string">"js8.in"</span>);</div></pre></td></tr></table></figure>
+
+<p>getItem获取value<br>用途：获取指定key本地存储的值<br>用法：.getItem(key)<br>代码示例：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> <span class="keyword">value</span> = sessionStorage.getItem(<span class="string">"key"</span>); </div><div class="line"><span class="keyword">var</span> site = localStorage.getItem(<span class="string">"site"</span>);</div></pre></td></tr></table></figure>
+
+<p>removeItem删除key<br>用途：删除指定key本地存储的值<br>用法：.removeItem(key)<br>代码示例：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sessionStorage.removeItem(<span class="string">"key"</span>); </div><div class="line">localStorage.removeItem(<span class="string">"site"</span>);</div></pre></td></tr></table></figure>
+
+<p>clear清除所有的key/value<br>用途：清除所有的key/value<br>用法：.clear()<br>代码示例：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sessionStorage.<span class="keyword">clear</span>(); 	</div><div class="line">localStorage.<span class="keyword">clear</span>();</div></pre></td></tr></table></figure>
+
+<p>其他操作方法：点操作和[]<br>web Storage不但可以用自身的setItem,getItem等方便存取，也可以像普通对象一样用点(.)操作符，及[]的方式进行数据存储，像如下的代码：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> storage = <span class="built_in">window</span>.localStorage; </div><div class="line">storage.key1 = <span class="string">"hello"</span>; </div><div class="line">storage[<span class="string">"key2"</span>] = <span class="string">"world"</span>; </div><div class="line"><span class="built_in">console</span>.log(storage.key1); </div><div class="line"><span class="built_in">console</span>.log(storage[<span class="string">"key2"</span>]);</div></pre></td></tr></table></figure>
+
+<p>localStorage和sessionStorage的key和length属性实现遍历<br>sessionStorage和localStorage提供的key()和length可以方便的实现存储的数据遍历，例如下面的代码：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> storage = window.localStorage; </div><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">0</span>, len = storage.length; i  &lt;  len; i++){     </div><div class="line">	<span class="keyword">var</span> key = storage.key(i);     </div><div class="line">	<span class="keyword">var</span> <span class="keyword">value</span> = storage.getItem(key);     </div><div class="line">	console.log(key + <span class="string">"="</span> + <span class="keyword">value</span>); </div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>storage事件<br>storage还提供了storage事件，当键值改变或者clear的时候，就可以触发storage事件，如下面的代码就添加了一个storage事件改变的监听：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(<span class="built_in">window</span>.addEventListener){ 	</div><div class="line">	<span class="built_in">window</span>.addEventListener(<span class="string">"storage"</span>,handle_storage,<span class="literal">false</span>); </div><div class="line">}<span class="keyword">else</span> <span class="keyword">if</span>(<span class="built_in">window</span>.attachEvent){ 	</div><div class="line">	<span class="built_in">window</span>.attachEvent(<span class="string">"onstorage"</span>,handle_storage); </div><div class="line">} </div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">handle_storage</span><span class="params">(e)</span></span>{ 	</div><div class="line">	<span class="keyword">if</span>(!e){</div><div class="line">		e=<span class="built_in">window</span>.event;</div><div class="line">	}	</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>storage事件对象的具体属性如下表：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">Property</span>	 <span class="keyword">Type</span>	 Description</div><div class="line"></div><div class="line">key	String	 The named key that was added, removed, <span class="keyword">or</span> moddified</div><div class="line">oldValue	 Any	 The previous value(now overwritten), <span class="keyword">or</span> null <span class="keyword">if</span> a <span class="keyword">new</span> item was added</div><div class="line">newValue	 Any	 The <span class="keyword">new</span> value, <span class="keyword">or</span> null <span class="keyword">if</span> an item was added</div><div class="line">url/uri	String	The page that called the <span class="function"><span class="keyword">method</span> <span class="title">that</span> <span class="title">triggered</span> <span class="title">this</span> <span class="title">change</span></span></div></pre></td></tr></table></figure>
+
+<h3 id="空间大小">空间大小</h3>
+<p>HTML5 的建议是每个网站提供给 Storage 的空间是 5MB，一般来说足够存字符串。如果存入的数据太大，有些浏览器如 Chrome 会抛出 QUOTA_EXCEEDED_ERR 异常。所以虽然 DOM Storage 提供的空间比 cookie 要大很多，但在使用需要注意限制。</p>
+<h3 id="安全性">安全性</h3>
+<p>一般不要在客户端存储敏感的信息，使用 localStorage、globalStorage 等在客户端存储的信息都非常容易暴露。应该在完成数据存储后使用 clear 或者 removeItem 方法清除保存在 Storage 对象中的数据。</p>
+<h3 id="谢谢！">谢谢！</h3>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/09/22/2014_Html5_storage/" target="_blank" rel="external">http://www.haomou.net/2014/09/22/2014_Html5_storage/</a></p>
+<p>有问题请留言。  请叫我皓眸哥(^_^)  </p>
+
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://haomou.net">皓眸IT</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/09/23/2014_Html5_storage/">WebStorge使用</a></div>
+</div></div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/HTML5/" itemprop="url"><span itemprop="title" >HTML5</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/HTML5/" class="label label-primary" itemprop="url"><span itemprop="title">HTML5</span></a><a href="/tags/storage/" class="label label-success" itemprop="url"><span itemprop="title">storage</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-04 17:35:30"datetime="2015-01-04 17:35:30"> Jan 4 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://haomou.net/2014/09/23/2014_Html5_storage/#comments" class="ds-thread-count comment-link" data-thread-key="2014_Html5_storage" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  <li class="previous"><a href="/2014/09/26/2014_nodejs_3/" title="NodeJS+mongoDB部署到Linux">&larr; NodeJS+mongoDB部署到Linux</a></li>
+  
+  
+  <li class="next"><a href="/2014/09/20/2014_js2/" title="正确使用“use strict”">正确使用“use strict” &rarr;</a></li>
+  
+</ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="2014_Html5_storage"  data-url="http://haomou.net/2014/09/23/2014_Html5_storage/" data-title="WebStorge使用"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_myself" class="widget hm-left-widget" style="clear:both">
+    <img alt="皓眸GEEK" src="/images/hm.jpg" width="100" height="120"  style="border-radius: 5px;margin-right: 5px;float:left;"/>
+<div style="color: #428bca;text-align: center;font-size: 18px;">曹欢欢(chale)</div>2014年毕业于中国科学技术大学，硕士研究生，目前在大武汉知名外企公司上班。<br/>喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身哈，等你来...吼吼...喜欢就写信给我喽，请叫我皓眸哥(^_^)
+<br/>擅长：NodeJS，JAVA，PHP，WebGL，WebRTC，PS ...
+<br/><span style="color: #fb6580;">Mail To: </span>chh1990@mail.ustc.edu.cn
+<br/><span style="color: #fb6580;">QQ：</span>807991555（chale）
+<br/><span style="color: #fb6580;">APP敏捷开发交流群：</span>345413787</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_search" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">一般人我不告诉他？</div>  <div id="haomou_ad">
+<a target="_blank" href="http://2.taobao.com/item.htm?id=43869349327&spm=686.1000925.0.0.mjUwtL&mt=">
+<img src="/images/book.png" title="皓眸IT-我的书" alt="APP敏捷开发王道-我的新书" />
+</a>
+<br/>
+<p style="text-align:center;"><a target="_blank" href="http://2.taobao.com/item.htm?id=43869349327&spm=686.1000925.0.0.mjUwtL&mt=">附整套项目代码，只要<b style="color:red;">9.9</b>元</a></p>
+<p style="text-align:center;">APP敏捷开发交流群：<b style="color:red;">345413787</b></p>
+</div></div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2014-2015 Chale Cao
+  
+    &nbsp;&nbsp;</span>
+  <a href='http://www.miibeian.gov.cn/'>苏ICP备13018740号-6</a></span>
+  <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'></span>  </div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-04 17:35:30</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haomou"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://haomou.net/2014/09/23/2014_Html5_storage/";
+    var wumiiTitle = "WebStorge使用";
+    var wumiiTags = "HTML5,storage";
+    var wumiiCategories = ["HTML5"];
+    var wumiiSitePrefix = "http://haomou.net";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />').wrap('<div class="img_block"></div>');
+     
+      if(alt){$(this).after('<span class="caption">' + alt + '</span>')};
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script src="/js/chenall.js" type="text/javascript"></script>
+
+
+  </body>
+</html>

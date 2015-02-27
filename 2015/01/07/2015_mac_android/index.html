@@ -1,0 +1,396 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="wumiiVerification" content="1747c9bc-e905-45aa-88ac-f13f2b210015" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MAC下Android环境与cordova搭建 | 皓眸IT</title>
+<meta name="author" content="Chale Cao">
+
+<meta name="description" content="MAC下玩Android为什么需要在mac下用Android，这个主要是因为前几天手痒，哈哈，把系统装成了黑苹果。不过用起来还是蛮流畅的，所以就用这个，懒得换了。熟悉熟悉mac也挺好的，在一个就是现在在学习ionic和cordova，做完项目后可以同时编译生成Android和ios手机app，这样挺方便的。你是不是也心动了，快点动手吧。装黑苹果教程">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="MAC下Android环境与cordova搭建"/>
+<meta property="og:site_name" content="皓眸IT"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css">
+<![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="皓眸IT Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+
+<link rel="stylesheet" href="/css/nprogress.css" type="text/css">
+
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.bootcss.com/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+  
+  <header id="header" class="hm-menu-left-container"><nav id="main-nav" class="navbar navbar-default hm-navbar-menu-left  " role="navigation">
+    <div class="hm-navbar-header">
+    <a href="http://haomou.net" ><img class="hm-logo" src="/images/haomou.png" title="皓眸IT" width="64" height="64" /></a>
+    <br/>|<br/><span class="fa fa-tint hm-black shine_blue" ></span><br/>|<br/><span class="fa fa-heart hm-black shine_red" ></span><br/>|<br/>
+        <i class="fa fa-bars fa-2x hm-black hm-menu shine_blue" ></i><br/><div class="hm-line"></div>
+    </div>
+    <div class="collapse navbar-collapse">
+      <h1 style="color:black">皓眸IT</h1>
+      <ul class="nav navbar-nav hm-left-nav">
+  
+        <li item='2015/01/07/2015_mac_android/' class='active'><a href="/" title="首页">首页</a></li>      
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>关于我<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://home.ustc.edu.cn/~chh1990/chero/chero.html" title="个人主页">个人主页</a></li>    
+        </ul>
+      </li>
+    
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>创业项目<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://pictcake.cn" title="照片蛋糕">照片蛋糕</a></li>    
+        </ul>
+      </li>
+    
+      </ul>
+
+        
+        <div id="widget_category" class="widget hm-left-widget">
+            <div class="panel-heading">分类：</div>            <div data-src='category' class='ajax_widgets'>正在加载...</div>
+        </div>
+        
+        <div id="widget_tagcloud" class="widget hm-left-widget">
+            <div class="panel-heading">标签云：</div>            <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div>        </div>
+        
+
+
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/chalecao">github</a></li>
+      
+      </ul>
+    </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div style="" id="headflash" class="headflash hm_container"><embed pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="/images/bck.swf" width="100%" height="313" style="undefined" id="headflash_f" name="headflash_f" bgcolor="#000" quality="high" allowscriptaccess="false" wmode="transparent" allowfullscreen="false"></div>
+  <div id='content' class=" container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>皓眸IT <small>写清楚，说明白</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article class="hm-article">
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left hm-article-w"></i>
+      <h1 class="title">MAC下Android环境与cordova搭建</h1>
+      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2015-01-06T16:44:29.000Z"> <a href="/2015/01/07/2015_mac_android/">Jan 7 2015</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry"  data-spy="scroll" data-target="#toc" >
+      
+        <h3 id="MAC下玩Android">MAC下玩Android</h3>
+<p>为什么需要在mac下用Android，这个主要是因为前几天手痒，哈哈，把系统装成了黑苹果。不过用起来还是蛮流畅的，所以就用这个，懒得换了。熟悉熟悉mac也挺好的，在一个就是现在在学习ionic和cordova，做完项目后可以同时编译生成Android和ios手机app，这样挺方便的。你是不是也心动了，快点动手吧。<a href="http://www.haomou.net/2014/12/31/2014_mac_install/" target="_blank" rel="external">装黑苹果教程</a><br><a id="more"></a><br><img class="floatnone" alt="皓眸哥" src="/images/mac_android1.jpeg"></p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2015/01/06/2015_mac_android/" target="_blank" rel="external">http://www.haomou.net/2015/01/06/2015_mac_android/</a></p>
+<h3 id="安装工具">安装工具</h3>
+<p>1、最好选择ADT Bundle，这里面已经集成好了Eclipse、ADT、Android SDK Tools，不用自己去设置了。<br>我使用的版本是adt-bundle-mac-x86_64-20131030.zip，22.3.0<br>百度盘下载地址：<a href="http://pan.baidu.com/s/1qWNRJ8g" target="_blank" rel="external">http://pan.baidu.com/s/1qWNRJ8g</a>  共有470MB<br>网上有今年的新版：adt-bundle-mac-x86_64-20140624，这个版本除了集成是API 20外，没有别的，而且用起来错误一大堆，我也不打算去排错了，用这V22.3.0的非常的好。</p>
+<p>上面这个是别人写的经验，但是V22.3.0 版本是可以用，但是如果想用x86虚拟机的，就不行了。这里面有一个坑，很大的坑，就是adt V22.3.0升级到adt V23以上版本，升级不了。不能升级，就不能使用新的AVD，就不能使用新的虚拟机。所以建议还是使用比较新的版本。</p>
+<p>附上地址：<br>ADT<br>23.0.4：<a href="https://dl.google.com/android/ADT-23.0.4.zip" target="_blank" rel="external">https://dl.google.com/android/ADT-23.0.4.zip</a></p>
+<p>SDK——23.0.2<br>Windows32 &amp; 64-bit:<a href="http://dl.google.com/android/android-sdk_r23.0.2-windows.zip" target="_blank" rel="external">http://dl.google.com/android/android-sdk_r23.0.2-windows.zip</a><br>Windows32 &amp; 64-bit:<a href="http://dl.google.com/android/installer_r23.0.2-windows.exe" target="_blank" rel="external">http://dl.google.com/android/installer_r23.0.2-windows.exe</a><br>Mac OS X32 &amp; 64-bit:<a href="http://dl.google.com/android/android-sdk_r23.0.2-macosx.zip" target="_blank" rel="external">http://dl.google.com/android/android-sdk_r23.0.2-macosx.zip</a><br>Linux32 &amp; 64-bit:<a href="http://dl.google.com/android/android-sdk_r23.0.2-linux.tgz" target="_blank" rel="external">http://dl.google.com/android/android-sdk_r23.0.2-linux.tgz</a></p>
+<p>ADT Bundle——23.0.2<br>Windows 32-bit:<a href="https://dl.google.com/android/adt/adt-bundle-windows-x86-20140702.zip" target="_blank" rel="external">https://dl.google.com/android/adt/adt-bundle-windows-x86-20140702.zip</a><br>Windows 64-bit:<a href="https://dl.google.com/android/adt/adt-bundle-windows-x86_64-20140702.zip" target="_blank" rel="external">https://dl.google.com/android/adt/adt-bundle-windows-x86_64-20140702.zip</a><br>Mac OS X 64-bit:<a href="https://dl.google.com/android/adt/adt-bundle-mac-x86_64-20140702.zip" target="_blank" rel="external">https://dl.google.com/android/adt/adt-bundle-mac-x86_64-20140702.zip</a><br>Linux 32-bit:<a href="https://dl.google.com/android/adt/adt-bundle-linux-x86-20140702.zip" target="_blank" rel="external">https://dl.google.com/android/adt/adt-bundle-linux-x86-20140702.zip</a><br>Linux 64-bit:<a href="https://dl.google.com/android/adt/adt-bundle-linux-x86_64-20140702.zip" target="_blank" rel="external">https://dl.google.com/android/adt/adt-bundle-linux-x86_64-20140702.zip</a><br>﻿﻿如果你的下载慢，请修改hosts文件，添加下面的地址，经测试这个是比较快的。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="number">74.125</span>.<span class="number">113.121</span> developer.android.<span class="keyword">com</span> </div><div class="line"><span class="number">203.208</span>.<span class="number">46.146</span> <span class="keyword">dl</span>.google.<span class="keyword">com</span> </div><div class="line"><span class="number">203.208</span>.<span class="number">46.146</span> <span class="keyword">dl</span>-ssl.google.<span class="keyword">com</span></div></pre></td></tr></table></figure>
+
+<p>当然，如果你不拍麻烦，选择Eclipse+ADT的方式，会消耗很多时间，各种的版本问题，各种的下载，总之不推荐。因为我是做安卓开发，不是做JAVA开发，用Google给我们做好的ADT Bundle应该说是最好的选择。</p>
+<p>2、这个版本仅仅集成了API 19，即Android 4.4。你可以打开SDK Manager安装你需要的版本即可。</p>
+<p><img class="floatnone" alt="皓眸哥" src="/images/mac_android2.jpeg"></p>
+<h3 id="mac安装ant">mac安装ant</h3>
+<p>下载安装ant，这个是在用phonegap的cordova工具生成android项目时，需要的编辑工具。<a href="http://ant.apache.org/bindownload.cgi" target="_blank" rel="external">下载地址</a>（<a href="http://ant.apache.org/bindownload.cgi" target="_blank" rel="external">http://ant.apache.org/bindownload.cgi</a> ）,当前最新版是Apache Ant 1.9.3，可以下载那个zip包，如下图：<br><img class="floatnone" alt="皓眸哥" src="/images/mac_android3.jpg"></p>
+<p>2.将下载的zip包解压到一个目录下，如/usr/local。这时候需要你提供修改权限，输入密码。</p>
+<p>Tip:什么？不会进入usr目录？打开Finder，选择菜单中的“前往”&gt;“前往文件夹”，或者在打开Finder后用快捷键“shift+command+G”，就进入到了/usr/local目录下。</p>
+<p>3.配置环境变量：</p>
+<p>1)获取root权限</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$sudo</span> <span class="operator">-s</span>根据提示输入管理员密码，提示符会改成bash-<span class="number">3.2</span><span class="comment">#</span></div></pre></td></tr></table></figure>
+
+<p>2）修改bashrc文件读写权限</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bash-<span class="number">3.2</span><span class="comment">#chmod +w /etc/bashrc</span></div></pre></td></tr></table></figure>
+
+<p>3）查看修改权限后的结果，如显示类似下面，说明修改权限成功。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="deletion">-rw-rw-rw-1 rootwheel8161 13 13:55 /etc/bashrc</span></div></pre></td></tr></table></figure>
+
+<p>4）修改bashrc文件 或者 .bash_profile</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">bash-<span class="number">3.2</span><span class="comment">#vi /etc/bashrc</span></div></pre></td></tr></table></figure>
+
+<p>按i键进入编辑状态，在文件末尾加入下面两行</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">export</span> ANT_HOME=/usr/local/apache-ant-<span class="number">1.9</span>.<span class="number">3</span></div><div class="line"></div><div class="line"><span class="keyword">export</span> PATH=<span class="variable">${PATH}</span>:<span class="variable">${ANT_HOME}</span>/bin</div></pre></td></tr></table></figure>
+
+<p>Tip:其中“apache-ant-1.9.3”是你解压缩的文件夹名称</p>
+<p>按ESC键退出编辑状态。输入:wq!保存并退出。</p>
+<p>5）测试</p>
+<p>重新打开终端并输入</p>
+<p>$ant -version</p>
+<p>配置成功则显示如下：</p>
+<p>Apache Ant(TM) version 1.9.3 compiled on December 23 2013</p>
+<h3 id="安装NodeJS插件">安装NodeJS插件</h3>
+<p>这个之前介绍过如何安装，这里就不说明了，参考：（<a href="http://www.haomou.net/2014/07/29/2014_nodejs_1/" target="_blank" rel="external">http://www.haomou.net/2014/07/29/2014_nodejs_1/</a> ）</p>
+<p>接着安装pnonegap和cordova，如下：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">npm install -g phonegap</div><div class="line"><span class="keyword">...</span></div><div class="line">npm install -g cordova</div></pre></td></tr></table></figure>
+
+<p>安装完成之后，我们就可以使用phonegap生成一个android项目文件。执行如下命令：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">cordova <span class="built_in">create</span> myapp com.org.myapp <span class="string">"HelloWorld"</span>  </div><div class="line">cd myapp  </div><div class="line">cordova <span class="built_in">platform</span> <span class="built_in">add</span> android <span class="comment"> //添加android运行平台</span></div><div class="line">cordova build android  <span class="comment"> //编译apk</span></div><div class="line">cordova emulate android <span class="comment"> //调用adb调试应用</span></div></pre></td></tr></table></figure>
+
+<p>上面的倒数第二步，cordova platform add android这个可能会报错。</p>
+<h4 id="错误1-ANDROID_HOME_is_not_set">错误1-ANDROID_HOME is not set</h4>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">/Users/chale/.cordova/lib/npm_cache/cordova-android/3.6.4/package/bin/node_modules/q/q.js:126</div><div class="line">                    throw e;</div><div class="line">                          ^</div><div class="line">Error: ANDROID_HOME is not <span class="operator"><span class="keyword">set</span> <span class="keyword">and</span> <span class="string">"android"</span> command <span class="keyword">not</span> <span class="keyword">in</span> your PATH. You must fulfill <span class="keyword">at</span> <span class="keyword">least</span> one <span class="keyword">of</span> these conditions.</span></div><div class="line">    <span class="keyword">at</span> /Users/chale/.cordova/lib/npm_cache/cordova-android/<span class="number">3.6</span><span class="number">.4</span>/package/<span class="keyword">bin</span>/lib/check_reqs.js:<span class="number">159</span>:<span class="number">19</span></div><div class="line">    <span class="keyword">at</span> _fulfilled (/Users/chale/.cordova/lib/npm_cache/cordova-android/<span class="number">3.6</span><span class="number">.4</span>/package/<span class="keyword">bin</span>/node_modules/q/q.js:<span class="number">798</span>:<span class="number">54</span>)</div><div class="line">    <span class="keyword">at</span> self.promiseDispatch.done (/Users/chale/.cordova/lib/npm_cache/cordova-android/<span class="number">3.6</span><span class="number">.4</span>/package/<span class="keyword">bin</span>/node_modules/q/q.js:<span class="number">827</span>:<span class="number">30</span>)</div><div class="line">    <span class="keyword">at</span> Promise.promise.promiseDispatch (/Users/chale/.cordova/lib/npm_cache/cordova-android/<span class="number">3.6</span><span class="number">.4</span>/package/<span class="keyword">bin</span>/node_modules/q/q.js:<span class="number">760</span>:<span class="number">13</span>)</div><div class="line">    <span class="keyword">at</span> /Users/chale/.cordova/lib/npm_cache/cordova-android/<span class="number">3.6</span><span class="number">.4</span>/package/<span class="keyword">bin</span>/node_modules/q/q.js:<span class="number">821</span>:<span class="number">14</span></div><div class="line">    <span class="keyword">at</span> <span class="keyword">flush</span> (/Users/chale/.cordova/lib/npm_cache/cordova-android/<span class="number">3.6</span><span class="number">.4</span>/package/<span class="keyword">bin</span>/node_modules/q/q.js:<span class="number">108</span>:<span class="number">17</span>)</div><div class="line">    <span class="keyword">at</span> process._tickCallback (node.js:<span class="number">442</span>:<span class="number">13</span>)</div><div class="line">    <span class="keyword">at</span> <span class="keyword">Function</span>.<span class="keyword">Module</span>.runMain (<span class="keyword">module</span>.js:<span class="number">499</span>:<span class="number">11</span>)</div><div class="line">    <span class="keyword">at</span> startup (node.js:<span class="number">119</span>:<span class="number">16</span>)</div></pre></td></tr></table></figure>
+
+<p>错误提示是没有添加ANDROID_HOME到环境变量中，我们添加即可，方法：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">sudo</span> vi ~/.bash_profile</div><div class="line"></div><div class="line">追加 下载的adt bundle目录下的sdk目录为ANDROID_HOME，例如：</div><div class="line"><span class="keyword">export</span> ANDROID_HOME=/Applications/adt-bundle-mac-x86_64-<span class="number">20131030</span>/sdk</div><div class="line"></div><div class="line">然后是配置生效</div><div class="line"><span class="built_in">source</span> ~/.bash_profile</div></pre></td></tr></table></figure>
+
+<p>然后重试一下，我的是成功了！</p>
+<h4 id="错误2-Please_install_Android_target_17">错误2-Please install Android target 17</h4>
+<p>这个是windows安装时容易出现的错误。</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[error] Please <span class="operator"><span class="keyword">install</span> Android target <span class="number">17</span> (the Android <span class="number">4.2</span> SDK). Make sure you have the latest Android tools installed <span class="keyword">as</span> well.</span></div></pre></td></tr></table></figure>
+
+<p>这个主要是没有安装和当前cordova对应要求的android平台sdk，这个可以通过2种方法解决，</p>
+<ol>
+<li>打开ADT，打开Android SDK manager，安装对应平台的SDK。（参考下一小节）</li>
+<li>打开如下目录，可能其中的版本号不一，</li>
+</ol>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">C:<span class="command">\Users</span><span class="command">\USER</span>_NAME<span class="command">\.</span>cordova<span class="command">\lib</span><span class="command">\android</span><span class="command">\cordova</span>\3.1.0<span class="command">\framework</span><span class="command">\project</span>.properties</div></pre></td></tr></table></figure>
+
+<p>修改</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">target</span>=<span class="string">android-17</span></div></pre></td></tr></table></figure>
+
+<p>可以把这个修改成你现在已安装的平Andriod台，或者想要指定的Android平台。<br>这个问题解决后，上面的示例项目即可生成，然后使用ADT Eclipse导入该项目即可，同意通过运行，查看在AVD中的运行效果。</p>
+<h3 id="Android开发平台搭建技巧">Android开发平台搭建技巧</h3>
+<p>技巧一：Android SDK Manager打开非常慢，总是失败。解决方法：</p>
+<blockquote>
+<p>访问站长工具网站（<a href="http://tool.chinaz.com/" target="_blank" rel="external">http://tool.chinaz.com/</a>  )，选择 其他工具/超级PING ，把域名dl-ssl.google.com粘贴进去，然后勾选海外的，点击查询，会列出一些可以ping通的IP地址。<br>使用cmd命令行ping 对应的ip地址，修改系统的host文件，具体位置在（C:\Windows\System32\drivers\etc），在最后一行增加域名解析记录：</p>
+</blockquote>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="number">74.125</span>.<span class="number">206.93</span> <span class="keyword">dl</span>-ssl.google.<span class="keyword">com</span></div></pre></td></tr></table></figure>
+
+<p>然后重新打开Android SDK Manager，试一下。如果不行，就换一个ip，重新修改host，总有可以的。我用的这个是英国的ip，速度还不错。<br>技巧二：manage AVD里面新建Android虚拟机的时候，报错：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">No system images installed <span class="keyword">for</span> <span class="keyword">this</span> target</div></pre></td></tr></table></figure>
+
+<p>解决方法：在Android SDK Manager中下载对应平台的ARM EABI v7a System image。<br>技巧三：打开eclipse时，卡在Android sdk content loader 0%，解决办法：<br>方法1：遇到Eclipse右下角一直显示“Android sdk content loader 0%”的情况时，直接关掉Eclipse，有ADB进程在运行时通过进程管理器结束进程，然后重启Eclipse。通过这种方法多数情况下问题会得到解决。<br>方法2：关闭Eclipse，删掉C:\Users\用户名.android文件夹下的所有内容，再重启Eclipse。</p>
+<p>技巧四：强制更新SDK Manager 列表<br>用SDK Manager 更新就可以解决了。<br>更新方法：<br>在tools- &gt;options中清除缓存 并且选中 Force <a href="https://..sources" target="_blank" rel="external">https://..sources</a> to be fetched using <a href="http://...；" target="_blank" rel="external">http://...；</a><br>更改host文件，在host文件中加入如下信息（win7或者win8修改host文件需要权限，可以将host文件拷贝出来修改后再替换）：<br>74.125.113.121 developer.android.com<br>203.208.46.146 dl.google.com<br>203.208.46.146 dl-ssl.google.com<br>更新完后重新打开SDK Manager，这是应该就可以下载了</p>
+<p>技巧五：虚拟机使用x86架构cpu提升速度<br>安装<a href="https://software.intel.com/en-us/android/articles/intel-hardware-accelerated-execution-manager" target="_blank" rel="external">intel HAXM支持</a>:<a href="https://software.intel.com/en-us/android/articles/intel-hardware-accelerated-execution-manager" target="_blank" rel="external">https://software.intel.com/en-us/android/articles/intel-hardware-accelerated-execution-manager</a><br>这个也可以通过Android SDK Manager安装，在extra目录，但是有时候没有这个选项，我强制更新SDK Manager之后也没有x86内容。参考：<br><img class="floatnone" alt="皓眸哥" src="/images/android_x86.png"><br>然后按照下图创建虚拟机即可，绝对提升Android 虚拟机速度。<br><img class="floatnone" alt="皓眸哥" src="/images/android_x862.png"><br>我在自己的mac上搞了半天，死活不出现x86的选项，只能自己手动添加了，参考:<br><a href="https://software.intel.com/en-us/android/articles/alternate-method-installing-the-intel-atom-android-x86-emulator-image-manually" target="_blank" rel="external">https://software.intel.com/en-us/android/articles/alternate-method-installing-the-intel-atom-android-x86-emulator-image-manually</a><br>手动下载Android<em> 2.3.7 x86 Emulator Image  放到addon目录下。附上：<br>Android</em> 2.3.7 (Gingerbread) x86 Emulator Image下载地址：<br><a href="https://software.intel.com/en-us/articles/android-237-gingerbread-x86-emulator-image-add-on" target="_blank" rel="external">https://software.intel.com/en-us/articles/android-237-gingerbread-x86-emulator-image-add-on</a><br>Android 4.4 (kitkat) x86 Emulator Image下载地址：<br><a href="https://software.intel.com/en-us/android/articles/android-44-kitkat-x86-emulator-system-image" target="_blank" rel="external">https://software.intel.com/en-us/android/articles/android-44-kitkat-x86-emulator-system-image</a><br>Android 4.4 (kitkat) x86 Emulator安装说明，这个与上面的不太一样：<br><a href="https://software.intel.com/en-us/android/articles/intel-atom-x86-image-for-android-4-4-kitkat-installation-instructions-manually" target="_blank" rel="external">https://software.intel.com/en-us/android/articles/intel-atom-x86-image-for-android-4-4-kitkat-installation-instructions-manually</a><br><img class="floatnone" alt="皓眸哥" src="/images/android_x863.gif"></p>
+<p>总结一下，我折腾了半天，发现一个问题。起始只要升级一下Android SDK platform-tools就可以了，怎么升级呢，看下图，升级之后重新开启这个sdk Manager就可以了，汗死了！！<br><img class="floatnone" alt="皓眸哥" src="/images/mac_android.png"></p>
+<h3 id="谢谢！">谢谢！</h3>
+<p>转载请注明出处：<a href="http://www.haomou.net/2015/01/06/2015_mac_android/" target="_blank" rel="external">http://www.haomou.net/2015/01/06/2015_mac_android/</a><br>有问题请留言。  请叫我皓眸哥(^_^)  </p>
+
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://haomou.net">皓眸IT</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2015/01/07/2015_mac_android/">MAC下Android环境与cordova搭建</a></div>
+</div></div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/android/" itemprop="url"><span itemprop="title" >android</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/phonegap/" class="label label-primary" itemprop="url"><span itemprop="title">phonegap</span></a><a href="/tags/android/" class="label label-success" itemprop="url"><span itemprop="title">android</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-08 08:55:38"datetime="2015-01-08 08:55:38"> Jan 8 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://haomou.net/2015/01/07/2015_mac_android/#comments" class="ds-thread-count comment-link" data-thread-key="2015_mac_android" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  <li class="previous"><a href="/2015/01/08/2015_ionic_fileOP/" title="ionic文件选择与上传">&larr; ionic文件选择与上传</a></li>
+  
+  
+  <li class="next"><a href="/2015/01/06/2015_ionic_ngCordova/" title="ionic开发插件之ngCordova配置安装">ionic开发插件之ngCordova配置安装 &rarr;</a></li>
+  
+</ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="2015_mac_android"  data-url="http://haomou.net/2015/01/07/2015_mac_android/" data-title="MAC下Android环境与cordova搭建"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_myself" class="widget hm-left-widget" style="clear:both">
+    <img alt="皓眸GEEK" src="/images/hm.jpg" width="100" height="120"  style="border-radius: 5px;margin-right: 5px;float:left;"/>
+<div style="color: #428bca;text-align: center;font-size: 18px;">曹欢欢(chale)</div>2014年毕业于中国科学技术大学，硕士研究生，目前在大武汉知名外企公司上班。<br/>喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身哈，等你来...吼吼...喜欢就写信给我喽，请叫我皓眸哥(^_^)
+<br/>擅长：NodeJS，JAVA，PHP，WebGL，WebRTC，PS ...
+<br/><span style="color: #fb6580;">Mail To: </span>chh1990@mail.ustc.edu.cn
+<br/><span style="color: #fb6580;">QQ：</span>807991555（chale）
+<br/><span style="color: #fb6580;">APP敏捷开发交流群：</span>345413787</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_search" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">一般人我不告诉他？</div>  <div id="haomou_ad">
+<a target="_blank" href="http://2.taobao.com/item.htm?id=43869349327&spm=686.1000925.0.0.mjUwtL&mt=">
+<img src="/images/book.png" title="皓眸IT-我的书" alt="APP敏捷开发王道-我的新书" />
+</a>
+<br/>
+<p style="text-align:center;"><a target="_blank" href="http://2.taobao.com/item.htm?id=43869349327&spm=686.1000925.0.0.mjUwtL&mt=">附整套项目代码，只要<b style="color:red;">9.9</b>元</a></p>
+<p style="text-align:center;">APP敏捷开发交流群：<b style="color:red;">345413787</b></p>
+</div></div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2014-2015 Chale Cao
+  
+    &nbsp;&nbsp;</span>
+  <a href='http://www.miibeian.gov.cn/'>苏ICP备13018740号-6</a></span>
+  <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'></span>  </div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-08 08:55:38</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haomou"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://haomou.net/2015/01/07/2015_mac_android/";
+    var wumiiTitle = "MAC下Android环境与cordova搭建";
+    var wumiiTags = "phonegap,android";
+    var wumiiCategories = ["android"];
+    var wumiiSitePrefix = "http://haomou.net";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />').wrap('<div class="img_block"></div>');
+     
+      if(alt){$(this).after('<span class="caption">' + alt + '</span>')};
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script src="/js/chenall.js" type="text/javascript"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="wumiiVerification" content="1747c9bc-e905-45aa-88ac-f13f2b210015" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>图像处理的数学理论 | 皓眸IT</title>
+<meta name="author" content="Chale Cao">
+
+<meta name="description" content="简介本篇主要介绍图像处理中一些常用的数学理论，比如卷积，拉普拉斯变换，傅里叶变换等等。通过列举很多有趣的生活实例，增加对理论的理解。想起当时大学学的课程，突然感觉一位好老师是那么的重要，当然也不是随随便便就可以成为好老师的。这里大部分例子也是从网上搜集的，主要是分享知识。">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="图像处理的数学理论"/>
+<meta property="og:site_name" content="皓眸IT"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css">
+<![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="皓眸IT Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+
+<link rel="stylesheet" href="/css/nprogress.css" type="text/css">
+
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.bootcss.com/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+  
+  <header id="header" class="hm-menu-left-container"><nav id="main-nav" class="navbar navbar-default hm-navbar-menu-left  " role="navigation">
+    <div class="hm-navbar-header">
+    <a href="http://haomou.net" ><img class="hm-logo" src="/images/haomou.png" title="皓眸IT" width="64" height="64" /></a>
+    <br/>|<br/><span class="fa fa-tint hm-black shine_blue" ></span><br/>|<br/><span class="fa fa-heart hm-black shine_red" ></span><br/>|<br/>
+        <i class="fa fa-bars fa-2x hm-black hm-menu shine_blue" ></i><br/><div class="hm-line"></div>
+    </div>
+    <div class="collapse navbar-collapse">
+      <h1 style="color:black">皓眸IT</h1>
+      <ul class="nav navbar-nav hm-left-nav">
+  
+        <li item='2014/08/06/2014_theory/' class='active'><a href="/" title="首页">首页</a></li>      
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>关于我<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://home.ustc.edu.cn/~chh1990/chero/chero.html" title="个人主页">个人主页</a></li>    
+        </ul>
+      </li>
+    
+      <li class='dropdown'>
+        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>创业项目<b class='caret'></b></a>
+        <ul class='dropdown-menu'>
+    
+          <li><a href="http://pictcake.cn" title="照片蛋糕">照片蛋糕</a></li>    
+        </ul>
+      </li>
+    
+      </ul>
+
+        
+        <div id="widget_category" class="widget hm-left-widget">
+            <div class="panel-heading">分类：</div>            <div data-src='category' class='ajax_widgets'>正在加载...</div>
+        </div>
+        
+        <div id="widget_tagcloud" class="widget hm-left-widget">
+            <div class="panel-heading">标签云：</div>            <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div>        </div>
+        
+
+
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/chalecao">github</a></li>
+      
+      </ul>
+    </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div style="" id="headflash" class="headflash hm_container"><embed pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="/images/bck.swf" width="100%" height="313" style="undefined" id="headflash_f" name="headflash_f" bgcolor="#000" quality="high" allowscriptaccess="false" wmode="transparent" allowfullscreen="false"></div>
+  <div id='content' class=" container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>皓眸IT <small>写清楚，说明白</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article class="hm-article">
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left hm-article-w"></i>
+      <h1 class="title">图像处理的数学理论</h1>
+      
+        <span class="hm-article-w hm-article-w-h0">发表于<br/><time datetime="2014-08-06T01:40:49.000Z"> <a href="/2014/08/06/2014_theory/">Aug 6 2014</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry"  data-spy="scroll" data-target="#toc" >
+      
+        <h3 id="简介">简介</h3>
+<p>本篇主要介绍图像处理中一些常用的数学理论，比如卷积，拉普拉斯变换，傅里叶变换等等。通过列举很多有趣的生活实例，增加对理论的理解。想起当时大学学的课程，突然感觉一位好老师是那么的重要，当然也不是随随便便就可以成为好老师的。这里大部分例子也是从网上搜集的，主要是分享知识。<br><a id="more"></a></p>
+<p>转载请注明出处：<a href="http://www.haomou.net/2014/08/05/2014_theory/" target="_blank" rel="external">http://www.haomou.net/2014/08/05/2014_theory/</a></p>
+<h3 id="卷积概念引入之滤波">卷积概念引入之滤波</h3>
+<p>这里讨论利用输入图像中像素的小邻域来产生输出图像的方法，在信号处理中这种方法称为滤波（filtering）。其中，最常用的是线性滤波：输出像素是输入邻域像素的加权和。<br>1.相关算子（Correlation Operator)<br>定义：<img class="floatnone" src="/images/theory1.png">,<br>即 <img class="floatnone" src="/images/theory2.png">，<br>其中ｈ称为相关核(Kernel).<br>步骤：<br>        1）滑动核，使其中心位于输入图像g的（i，j）像素上<br>        2）利用上式求和，得到输出图像的（i，j）像素值<br>        3）充分上面操纵，直到求出输出图像的所有像素值</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">例如：<span class="variable">A =</span> [<span class="number">17</span>  <span class="number">24</span>   <span class="number">1</span>   <span class="number">8</span>  <span class="number">15</span>            <span class="variable">h =</span> [<span class="number">8</span>   <span class="number">1</span>   <span class="number">6</span></div><div class="line">	   <span class="number">23</span>   <span class="number">5</span>   <span class="number">7</span>  <span class="number">14</span>  <span class="number">16</span>                 <span class="number">3</span>   <span class="number">5</span>   <span class="number">7</span></div><div class="line">            <span class="number">4</span>   <span class="number">6</span>  <span class="number">13</span>  <span class="number">20</span>  <span class="number">22</span>                 <span class="number">4</span>   <span class="number">9</span>   <span class="number">2</span>]</div><div class="line">           <span class="number">10</span>  <span class="number">12</span>  <span class="number">19</span>  <span class="number">21</span>   <span class="number">3</span>           </div><div class="line">           <span class="number">11</span>  <span class="number">18</span>  <span class="number">25</span>   <span class="number">2</span>   <span class="number">9</span>]</div></pre></td></tr></table></figure>
+
+<p>计算输出图像的（2，4）元素 = 1<em>8 + 8</em>1 + 15<em>6 + 7</em>3 + 14<em>5 + 16</em>7 + 13<em>4 + 20</em>9 + 22*2<br><img class="floatnone" src="/images/theory3.png"><br>2.卷积算子（Convolution)<br>定义：<img class="floatnone" src="/images/theory4.png"> ，<img class="floatnone" src="/images/theory5.png">，其中<br>步骤：<br>        1）将核围绕中心旋转180度<br>        2）滑动核，使其中心位于输入图像g的（i，j）像素上<br>        3）利用上式求和，得到输出图像的（i，j）像素值<br>        4）充分上面操纵，直到求出输出图像的所有像素值<br><img class="floatnone" src="/images/theory6.png"><br>3.边缘效应<br>当对图像边缘的进行滤波时，核的一部分会位于图像边缘外面。<br><img class="floatnone" src="/images/theory7.png"><br>常用的策略包括：<br>1）使用常数填充：imfilter默认用0填充，这会造成处理后的图像边缘是黑色的。<br>2）复制边缘像素：I3 = imfilter(I,h,’replicate’);</p>
+<h3 id="图像处理之卷积概念">图像处理之卷积概念</h3>
+<p>我们来看一下一维卷积的概念.<br>连续空间的卷积定义是 f(x)与g(x)的卷积是 f(t-x)g(x) 在t从负无穷到正无穷的积分值.t-x要在f(x)定义域内,所以看上去很大的积分实际上还是在一定范围的.<br>实际的过程就是f(x) 先做一个Y轴的反转,然后再沿X轴平移t就是f(t-x),然后再把g(x)拿来,两者乘积的值再积分.想象一下如果g(x)或者f(x)是个单位的阶越函数. 那么就是f(t-x)与g(x)相交部分的面积.这就是卷积了.<br>把积分符号换成求和就是离散空间的卷积定义了.</p>
+<p>那么在图像中卷积卷积地是什么意思呢,就是图像f(x),模板g(x),然后将模版g(x)在模版中移动,每到一个位置,就把f(x)与g(x)的定义域相交的元素进行乘积并且求和,得出新的图像一点,就是被卷积后的图像. 模版又称为卷积核.卷积核做一个矩阵的形状.</p>
+<p>卷积定义上是线性系统分析经常用到的.线性系统就是一个系统的输入和输出的关系是线性关系.就是说整个系统可以分解成N多的无关独立变化,整个系统就是这些变化的累加.<br>如 x1-&gt;y1, x2-&gt;y2; 那么A<em>x1 + B</em>x2 -&gt; A<em>y1 + B</em>y2 这就是线性系统. 表示一个线性系统可以用积分的形式 如 Y = Sf(t,x)g(x)dt S表示积分符号,就是f(t,x)表示的是A B之类的线性系数.<br>看上去很像卷积呀,,对如果f(t,x) = F(t-x) 不就是了吗.从f(t,x)变成F(t-x)实际上是说明f(t,x)是个线性移不变,就是说 变量的差不变化的时候,那么函数的值不变化. 实际上说明一个事情就是说线性移不变系统的输出可以通过输入和表示系统线性特征的函数卷积得到.</p>
+<h3 id="卷积理论理解">卷积理论理解</h3>
+<p>谈起卷积分当然要先说说冲击函数—-这个倒立的小蝌蚪，卷积其实就是为它诞生的。”冲击函数”是狄拉克为了解决一些瞬间作用的物理现象而提出的符号。<br>古人曰：”说一堆大道理不如举一个好例子”，冲量这一物理现象很能说明”冲击函数”。在t时间内对一物体作用F的力，我们可以让作用时间t很小，作用力F很大，但让Ft的乘积不变，即冲量不变。于是在用t做横坐标、F做纵坐标的坐标系中，就如同一个面积不变的长方形，底边被挤的窄窄的，高度被挤的高高的，在数学中它可以被挤到无限高，但即使它无限瘦、无限高、但它仍然保持面积不变（它没有被挤没！），为了证实它的存在，可以对它进行积分，积分就是求面积嘛！于是”卷积” 这个数学怪物就这样诞生了。说它是数学怪物是因为追求完美的数学家始终在头脑中转不过来弯，一个能瘦到无限小的家伙，竟能在积分中占有一席之地，必须将这个细高挑清除数学界。但物理学家、工程师们确非常喜欢它，因为它解决了很多当时数学家解决不了的实际问题。最终追求完美的数学家终于想通了，数学是来源于实际的，并最终服务于实际才是真。于是，他们为它量身定做了一套运作规律。于是，妈呀！你我都感觉眩晕的卷积分产生了。<br>例子：<br>有一个七品县令，喜欢用打板子来惩戒那些市井无赖，而且有个惯例：如果没犯大罪，只打一板，释放回家，以示爱民如子。<br>有一个无赖，想出人头地却没啥指望，心想：既然扬不了善名，出恶名也成啊。怎么出恶名？炒作呗！怎么炒作？找名人呀！他自然想到了他的行政长官——县令。<br>无赖于是光天化日之下，站在县衙门前撒了一泡尿，后果是可想而知地，自然被请进大堂挨了一板子，然后昂首挺胸回家，躺了一天，嘿！身上啥事也没有！第二天如法炮制，全然不顾行政长管的仁慈和衙门的体面，第三天、第四天……每天去县衙门领一个板子回来，还喜气洋洋地，坚持一个月之久！这无赖的名气已经和衙门口的臭气一样，传遍八方了！<br>县令大人噤着鼻子，呆呆地盯着案子上的惊堂木，拧着眉头思考一个问题：这三十个大板子怎么不好使捏？……想当初，本老爷金榜题名时，数学可是得了满分，今天好歹要解决这个问题：<br>——人（系统！）挨板子（脉冲！）以后，会有什么表现（输出！）？<br>——费话，疼呗！<br>——我问的是：会有什么表现？<br>——看疼到啥程度。像这无赖的体格，每天挨一个板子啥事都不会有，连哼一下都不可能，你也看到他那得意洋洋的嘴脸了（输出0）；如果一次连揍他十个板子，他可能会皱皱眉头，咬咬牙，硬挺着不哼<br>（输出1）；揍到二十个板子，他会疼得脸部扭曲，象猪似地哼哼（输出3）；揍到三十个板子，他可能会象驴似地嚎叫，一把鼻涕一把泪地求你饶他一命（输出5）；揍到四十个板子，他会大小便失禁，勉<br>强哼出声来（输出1）；揍到五十个板子，他连哼一下都不可能（输出0）——死啦！<br>县令铺开坐标纸，以打板子的个数作为X轴，以哼哼的程度（输出）为Y轴，绘制了一条曲线：<br>——呜呼呀！这曲线象一座高山，弄不懂弄不懂。为啥那个无赖连挨了三十天大板却不喊绕命呀？<br>—— 呵呵，你打一次的时间间隔（Δτ=24小时）太长了，所以那个无赖承受的痛苦程度一天一利索，没有叠加，始终是一个常数；如果缩短打板子的时间间隔（建议 Δτ=0.5秒），那他的痛苦程度可就迅速叠加了；等到这无赖挨三十个大板（t=30）时，痛苦程度达到了他能喊叫的极限，会收到最好的惩戒效果，再多打就显示不出您的仁慈了。<br>——还是不太明白，时间间隔小，为什么痛苦程度会叠加呢？<br>——这与人（线性时不变系统）对板子（脉冲、输入、激励）的响应有关。什么是响应？人挨一个板子后，疼痛的感觉会在一天（假设的，因人而异）内慢慢消失（衰减），而不可能突然消失。这样一来，只要打板子的时间间隔很小，每一个板子引起的疼痛都来不及完全衰减，都会对最终的痛苦程度有不同的贡献：<br>t个大板子造成的痛苦程度=Σ(第τ个大板子引起的痛苦<em>衰减系数)<br>[衰减系数是（t-τ）的函数，仔细品味]<br>数学表达为：y(t)=∫T(τ)H(t-τ)<br>——拿人的痛苦来说卷积的事，太残忍了。除了人以外，其他事物也符合这条规律吗？<br>——呵呵，县令大人毕竟仁慈。其实除人之外，很多事情也遵循此道。好好想一想，铁丝为什么弯曲一次不折，快速弯曲多次却会轻易折掉呢？<br>——恩，一时还弄不清，容本官慢慢想来——但有一点是明确地——来人啊，将撒尿的那个无赖抓来，狠打40大板！<br>卷积及拉普拉斯变换的通俗解释–对于我这类没学过信号系统的人来说太需要了<br>卷积(convolution, 另一个通用名称是德文的Faltung)的名称由来，是在于当初定义它时，定义成 integ(f1(v)</em>f2(t-v))dv，积分区间在0到t之间。举个简单的例子，大家可以看到，为什么叫”卷积”了。比方说在(0，100)间积分，用简单的辛普生积分公式，积分区间分成100等分，那么看到的是f1(0)和f2(100)相乘，f1(1)和f2(99)相乘，f1(2)和f2 (98)相乘，……… 等等等等，就象是在坐标轴上回卷一样。所以人们就叫它”回卷积分”，或者”卷积”了。<br>为了理解”卷积”的物理意义，不妨将那个问题”相当于它的时域的信号与系统的单位脉冲响应的卷积”略作变化。这个变化纯粹是为了方便表达和理解，不影响任何其它方面。将这个问题表述成这样一个问题：一个信号通过一个系统，系统的响应是频率响应或波谱响应，且看如何理解卷积的物理意义。<br>假设信号函数为f, 响应函数为g。f不仅是时间的函数(信号时有时无)，还是频率的函数(就算在某一固定时刻，还有的地方大有的地方小)；g也是时间的函数(有时候有反应，有时候没反应)，同时也是频率的函数(不同的波长其响应程度不一样)。那我们要看某一时刻 t 的响应信号，该怎么办呢？<br>这就需要卷积了。<br>要看某一时刻 t 的响应信号，自然是看下面两点：<br>1。你信号来的时候正赶上人家”系统”的响应时间段吗？<br>2。就算赶上系统响应时间段，响应有多少？<br>响 应不响应主要是看 f 和 g 两个函数有没有交叠；响应强度的大小不仅取决于所给的信号的强弱，还取决于在某频率处对单位强度响应率。响应强度是信号强弱和对单位强度信号响应率的乘积。”交叠”体现在f(t1)和g(t-t1)上，g之所以是”(t-t1)”就是看两个函数错开多少。<br>由于 f 和 g 两个函数都有一定的带宽分布(假若不用开头提到的”表述变化”就是都有一定的时间带宽分布)，这个信号响应是在一定”范围”内广泛响应的。算总的响应信号，当然要把所有可能的响应加起来，实际上就是对所有可能t1积分了。积分范围虽然一般在负无穷到正无穷之间；但在没有信号或者没有响应的地方，积也是白积，结果是0，所以往往积分范围可以缩减。<br>这就是卷积及其物理意义啊。并成一句话来说，就是看一个时有时无(当然作为特例也可以永恒存在)的信号，跟一个响应函数在某一时刻有多大交叠。</p>
+<h3 id="拉普拉斯理论">拉普拉斯理论</h3>
+<p>拉普拉斯(1729-1827) 是法国数学家，天文学家，物理学家。他提出拉普拉斯变换(Laplace Transform) 的目的是想要解决他当时研究的牛顿引力场和太阳系的问题中涉及的积分微分方程。<br>拉普拉斯变换其实是一个数学上的简便算法；想要了解其”物理”意义 — 如果有的话 — 请看我举这样一个例子：<br>问题：请计算十万乘以一千万。<br>对于没学过指数的人，就只会直接相乘；对于学过指数的人，知道不过是把乘数和被乘数表达成指数形式后，两个指数相加就行了；如果要问究竟是多少，把指数转回来就是。<br>“拉 普拉斯变换” 就相当于上述例子中把数转换成”指数” 的过程；进行了拉普拉斯变换之后，复杂的微分方程(对应于上例中”复杂”的乘法) 就变成了简单的代数方程，就象上例中”复杂”的乘法变成了简单的加减法。再把简单的代数方程的解反变换回去(就象把指数重新转换会一般的数一样)，就解决了原来那个复杂的微分方程。<br>所以要说拉普拉斯变换真有” 物理意义”的话，其物理意义就相当于人们把一般的有理数用指数形式表达一样。<br>另外说两句题外话：<br>1 。拉普拉斯变换之所以现在在电路中广泛应有，根本原因是电路中也广泛涉及了微分方程。<br>2。拉普拉斯变换与Z变换当然有紧密联系；其本质区别在于拉氏变换处理的是时间上连续的问题，Z变换处理的是时间上分立的问题。<br>Signals, Linear Systems, and Convolution<br>Download from here<br>我们都知道卷积公式，但是它有什么物理意义呢？平时我们用卷积做过很多事情，信号处理时，输出函数是输入函数和系统函数的卷积；在图像处理时，两组幅分辨率不同的图卷积之后得到的互相平滑的图像可以方便处理。卷积甚至可以用在考试作弊中，为了让照片同时像两个人，只要把两人的图像卷积处理即可，这就是一种平滑的过程，可是我们怎么才能真正把公式和实际建立起一种联系呢？生活中就有实例：<br>比如说你的老板命令你干活，你却到楼下打台球去了，后来被老板发现，他非常气愤，扇了你一巴掌（注意，这就是输入信号，脉冲），于是你的脸上会渐渐地（贱贱地）鼓起来一个包，你的脸就是一个系统，而鼓起来的包就是你的脸对巴掌的响应。<br>好，这样就和信号系统建立起来意义对应的联系。下面还需要一些假设来保证论证的严谨：假定你的脸是线性时不变系统，也就是说，无论什么时候老板打你一巴掌，打在你脸的同一位置（这似乎要求你的脸足够光滑，如果你说你长了很多青春痘，甚至整个脸皮处处连续处处不可导，那难度太大了，我就无话可说了），你的脸上总是会在相同的时间间隔内鼓起来一个相同高度的包来，并且假定以鼓起来的包的大小作为系统输出。好了，那么，下面可以进入核心内容——卷积了！<br>如果你每天都到楼下去打台球，那么老板每天都要扇你一巴掌，不过当老板打你一巴掌后，你5分钟就消肿了，所以时间长了，你甚至就适应这种生活了……如果有一天，老板忍无可忍，以0.5秒的间隔开始不间断的扇你的过程，这样问题就来了：第一次扇你鼓起来的包还没消肿，第二个巴掌就来了，你脸上的包就可能鼓起来两倍高，老板不断扇你，脉冲不断作用在你脸上，效果不断叠加了，这样这些效果就可以求和了，结果就是你脸上的包的高度岁时间变化的一个函数了（注意理解）！<br>如果老板再狠一点，频率越来越高，以至于你都辨别不清时间间隔了，那么，求和就变成积分了。可以这样理解，在这个过程中的某一固定的时刻，你的脸上的包的鼓起程度和什么有关呢？和之前每次打你都有关！但是各次的贡献是不一样的，越早打的巴掌，贡献越小，这就是说，某一时刻的输出是之前很多次输入乘以各自的衰减系数之后的叠加而形成某一点的输出，然后再把不同时刻的输出点放在一起，形成一个函数，这就是卷积。卷积之后的函数就是你脸上的包的大小随时间变化的函数。本来你的包几分钟就可以消肿，可是如果连续打，几个小时也消不了肿了，这难道不是一种平滑过程么？反映到公式上，f(a)就是第a个巴掌，g(x-a)就是第a个巴掌在x时刻的作用程度，乘起来再叠加就ok了，这就是卷积！<br>最后提醒各位，请勿亲身尝试……</p>
+<h3 id="卷积的物理意义">卷积的物理意义</h3>
+<p>为了理解“卷积”的物理意义，不妨将那个问题“相当于它的时域的信号与系统的单位脉冲响应的卷积”略作变化。这个变化纯粹是为了方便表达和理解，不影响任何其它方面。将这个问题表述成这样一个问题：一个信号通过一个系统，系统的响应是频率响应或波谱响应，且看如何理解卷积的物理意义。<br>假设信号函数为f, 响应函数为g。f不仅是时间的函数(信号时有时无)，还是频率的函数(就算在某一固定时刻，还有的地方大有的地方小)；g也是时间的函数(有时候有反应，有时候没反应)，同时也是频率的函数(不同的波长其响应程度不一样)。那我们要看某一时刻 t 的响应信号，该怎么办呢？<br>这就需要卷积了。<br>其实卷积积分应用广泛用在信号里面，一个是频域一个是时域<br>卷积是个啥？我忽然很想从本质上理解它。于是我从抽屉里翻出自己珍藏了许多年，每每下决心阅读却永远都读不完的《应用傅立叶变换》。</p>
+<h3 id="傅立叶变换">傅立叶变换</h3>
+<p>一维卷积的定义：函数f(x)与函数h(x)的卷积，由函参量的无穷积分定义。这里参量x和积分变量α皆为实数；函数f和h可实可复。<br>定义虽然找到了，但我还是一头雾水。卷积是个无穷积分吗？那它是干啥用的？再往后翻：几何说明、运算举例、基本性质，一堆的公式，就是没有说它是干啥用的。我于是坐在那呆想，忽然第二个困扰我的问题冒了出来：傅立叶变换是个啥？接着就是第三个、第四个、……、第N个问题。</p>
+<p>傅立叶变换是个啥？听说能将时域上的东东变到频域上分析？哎？是变到频域上还是空间域上来着？到底啥是时域，频域，空间域？</p>
+<p>上网查傅立叶变换的物理意义，没发现明确答案，倒发现了许多和我一样晕着问问题的人。结果又多出了许多名词，能量？功率谱？图像灰度域？……没办法又去翻那本教材。</p>
+<p>一维傅立叶变换的定义与傅立叶积分定理</p>
+<p>设f(x)是实变量x的函数，该函数可实可复，称积分为函数f(x)的傅立叶变换。<br>吐血，啥是无穷积分来着？积分是啥来着？还能记起三角函数和差化积、积化和差公式吗？我忽然有种想把高中课本寻来重温的冲动。</p>
+<p>傅立叶变换主要是为了将信号运算从时域转换为频域。<br>信号的时域的卷积等于频域的乘积。<br>利用这个性质以及特殊的δ函数可以通过抽样构造简单的调制电路</p>
+<p>我比较赞同卷积的相关性的作用  在通信系统中的接收机部分MF匹配滤波器等就是本质上的相关<br>匹配滤波器最简单的形式就是原信号反转移位相乘积分得到的近似＝相关<br>相关性越好得到的信号越强   这个我们有一次大作业做的  做地做到呕吐  呵呵<br>还有解调中一些东西本质就是相关</p>
+<p>卷积公式　　解释　　卷积公式是用来求随机变量和的密度函数(pdf)的计算公式。定义式：　　<br>z(t)=x(t)<em>y(t)= ∫x(m)y(t-m)dm. 　　<br>已知x,y的pdf,x(t),y(t).现在要求z=x+y的pdf. 我们作变量替显，令　z=x+y,m=x. 雅可比行列式=1.那么,z，m联合密度就是f(z,m)=x(m)y(z-m)</em>1. 这样，就可以很容易求Z的在（z,m)中边缘分布，即fZ(z)=∫x(m)y(z-m)dm….. 由于这个公式和x(t),y(t)存在一一对应的关系。<br>为了方便，所以记 ∫x(m)y(z-m)dm=x(t)<em>y(t) 　　<br>长度为m的向量序列u和长度为n的向量序列v，卷积w的向量序列长度为(m+n-1), u(n)与v(n)的卷积w(n)定义为： w(n)=u(n)@v(n)=sum(v(m)</em>u(n-m)),m from 负无穷到正无穷；</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">当m=n时w(1) = u(1)<span class="keyword">*</span>v(1) 　　</div><div class="line">	w(2) = u(1)<span class="keyword">*</span>v(2)+u(2)<span class="keyword">*</span>v(1) 　　</div><div class="line">	w(3) = u(1)<span class="keyword">*</span>v(3)+u(2)<span class="keyword">*</span>v(2)+u(3)<span class="keyword">*</span>v(1) </div><div class="line">	...　</div><div class="line">	w(n) = u(1)<span class="keyword">*</span>v(n)+u(2)<span class="keyword">*</span>v(n-1)+ … +u(n)<span class="keyword">*</span>v(1) 　　… 　　w(2<span class="keyword">*</span>n-1) = u(n)<span class="keyword">*</span>v(n) </div><div class="line">当m≠n时,应以0补齐阶次低的向量的高位后进行计算</div></pre></td></tr></table></figure>
+
+<p>这是数学中常用的一个公式，在概率论中，是个重点也是一个难点。</p>
+<p>　　卷积公式是用来求随机变量和的密度函数(pdf)的计算公式。<br>　　定义式：<br>　　z(t)=x(t)<em>y(t)= ∫x(m)y(t-m)dm.<br>　　已知x,y的pdf,x(t),y(t).现在要求z=x+y的pdf. 我们作变量替显，令<br>　　z=x+y,m=x. 雅可比行列式=1.那么,t，m联合密度就是f(z,m)=x(m)y(z-m)</em>1. 这样，就可以很容易求Z的在（z,m)中边缘分布<br>　　即fZ(z)=∫x(m)y(z-m)dm….. 由于这个公式和x(t),y(t)存在一一对应的关系。为了方便，所以记 ∫x(m)y(z-m)dm=x(t)*y(t)</p>
+<p>卷积是一种线性运算,图像处理中常见的mask运算都是卷积，广泛应用于图像滤波。castlman的书对卷积讲得很详细。<br>高斯变换就是用高斯函数对图像进行卷积。高斯算子可以直接从离散高斯函数得到：</p>
+<figure class="highlight {bash}"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;N; i++)</div><div class="line">{</div><div class="line">	<span class="keyword">for</span>(j=<span class="number">0</span>; j&lt;N; j++)</div><div class="line">	{</div><div class="line">		g<span class="matrix">[i*N+j]</span>=<span class="built_in">exp</span>(-((i-(N-<span class="number">1</span>)/<span class="number">2</span>)^<span class="number">2</span>+(j-(N-<span class="number">1</span>)/<span class="number">2</span>)^<span class="number">2</span>))/(<span class="number">2</span>*delta^<span class="number">2</span>));</div><div class="line">		<span class="built_in">sum</span> += g<span class="matrix">[i*N+j]</span>;</div><div class="line">	}</div><div class="line">}</div><div class="line">再除以 <span class="built_in">sum</span> 得到归一化算子</div><div class="line">N是滤波器的大小，delta自选</div></pre></td></tr></table></figure>
+
+<p>首先，再提到卷积之前，必须提到卷积出现的背景。卷积是在信号与线性系统的基础上或背景中出现的，脱离这个背景单独谈卷积是没有任何意义的，除了那个所谓褶反公式上的数学意义和积分（或求和，离散情况下）。<br>信号与线性系统，讨论的就是信号经过一个线性系统以后发生的变化（就是输入输出和所经过的所谓系统，这三者之间的数学关系）。所谓线性系统的含义，就是，这个所谓的系统，带来的输出信号与输入信号的数学关系式之间是线性的运算关系。<br>因此，实际上，都是要根据我们需要待处理的信号形式，来设计所谓的系统传递函数，那么这个系统的传递函数和输入信号，在数学上的形式就是所谓的卷积关系。<br>卷积关系最重要的一种情况，就是在信号与线性系统或数字信号处理中的卷积定理。利用该定理，可以将时间域或空间域中的卷积运算等价为频率域的相乘运算，从而利用FFT等快速算法，实现有效的计算，节省运算代价。</p>
+<h3 id="sift算法">sift算法</h3>
+<p>尺度不变特征转换(Scale-invariant feature transform 或 SIFT)是一种电脑视觉的算法用来侦测与描述影像中的局部性特征，它在空间尺度中寻找极值点，并提取出其位置、尺度、旋转不变量，此算法由 David Lowe 在1999年所发表，2004年完善总结。<br>Sift算法就是用不同尺度（标准差）的高斯函数对图像进行平滑，然后比较平滑后图像的差别，<br>差别大的像素就是特征明显的点。<br>sift可以同时处理亮度，平移，旋转，尺度的变化，利用特征点来提取特征描述符，最后在特征描述符之间寻找匹配</p>
+<p>五个步骤<br>1构建尺度空间，检测极值点，获得尺度不变性<br>2特征点过滤并进行经确定位，剔除不稳定的特征点<br>3 在特征点处提取特征描述符，为特征点分配方向直<br>4声称特征描述子，利用特征描述符寻找匹配点<br>5计算变换参数<br>当2幅图像的sift特征向量生成以后，下一步就可以采用关键点特征向量的欧式距离来作为2幅图像中关键点的相似性判定量度</p>
+<p>尺度空间：<br>尺度就是受delta这个参数控制的表示<br>而不同的L(x,y,delta)就构成了尺度空间，实际上具体计算的时候即使连续的高斯函数，都要被离散为矩阵来和数字图像进行卷积操作<br>L(x,y,delta)=G(x,y,e)*i(x,y)<br>尺度空间＝原始图像（卷积）一个可变尺度的2维高斯函数G(x,y,e)</p>
+<p>G(x,y,e) = [1/2<em>pi</em>e^2] * exp[ -(x^2 + y^2)/2e^2] </p>
+<p>为了更有效的在尺度空间检测到稳定的关键点，提出了高斯差分尺度空间，利用不同尺度的高斯差分核与原始图像i(x,y)卷积生成<br>D(x,y,e)=(G(x,y,ke)-G(x,y,e))*i(x,y)<br>=L(x,y,ke)-L(x,y,e)<br>(为避免遍历每个像素点)</p>
+<p>高斯卷积：<br>在组建一组尺度空间后，再组建下一组尺度空间，对上一组尺度空间的最后一幅图像进行二分之一采样，得到下一组尺度空间的第一幅图像，然后进行像建立第一组尺度空间那样的操作，得到第二组尺度空间，公式定义为<br>         L(x,y,e) = G(x,y,e)<em>I(x,y)<br>    图像金字塔的构建：图像金字塔共O组，每组有S层，下一组的图像由上一组图像降采样得到、<br>高斯差分<br>    在尺度空间建立完毕后，为了能够找到稳定的关键点，采用高斯差分的方法来检测那些在局部位置的极值点，即采用俩个相邻的尺度中的图像相减，即公式定义为：<br>        D(x,y,e) = ((G(x,y,ke) - G(x,y,e)) </em> I(x,y)<br>                 = L(x,y,ke) - L(x,y,e)<br> 咱们再来具体阐述下构造D(x,y,e)的详细步骤：<br>    1、首先采用不同尺度因子的高斯核对图像进行卷积以得到图像的不同尺度空间，将这一组图像作为金子塔图像的第一层。<br>    2、接着对第一层图像中的2倍尺度图像（相对于该层第一幅图像的2倍尺度）以2倍像素距离进行下采样来得到金子塔图像的第二层中的第一幅图像，对该图像采用不同尺度因子的高斯核进行卷积，以获得金字塔图像中第二层的一组图像。<br>    3、再以金字塔图像中第二层中的2倍尺度图像（相对于该层第一幅图像的2倍尺度）以2倍像素距离进行下采样来得到金字塔图像的第三层中的第一幅图像，对该图像采用不同尺度因子的高斯核进行卷积，以获得金字塔图像中第三层的一组图像。这样依次类推，从而获得了金字塔图像的每一层中的一组图像，<br> 4、对上图得到的每一层相邻的高斯图像相减，就得到了高斯差分图像，如下述第一幅图所示。下述第二幅图中的右列显示了将每组中相邻图像相减所生成的高斯差分图像的结果，限于篇幅，图中只给出了第一层和第二层高斯差分图像的计算<br><img class="floatnone" src="/images/theory9.jpg"></p>
+<h3 id="谢谢！">谢谢！</h3>
+<p>有问题请留言。  请叫我皓眸哥(^_^)  </p>
+
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">Chale Cao</a>)和出处 <a href="http://haomou.net">皓眸IT</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/08/06/2014_theory/">图像处理的数学理论</a></div>
+</div></div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories hm-article-w hm-article-w-h" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<br/><span class="breadcrumb fa fa-folder"><li><a href="/categories/数学理论/" itemprop="url"><span itemprop="title" >数学理论</span></a></li></span></div>    &nbsp;&nbsp; <span class="tags hm-article-w hm-article-w-h1">标签<br/> <a href="/tags/图像处理/" class="label label-primary" itemprop="url"><span itemprop="title">图像处理</span></a><a href="/tags/数学理论/" class="label label-success" itemprop="url"><span itemprop="title">数学理论</span></a></span>    &nbsp;&nbsp; <span class="time">最近更新:<time title="2015-01-04 17:35:14"datetime="2015-01-04 17:35:14"> Jan 4 2015</time></span>    &nbsp;&nbsp; <span class="comment-link">
+<a href="http://haomou.net/2014/08/06/2014_theory/#comments" class="ds-thread-count comment-link" data-thread-key="2014_theory" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  <li class="previous"><a href="/2014/08/06/2014_canvas/" title="Canvas图像处理和滤镜特效">&larr; Canvas图像处理和滤镜特效</a></li>
+  
+  
+  <li class="next"><a href="/2014/08/06/2014_js/" title="JS常用函数">JS常用函数 &rarr;</a></li>
+  
+</ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="2014_theory"  data-url="http://haomou.net/2014/08/06/2014_theory/" data-title="图像处理的数学理论"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_myself" class="widget hm-left-widget" style="clear:both">
+    <img alt="皓眸GEEK" src="/images/hm.jpg" width="100" height="120"  style="border-radius: 5px;margin-right: 5px;float:left;"/>
+<div style="color: #428bca;text-align: center;font-size: 18px;">曹欢欢(chale)</div>2014年毕业于中国科学技术大学，硕士研究生，目前在大武汉知名外企公司上班。<br/>喜欢美貌与智慧并存的女生，而我就是英雄与侠义的化身哈，等你来...吼吼...喜欢就写信给我喽，请叫我皓眸哥(^_^)
+<br/>擅长：NodeJS，JAVA，PHP，WebGL，WebRTC，PS ...
+<br/><span style="color: #fb6580;">Mail To: </span>chh1990@mail.ustc.edu.cn
+<br/><span style="color: #fb6580;">QQ：</span>807991555（chale）
+<br/><span style="color: #fb6580;">APP敏捷开发交流群：</span>345413787</div>
+
+<div id="widget_recent_posts" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_search" class="widget hm-left-widget" style="clear:both">
+  <div class="panel-heading">一般人我不告诉他？</div>  <div id="haomou_ad">
+<a target="_blank" href="http://2.taobao.com/item.htm?id=43869349327&spm=686.1000925.0.0.mjUwtL&mt=">
+<img src="/images/book.png" title="皓眸IT-我的书" alt="APP敏捷开发王道-我的新书" />
+</a>
+<br/>
+<p style="text-align:center;"><a target="_blank" href="http://2.taobao.com/item.htm?id=43869349327&spm=686.1000925.0.0.mjUwtL&mt=">附整套项目代码，只要<b style="color:red;">9.9</b>元</a></p>
+<p style="text-align:center;">APP敏捷开发交流群：<b style="color:red;">345413787</b></p>
+</div></div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2014-2015 Chale Cao
+  
+    &nbsp;&nbsp;</span>
+  <a href='http://www.miibeian.gov.cn/'>苏ICP备13018740号-6</a></span>
+  <span id='analytics-51la'></span><span id='analytics-google'></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5849006'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D5849006%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'></span>  </div>
+  <div id="copyright">Blog powered by <a href='http://www.haomou.net/'  title="本站由hexo V2.8.3 生成"><strong>hexo</strong></a> Theme <strong><a href='http://www.haomou.net/'>Chale V1.0</a></strong><span class="pull-right"> 更新时间: <em>2015-01-04 17:35:14</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.bootcss.com/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haomou"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://haomou.net/2014/08/06/2014_theory/";
+    var wumiiTitle = "图像处理的数学理论";
+    var wumiiTags = "图像处理,数学理论";
+    var wumiiCategories = ["数学理论"];
+    var wumiiSitePrefix = "http://haomou.net";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />').wrap('<div class="img_block"></div>');
+     
+      if(alt){$(this).after('<span class="caption">' + alt + '</span>')};
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script src="/js/chenall.js" type="text/javascript"></script>
+
+
+  </body>
+</html>
